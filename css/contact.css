@@ -1,0 +1,66 @@
+/* contact: hero section */
+.contact-copy {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contact-copy .contact-copy-main {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  text-align: center;
+  color: var(--tone-400);
+}
+
+.contact-copy .contact-copy-main .contact-header {
+  color: var(--tone-500);
+}
+
+.contact-copy .contact-copy-footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.contact-copy .contact-copy-footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  color: var(--tone-400);
+}
+
+.contact-col-copy h4:last-child {
+  pointer-events: none;
+}
+
+.contact-col-copy h4:last-child * {
+  pointer-events: none;
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+a[href^="tel:"] {
+  pointer-events: none !important;
+  color: var(--tone-400) !important;
+  text-decoration: none !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  font-family: inherit !important;
+  line-height: inherit !important;
+}
+
+@media (max-width: 1000px) {
+  .contact-copy .contact-copy-main {
+    width: 100%;
+  }
+}

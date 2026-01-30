@@ -1,0 +1,219 @@
+/* home: about callout section */
+.about-callout {
+  position: relative;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 8rem 0 0 0;
+  text-align: center;
+}
+
+/* home: about copy section */
+.about-copy .container {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.about-copy .container h3 {
+  width: 75%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-copy .container .about-copy-info {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  margin: 0 auto 8rem auto;
+  text-align: center;
+}
+
+.about-copy .container .about-copy-info a {
+  width: max-content;
+  margin: 0 auto;
+  color: var(--tone-500);
+}
+
+/* home: banner section */
+.banner {
+  position: relative;
+  width: 100%;
+  height: 150svh;
+  overflow: hidden;
+}
+
+.banner .banner-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.banner .banner-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.banner .banner-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.banner .banner-content .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: var(--tone-500);
+}
+
+.banner .banner-content .container h2 {
+  width: 75%;
+}
+
+.banner .banner-content .container .banner-copy {
+  width: 50%;
+}
+
+/* home: clients section */
+.clients {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  background-color: var(--tone-100);
+  color: var(--tone-500);
+  overflow: hidden;
+}
+
+.clients .clients-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.clients .clients-header p {
+  color: var(--tone-400);
+}
+
+.clients .container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+}
+
+.clients .grid {
+  position: relative;
+  width: 90%;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  border: 1px solid var(--tone-200);
+}
+
+.clients .grid-row,
+.clients .grid-item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.clients .grid-row:nth-child(1) {
+  border-bottom: 1px solid var(--tone-200);
+}
+
+.clients .grid-item:not(:last-child) {
+  border-right: 1px solid var(--tone-200);
+}
+
+.clients .grid-item p {
+  position: relative;
+  z-index: 2;
+  color: var(--tone-400);
+  user-select: none;
+}
+
+.clients .highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: white;
+  opacity: 1;
+  transition: transform 0.25s ease, width 0.25s ease, height 0.25s ease,
+    background-color 0.25s ease;
+  pointer-events: none;
+}
+
+@media (max-width: 1000px) {
+  .about-callout {
+    width: 85%;
+  }
+
+  .about-copy .container h3 {
+    width: 100%;
+  }
+
+  .about-copy .container .about-copy-info {
+    width: 90%;
+  }
+
+  .banner {
+    height: 125svh;
+  }
+
+  .banner .banner-content .container h2 {
+    width: 100%;
+  }
+
+  .banner .banner-content .container .banner-copy {
+    width: 85%;
+  }
+
+  .clients {
+    height: 110svh;
+  }
+
+  .clients .grid {
+    height: max-content;
+    border: 1px solid var(--tone-400);
+  }
+
+  .clients .grid-row {
+    flex: none;
+    flex-direction: column;
+    gap: 0;
+    height: max-content;
+    padding: 0;
+    border: none;
+  }
+
+  .clients .grid-row:nth-child(1) {
+    border-bottom: 1px solid var(--tone-400);
+  }
+
+  .clients .grid-item {
+    flex: none;
+    width: 100%;
+    height: 4rem;
+    padding: 0;
+  }
+
+  .clients .grid-item:not(:last-child) {
+    border-right: none;
+    border-bottom: 1px solid var(--tone-400);
+  }
+}

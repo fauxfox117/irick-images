@@ -1,0 +1,84 @@
+/* split element section */
+.split-element {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  background-color: var(--tone-100);
+  overflow: hidden;
+}
+
+.split-element .container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.split-element .split-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translate(-50%, -50%);
+}
+
+.split-element .split-img img {
+  width: 100%;
+  height: 50%;
+  object-fit: contain;
+  will-change: transform;
+}
+
+.split-element .split-top {
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+}
+
+.split-element .split-top img {
+  transform: scale(1.5);
+}
+
+.split-element .split-bottom {
+  clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+}
+
+.split-element .split-bottom img {
+  transform: scale(2);
+}
+
+.split-element .split-copy {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  background-color: var(--tone-300);
+  color: var(--tone-400);
+  text-align: center;
+  transform: translateY(-50%);
+  overflow: hidden;
+}
+
+.split-element .split-copy p {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+@media (max-width: 1000px) {
+  .split-element {
+    height: 75svh;
+  }
+
+  .split-element .split-copy p {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    column-gap: 2rem;
+    text-align: center;
+  }
+}

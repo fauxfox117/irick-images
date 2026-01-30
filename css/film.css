@@ -1,0 +1,139 @@
+/* film: hero section */
+.film-hero {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  background-color: var(--tone-200);
+  overflow: hidden;
+}
+
+.film-hero .container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.film-hero .container .film-hero-copy {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 4rem;
+  text-align: center;
+  color: var(--tone-400);
+}
+
+.film-hero .container .film-hero-copy .pixelated-text h1 {
+  padding: 2rem 2rem 1rem 2rem;
+  font-size: 15vw;
+}
+
+.film-hero .container .film-hero-copy .film-hero-description {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  margin: -2rem auto 0 auto;
+}
+
+/* film: banner section */
+.banner.film-banner {
+  background-color: var(--tone-100);
+}
+
+.banner.film-banner .banner-content .container {
+  color: var(--tone-400);
+}
+
+.banner.film-banner .banner-img img {
+  opacity: 0.5;
+}
+
+/* film: snapshots section */
+.film-snapshots {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 8rem 0;
+  background-color: var(--tone-200);
+}
+
+.film-snapshots .container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.film-snapshots .snap-row {
+  width: 100%;
+  display: flex;
+  gap: 2rem;
+}
+
+.film-snapshots .snap-img {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4/5;
+}
+
+.film-snapshots .mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.film-snapshots .img-1 .mask {
+  background: url(/sample-film/film-snapshot-1.jpg) no-repeat 50% 50%;
+  background-size: cover;
+}
+
+.film-snapshots .img-2 .mask {
+  background: url(/sample-film/film-snapshot-2.jpg) no-repeat 50% 50%;
+  background-size: cover;
+}
+
+.film-snapshots .img-3 .mask {
+  background: url(/sample-film/film-snapshot-3.jpg) no-repeat 50% 50%;
+  background-size: cover;
+}
+
+.film-snapshots .img-4 .mask {
+  background: url(/sample-film/film-snapshot-4.jpg) no-repeat 50% 50%;
+  background-size: cover;
+}
+
+.film-snapshots .img-5 .mask {
+  background: url(/sample-film/film-snapshot-5.jpg) no-repeat 50% 50%;
+  background-size: cover;
+}
+
+.film-snapshots .img-6 .mask {
+  background: url(/sample-film/film-snapshot-6.jpg) no-repeat 50% 50%;
+  background-size: cover;
+}
+
+@media (max-width: 1000px) {
+  .film-hero .container .film-hero-copy .pixelated-text h1 {
+    padding: 0 0 5rem 0;
+    font-size: 20vw;
+  }
+
+  .film-hero .container .film-hero-copy .film-hero-description {
+    width: 100%;
+  }
+
+  .film-snapshots .container,
+  .film-snapshots .snap-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .snap-img:not([class*="img-"]) {
+    display: none;
+  }
+}

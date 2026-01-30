@@ -1,0 +1,40 @@
+{
+  "name": "irick-images",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "server": "node server.js",
+    "dev:all": "npm run server & npm run dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "host": "vite --host"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harrnish/irick-images.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/harrnish/irick-images/issues"
+  },
+  "homepage": "https://github.com/harrnish/irick-images#readme",
+  "description": "",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.93.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "gsap": "^3.13.0",
+    "html2canvas": "^1.4.1",
+    "lenis": "^1.3.11",
+    "split-type": "^0.3.4",
+    "stripe": "^20.3.0",
+    "three": "^0.180.0",
+    "ukiyojs": "^4.2.0",
+    "vite": "^7.1.5"
+  }
+}
