@@ -49,9 +49,6 @@ function initImageRevealAnimations() {
         });
       });
 
-      // shuffle masks for random reveal order
-      const shuffledMasks = gsap.utils.shuffle([...masks]);
-
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: row,
@@ -59,17 +56,12 @@ function initImageRevealAnimations() {
         },
       });
 
-      // flicker animation using stagger with repeat
-      timeline.to(shuffledMasks, {
+      // Simple fade in - no flicker/glitch
+      timeline.to(masks, {
         opacity: 1,
-        duration: 0.05,
-        ease: "power2.inOut",
-        stagger: {
-          amount: 0.5,
-          from: "random",
-          repeat: 2,
-          yoyo: true,
-        },
+        duration: 0.8,
+        ease: "power2.out",
+        stagger: 0.05,
       });
     });
   });
