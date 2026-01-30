@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Now | Irick Images</title>
+    <link rel="icon" href="/site-icon.png" />
+    <meta name="theme-color" content="#000000" />
+
+    <link rel="stylesheet" href="/globals.css" />
+    <link rel="stylesheet" href="/css/transition.css" />
+    <link rel="stylesheet" href="/css/menu.css" />
+    <link rel="stylesheet" href="/css/booking.css" />
+  </head>
+  <body>
+    <!-- page transition -->
+    <div class="transition">
+      <div class="transition-overlay"></div>
+    </div>
+
+    <!-- menu -->
+    <nav>
+      <div class="container">
+        <div class="logo">
+          <div class="logo-container">
+            <a href="/"><span></span>Irick Images</a>
+          </div>
+        </div>
+
+        <div class="menu-toggle-btn">
+          <div class="menu-toggle-btn-wrapper">
+            <p>Menu</p>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="nav-overlay">
+      <div class="nav-items">
+        <div class="nav-item">
+          <a href="/">Index</a>
+        </div>
+        <div class="nav-item">
+          <a href="/work">Work</a>
+        </div>
+        <div class="nav-item">
+          <a href="/culture">Culture</a>
+        </div>
+        <div class="nav-item">
+          <a href="/directors">Directors</a>
+        </div>
+        <div class="nav-item">
+          <a href="/contact">Contact</a>
+        </div>
+        <div class="nav-item active">
+          <a href="/book">Book Now</a>
+        </div>
+      </div>
+
+      <div class="nav-footer">
+        <div class="container">
+          <div class="nav-footer-item">
+            <a href="https://www.instagram.com/codegridweb/" target="_blank"
+              >Instagram</a
+            >
+            <a href="https://www.youtube.com/@codegrid" target="_blank"
+              >YouTube</a
+            >
+          </div>
+
+          <div class="nav-footer-item">
+            <a href="/contact">[ &nbsp;Drop a line &nbsp; ]</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking Flow -->
+    <div class="page booking">
+      <div class="booking-container">
+        <!-- Progress Indicator -->
+        <div class="booking-progress">
+          <div class="progress-step active" data-step="1">
+            <span>01</span>
+            <p>Package</p>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="2">
+            <span>02</span>
+            <p>Add-ons</p>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="3">
+            <span>03</span>
+            <p>Details</p>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="4">
+            <span>04</span>
+            <p>Payment</p>
+          </div>
+        </div>
+
+        <!-- Step 1: Package Selection -->
+        <div class="booking-step active" data-step="1">
+          <h2>Select Your Package</h2>
+          <div class="packages-grid" id="packagesGrid"></div>
+          <div class="booking-actions">
+            <button class="btn-secondary" onclick="window.location.href = '/'">
+              Cancel
+            </button>
+            <button class="btn-primary" id="nextToAddons" disabled>
+              Continue
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Add-ons Selection -->
+        <div class="booking-step" data-step="2">
+          <h2>Enhance Your Experience</h2>
+          <p class="step-subtitle">
+            Optional add-ons to make your shoot even better
+          </p>
+          <div class="addons-grid" id="addonsGrid"></div>
+          <div class="booking-actions">
+            <button class="btn-secondary" id="backToPackages">Back</button>
+            <button class="btn-primary" id="nextToDetails">Continue</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Customer Details -->
+        <div class="booking-step" data-step="3">
+          <h2>Your Information</h2>
+          <form class="booking-form" id="customerForm">
+            <div class="form-group">
+              <label for="name">Full Name *</label>
+              <input type="text" id="name" name="name" required />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" required />
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number *</label>
+              <input type="tel" id="phone" name="phone" required />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="date">Shoot Date *</label>
+                <input type="date" id="date" name="date" required />
+              </div>
+
+              <div class="form-group">
+                <label for="time">Preferred Time *</label>
+                <input type="time" id="time" name="time" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="location">Location/Address *</label>
+              <input type="text" id="location" name="location" required />
+            </div>
+
+            <div class="form-group">
+              <label for="notes">Additional Notes (Optional)</label>
+              <textarea id="notes" name="notes" rows="4"></textarea>
+            </div>
+          </form>
+
+          <div class="booking-summary">
+            <h3>Booking Summary</h3>
+            <div id="summaryContent"></div>
+            <div class="summary-total">
+              <span>Total:</span>
+              <span id="totalPrice">$0</span>
+            </div>
+            <div class="summary-deposit">
+              <span>Deposit Required (50%):</span>
+              <span id="depositPrice">$0</span>
+            </div>
+          </div>
+
+          <div class="booking-actions">
+            <button class="btn-secondary" id="backToAddons">Back</button>
+            <button class="btn-primary" id="nextToPayment">
+              Continue to Payment
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 4: Payment -->
+        <div class="booking-step" data-step="4">
+          <h2>Complete Your Booking</h2>
+          <p class="step-subtitle">Secure payment powered by Stripe</p>
+
+          <div class="payment-summary">
+            <h3>Final Summary</h3>
+            <div id="finalSummary"></div>
+            <div class="summary-total">
+              <span>Deposit Due Today:</span>
+              <span id="finalDepositPrice">$0</span>
+            </div>
+          </div>
+
+          <div id="payment-element"></div>
+          <div id="payment-message" class="payment-message"></div>
+
+          <div class="booking-actions">
+            <button class="btn-secondary" id="backToDetails">Back</button>
+            <button class="btn-primary" id="submitPayment">Pay Deposit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/scripts/transition.js"></script>
+    <script type="module" src="/scripts/menu.js"></script>
+    <script type="module" src="/scripts/booking.js"></script>
+  </body>
+</html>

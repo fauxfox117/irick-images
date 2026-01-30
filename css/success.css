@@ -1,0 +1,102 @@
+/* Booking Success Page */
+.success-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  background-color: var(--tone-100);
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  background-color: var(--tone-500);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.success-icon::after {
+  content: "✓";
+  font-size: 3rem;
+  color: var(--tone-100);
+}
+
+.success-page h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.success-page p {
+  font-size: 1.25rem;
+  color: var(--tone-450);
+  max-width: 600px;
+  margin-bottom: 3rem;
+  line-height: 1.6;
+}
+
+.success-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--tone-500);
+  color: var(--tone-100);
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--tone-600);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 2px solid var(--tone-900);
+  color: var(--tone-900);
+}
+
+.btn-secondary:hover {
+  background-color: var(--tone-900);
+  color: var(--tone-100);
+}
+
+@media (max-width: 768px) {
+  .success-page h1 {
+    font-size: 2rem;
+  }
+
+  .success-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
