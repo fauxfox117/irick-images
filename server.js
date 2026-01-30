@@ -21,9 +21,9 @@ const supabase = createClient(
   process.env.SUPABASE_ANON_KEY,
   {
     db: {
-      schema: 'api'
-    }
-  }
+      schema: "api",
+    },
+  },
 );
 
 // Middleware
@@ -32,7 +32,8 @@ app.use(
     origin: process.env.FRONTEND_URL || "http://localhost:5173",
   }),
 );
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
@@ -145,10 +146,12 @@ app.post("/api/admin/upload-image", async (req, res) => {
   try {
     const { fileName, fileData, category } = req.body;
 
-    // Upload to Supabase storage
+    // Upload to Supabase storage (upsert to overwrite if exists)
     const { data, error } = await supabase.storage
       .from("images")
-      .upload(`${category}/${fileName}`, fileData);
+      .upload(`${category}/${fileName}`, fileData, {
+        upsert: true,
+      });
 
     if (error) throw error;
 
@@ -158,6 +161,42 @@ app.post("/api/admin/upload-image", async (req, res) => {
     });
   } catch (error) {
     console.error("Upload error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get images from a category endpoint
+app.get("/api/images/:category", async (req, res) => {
+  try {
+    const { category } = req.params;
+
+    // List all files in the category folder
+    const { data: files, error } = await supabase.storage
+      .from("images")
+      .list(category, {
+        sortBy: { column: "name", order: "asc" },
+      });
+
+    if (error) throw error;
+
+    // Get public URLs for all images
+    const imagesWithUrls = files
+      .filter((file) => file.name !== ".emptyFolderPlaceholder")
+      .map((file) => {
+        const { data } = supabase.storage
+          .from("images")
+          .getPublicUrl(`${category}/${file.name}`);
+
+        return {
+          name: file.name,
+          url: data.publicUrl,
+          created_at: file.created_at,
+        };
+      });
+
+    res.json({ images: imagesWithUrls });
+  } catch (error) {
+    console.error("Get images error:", error);
     res.status(500).json({ error: error.message });
   }
 });

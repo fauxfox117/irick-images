@@ -274,10 +274,13 @@ async function handlePayment() {
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Payment setup failed:", errorText);
       throw new Error("Payment setup failed");
     }
 
-    const { clientSecret } = await response.json();
+    const data = await response.json();
+    const { clientSecret } = data;
 
     // For now, simulate successful payment
     // When Stripe keys are added, this will integrate with Stripe Elements
@@ -308,8 +311,13 @@ async function completeBooking(paymentIntentId) {
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Booking submission failed:", errorText);
       throw new Error("Booking submission failed");
     }
+
+    const data = await response.json();
+    console.log("Booking completed:", data);
 
     // Redirect to success page
     window.location.href = "/booking-success.html";

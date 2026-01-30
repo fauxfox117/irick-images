@@ -128,11 +128,11 @@
 /* Admin Dashboard */
 .admin-dashboard {
   min-height: 100vh;
-  background-color: var(--tone-100);
+  background-color: rgba(75, 75, 75, 0.1);
 }
 
 .admin-header {
-  background-color: var(--tone-200);
+  background-color: rgba(75, 75, 75, 0.1);
   padding: 1.5rem 0;
   border-bottom: 2px solid var(--tone-300);
 }
@@ -168,7 +168,8 @@
 
 /* Admin Tabs */
 .admin-tabs {
-  background-color: var(--tone-200);
+  background-color: rgba(75, 75, 75, 0.1);
+
   border-bottom: 2px solid var(--tone-300);
 }
 
@@ -359,7 +360,7 @@
 }
 
 .upload-form {
-  background-color: var(--tone-200);
+  background-color: rgba(75, 75, 75, 0.1);
   padding: 2rem;
   border-radius: 8px;
 }
@@ -379,7 +380,8 @@
 .upload-form select {
   width: 100%;
   padding: 0.75rem;
-  background-color: var(--tone-100);
+  background-color: rgba(75, 75, 75, 0.1);
+
   border: 2px solid var(--tone-300);
   color: var(--tone-900);
   font-family: inherit;
@@ -417,7 +419,8 @@
 }
 
 .upload-instructions {
-  background-color: var(--tone-200);
+  background-color: rgba(75, 75, 75, 0.1);
+
   padding: 2rem;
   border-radius: 8px;
 }

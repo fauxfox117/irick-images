@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -29,12 +29,13 @@
       <!-- Main Content -->
       <div class="admin-content">
         <div class="container">
-          
           <!-- Bookings Tab -->
           <div class="tab-content active" data-tab="bookings">
             <div class="section-header">
               <h2>Recent Bookings</h2>
-              <button class="btn-secondary" id="refreshBookings">Refresh</button>
+              <button class="btn-secondary" id="refreshBookings">
+                Refresh
+              </button>
             </div>
 
             <div id="bookingsLoading" class="loading">Loading bookings...</div>
@@ -55,31 +56,32 @@
                   <label for="category">Category</label>
                   <select id="category" name="category" required>
                     <option value="">Select category...</option>
-                    <option value="work">Portfolio/Work</option>
-                    <option value="spotlight">Spotlight/Services</option>
-                    <option value="directors">Team/Directors</option>
-                    <option value="culture/team">Culture/Team</option>
-                    <option value="sample-film">Film Snapshots</option>
-                    <option value="home">Home/Banners</option>
+                    <option value="real-estate">Real Estate</option>
+                    <option value="portraits">Portraits</option>
+                    <option value="performance">Performance</option>
+                    <option value="events-misc">Events, misc.</option>
+                    <option value="promotional">Promotional</option>
                   </select>
                 </div>
 
                 <div class="form-group">
                   <label for="imageFile">Select Image</label>
-                  <input 
-                    type="file" 
-                    id="imageFile" 
-                    accept="image/jpeg,image/jpg,image/png,image/webp" 
+                  <input
+                    type="file"
+                    id="imageFile"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
                     required
                   />
-                  <p class="help-text">Accepted formats: JPG, PNG, WebP (Max 10MB)</p>
+                  <p class="help-text">
+                    Accepted formats: JPG, PNG, WebP (Max 10MB)
+                  </p>
                 </div>
 
                 <div class="form-group">
                   <label for="fileName">File Name (optional)</label>
-                  <input 
-                    type="text" 
-                    id="fileName" 
+                  <input
+                    type="text"
+                    id="fileName"
                     placeholder="e.g., work-6.jpg"
                   />
                   <p class="help-text">Leave blank to use original filename</p>
@@ -95,18 +97,34 @@
               <div class="upload-instructions">
                 <h3>Image Guidelines</h3>
                 <ul>
-                  <li><strong>Work Images:</strong> Portfolio pieces shown on work page (work-1.jpg to work-5.jpg)</li>
-                  <li><strong>Spotlight:</strong> Service showcase images (spotlight-1.jpg to spotlight-20.jpg)</li>
-                  <li><strong>Directors:</strong> Team member portraits (director-1.jpg to director-10.jpg)</li>
-                  <li><strong>Culture/Team:</strong> Team photos (team-1.jpg to team-17.jpg)</li>
-                  <li><strong>Film Snapshots:</strong> Project detail images (film-snapshot-1.jpg to film-snapshot-6.jpg)</li>
-                  <li><strong>Home/Banners:</strong> Hero and banner images</li>
+                  <li>
+                    <strong>Real Estate Images:</strong> Portfolio pieces shown
+                    on real estate page (real-estate-1.jpg to real-estate-5.jpg)
+                  </li>
+                  <li>
+                    <strong>Portraits:</strong> Service showcase images
+                    (portraits-1.jpg to portraits-20.jpg)
+                  </li>
+                  <li>
+                    <strong>Performance:</strong> Team member portraits
+                    (performance-1.jpg to performance-10.jpg)
+                  </li>
+                  <li>
+                    <strong>Events, misc.:</strong> Team photos
+                    (events-misc-1.jpg to events-misc-17.jpg)
+                  </li>
+                  <li>
+                    <strong>Promotional:</strong> Project detail images
+                    (promotional-1.jpg to promotional-6.jpg)
+                  </li>
                 </ul>
-                <p class="note">Note: Images will be optimized automatically. Recommended size: 1920x1080px</p>
+                <p class="note">
+                  Note: Images will be optimized automatically. Recommended
+                  size: 1920x1080px
+                </p>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>

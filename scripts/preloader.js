@@ -8,91 +8,91 @@ CustomEase.create("hop", "0.9, 0, 0.1, 1");
 // project data array
 const projectsData = [
   {
-    name: "Lunar Eclipse",
-    director: "Amelia Crawford",
-    location: "Toronto, ON",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Visitor Quarters",
-    director: "Marcus Reynolds",
-    location: "Vancouver Studio, BC",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Celestial",
-    director: "Nina Liu // Weston",
-    location: "Austin, TX",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Streamwave Original",
-    director: "Dylan Pierce",
-    location: "Sunset Studios - Miami",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Viewfinder",
-    director: "Javier // Rodriguez",
-    location: "BLANK Studios - Chicago",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Rhythm Collective",
-    director: "Sophia // Chen",
-    location: "London, UK",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Urban Odyssey",
-    director: "Leo Thompson",
-    location: "Pioneer Studios - Seattle",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Prism No. 1",
-    director: "Taylor // McKnight",
-    location: "Private Estate - Sedona",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Vision Quest",
-    director: "Spencer // Hudson",
-    location: "Elevation - Denver",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Wavelength",
-    director: "Kai Nakamura",
-    location: "San Francisco, CA",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Desert Horizon",
-    director: "Olivia",
-    location: "New Mexico",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Spectrum",
-    director: "Ellis // Moss",
-    location: "Harmony Studio - Montreal",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Vision Quest II",
-    director: "Hudson // Wright",
-    location: "Elevation Studios - Denver",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Auteur",
-    director: "Leo Thompson",
-    location: "Berlin, DE",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Capsule X Design",
-    director: "Sophia // Chen",
-    location: "Neon House - Brooklyn",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
   {
-    name: "Pulse",
-    director: "Callum // Winters",
-    location: "Echo Pavilion - Portland",
+    name: "Justin Irick",
+    director: "Irick Images",
+    location: "Greenville, SC",
   },
 ];
 
 // image sources for rotation
 const allImageSources = Array.from(
   { length: 20 },
-  (_, i) => `/spotlight/spotlight-${i + 1}.jpg`
+  (_, i) => `/spotlight/spotlight-${i + 1}.jpg`,
 );
 
 // utility functions
@@ -154,7 +154,7 @@ function startImageRotation() {
             }
           });
         },
-      }
+      },
     );
   }
 }
@@ -225,7 +225,7 @@ function createAnimationTimelines() {
       duration: 0.05,
       stagger: 0.075,
     },
-    "<"
+    "<",
   );
 
   // text color change
@@ -242,7 +242,7 @@ function createAnimationTimelines() {
       duration: 0.15,
       stagger: 0.075,
     },
-    "<"
+    "<",
   );
 
   // fade out projects
@@ -260,7 +260,7 @@ function createAnimationTimelines() {
       duration: 0.05,
       stagger: 0.075,
     },
-    "<"
+    "<",
   );
 
   // fade out overlay
