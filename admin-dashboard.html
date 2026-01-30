@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | Irick Images</title>
+    <link rel="icon" href="/site-icon.png" />
+    <link rel="stylesheet" href="/globals.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+  </head>
+  <body>
+    <div class="admin-dashboard">
+      <!-- Header -->
+      <header class="admin-header">
+        <div class="container">
+          <h1>Irick Images Admin</h1>
+          <button class="btn-logout" id="logoutBtn">Logout</button>
+        </div>
+      </header>
+
+      <!-- Navigation Tabs -->
+      <div class="admin-tabs">
+        <div class="container">
+          <button class="tab-btn active" data-tab="bookings">Bookings</button>
+          <button class="tab-btn" data-tab="upload">Upload Images</button>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="admin-content">
+        <div class="container">
+          
+          <!-- Bookings Tab -->
+          <div class="tab-content active" data-tab="bookings">
+            <div class="section-header">
+              <h2>Recent Bookings</h2>
+              <button class="btn-secondary" id="refreshBookings">Refresh</button>
+            </div>
+
+            <div id="bookingsLoading" class="loading">Loading bookings...</div>
+            <div id="bookingsError" class="error-message"></div>
+
+            <div class="bookings-grid" id="bookingsGrid"></div>
+          </div>
+
+          <!-- Upload Images Tab -->
+          <div class="tab-content" data-tab="upload">
+            <div class="section-header">
+              <h2>Upload Images</h2>
+            </div>
+
+            <div class="upload-section">
+              <div class="upload-form">
+                <div class="form-group">
+                  <label for="category">Category</label>
+                  <select id="category" name="category" required>
+                    <option value="">Select category...</option>
+                    <option value="work">Portfolio/Work</option>
+                    <option value="spotlight">Spotlight/Services</option>
+                    <option value="directors">Team/Directors</option>
+                    <option value="culture/team">Culture/Team</option>
+                    <option value="sample-film">Film Snapshots</option>
+                    <option value="home">Home/Banners</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="imageFile">Select Image</label>
+                  <input 
+                    type="file" 
+                    id="imageFile" 
+                    accept="image/jpeg,image/jpg,image/png,image/webp" 
+                    required
+                  />
+                  <p class="help-text">Accepted formats: JPG, PNG, WebP (Max 10MB)</p>
+                </div>
+
+                <div class="form-group">
+                  <label for="fileName">File Name (optional)</label>
+                  <input 
+                    type="text" 
+                    id="fileName" 
+                    placeholder="e.g., work-6.jpg"
+                  />
+                  <p class="help-text">Leave blank to use original filename</p>
+                </div>
+
+                <div id="uploadPreview" class="upload-preview"></div>
+                <div id="uploadError" class="error-message"></div>
+                <div id="uploadSuccess" class="success-message"></div>
+
+                <button class="btn-primary" id="uploadBtn">Upload Image</button>
+              </div>
+
+              <div class="upload-instructions">
+                <h3>Image Guidelines</h3>
+                <ul>
+                  <li><strong>Work Images:</strong> Portfolio pieces shown on work page (work-1.jpg to work-5.jpg)</li>
+                  <li><strong>Spotlight:</strong> Service showcase images (spotlight-1.jpg to spotlight-20.jpg)</li>
+                  <li><strong>Directors:</strong> Team member portraits (director-1.jpg to director-10.jpg)</li>
+                  <li><strong>Culture/Team:</strong> Team photos (team-1.jpg to team-17.jpg)</li>
+                  <li><strong>Film Snapshots:</strong> Project detail images (film-snapshot-1.jpg to film-snapshot-6.jpg)</li>
+                  <li><strong>Home/Banners:</strong> Hero and banner images</li>
+                </ul>
+                <p class="note">Note: Images will be optimized automatically. Recommended size: 1920x1080px</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/scripts/admin-dashboard.js"></script>
+  </body>
+</html>

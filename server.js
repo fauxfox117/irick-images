@@ -15,10 +15,15 @@ const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY)
   : null;
 
-// Initialize Supabase
+// Initialize Supabase with api schema
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_ANON_KEY,
+  {
+    db: {
+      schema: 'api'
+    }
+  }
 );
 
 // Middleware

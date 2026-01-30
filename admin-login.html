@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login | Irick Images</title>
+    <link rel="icon" href="/site-icon.png" />
+    <link rel="stylesheet" href="/globals.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+  </head>
+  <body>
+    <div class="admin-login-page">
+      <div class="login-container">
+        <div class="login-header">
+          <h1>Admin Login</h1>
+          <p>Access the Irick Images admin dashboard</p>
+        </div>
+
+        <form class="login-form" id="loginForm">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required 
+              autocomplete="email"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              required 
+              autocomplete="current-password"
+            />
+          </div>
+
+          <div id="loginError" class="error-message"></div>
+
+          <button type="submit" class="btn-primary" id="loginBtn">
+            Sign In
+          </button>
+        </form>
+
+        <div class="login-footer">
+          <a href="/">← Back to website</a>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/scripts/admin-login.js"></script>
+  </body>
+</html>
