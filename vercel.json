@@ -6,6 +6,6 @@
     { "source": "/culture", "destination": "/culture.html" },
     { "source": "/directors", "destination": "/directors.html" },
     { "source": "/contact", "destination": "/contact.html" },
-    { "source": "/film", "destination": "/real-estate.html" }
+    { "source": "/real-estate", "destination": "/real-estate.html" }
   ]
 }
