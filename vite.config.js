@@ -10,7 +10,7 @@ export default defineConfig({
         culture: resolve(__dirname, "culture.html"),
         directors: resolve(__dirname, "directors.html"),
         contact: resolve(__dirname, "contact.html"),
-        film: resolve(__dirname, "film.html"),
+        film: resolve(__dirname, "real-estate.html"),
       },
     },
     assetsInclude: [
