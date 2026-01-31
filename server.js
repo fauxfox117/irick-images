@@ -43,14 +43,23 @@ app.get("/api/health", (req, res) => {
 // Create payment intent endpoint (ported from irickimages_full)
 app.post("/api/create-payment-intent", async (req, res) => {
   try {
+    if (!stripe) {
+      return res.status(500).json({
+        error:
+          "Stripe is not configured. Please add STRIPE_SECRET_KEY to environment variables.",
+      });
+    }
+
     const { amount, bookingData, totalPrice } = req.body;
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100), // Convert to cents
       currency: "usd",
       metadata: {
-        bookingData: JSON.stringify(bookingData),
-        totalPrice: totalPrice.toString(),
+        customer_email: bookingData.customerInfo.email,
+        customer_name: bookingData.customerInfo.name,
+        package_name: bookingData.package.name,
+        total_price: totalPrice.toString(),
       },
     });
 

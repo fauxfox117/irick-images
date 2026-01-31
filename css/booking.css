@@ -129,8 +129,8 @@
 }
 
 .package-card.selected {
-  border-color: var(--tone-500);
-  background-color: rgba(254, 1, 0, 0.05);
+  border-color: var(--tone-900);
+  background-color: rgba(135, 135, 135, 0.35);
 }
 
 .package-header {
@@ -213,8 +213,8 @@
 }
 
 .addon-card:has(.addon-checkbox:checked) {
-  border-color: var(--tone-500);
-  background-color: rgba(254, 1, 0, 0.05);
+  border-color: var(--tone-900);
+  background-color: rgba(95, 95, 95, 0.35);
 }
 
 .addon-header {
@@ -281,7 +281,7 @@
   padding: 0.75rem;
   background-color: var(--tone-200);
   border: 2px solid var(--tone-300);
-  color: var(--tone-900);
+  color: var(--tone-400);
   font-family: inherit;
   font-size: 1rem;
   transition: border-color 0.3s ease;
@@ -339,11 +339,13 @@
   max-width: 600px;
   margin: 2rem auto;
   padding: 2rem;
-  background-color: var(--tone-200);
+  background-color: var(--tone-400);
+  color: #fff;
   border-radius: 8px;
 }
 
 .payment-message {
+  color: #fff;
   max-width: 600px;
   margin: 1rem auto;
   padding: 1rem;
@@ -376,12 +378,12 @@
 }
 
 .btn-primary {
-  background-color: var(--tone-500);
+  background-color: var(--tone-400);
   color: var(--tone-100);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: var(--tone-600);
+  background-color: #484848;
   transform: translateY(-2px);
 }
 
@@ -392,7 +394,7 @@
 
 .btn-secondary {
   background-color: rgba(80, 80, 80, 0.8);
-  border: 2px solid var(--tone-900);
+  border: 2px solid var(--tone-100);
   color: #fff;
   border-radius: 8px;
 }

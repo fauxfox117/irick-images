@@ -12,6 +12,9 @@ const bookingState = {
 
 // API Configuration
 const API_URL = "http://localhost:3000/api";
+let stripe = null;
+let elements = null;
+let paymentElement = null;
 
 // Initialize booking flow
 function init() {
@@ -35,15 +38,15 @@ function renderPackages() {
       <ul class="package-includes">
         ${pkg.includes.map((item) => `<li>${item}</li>`).join("")}
       </ul>
-      <button class="btn-select-package">Select Package</button>
     </div>
   `,
     )
     .join("");
 
-  // Add click handlers
-  document.querySelectorAll(".btn-select-package").forEach((btn, index) => {
-    btn.addEventListener("click", () => selectPackage(packages[index]));
+  // Add click handlers to the entire card
+  document.querySelectorAll(".package-card").forEach((card, index) => {
+    card.style.cursor = "pointer";
+    card.addEventListener("click", () => selectPackage(packages[index]));
   });
 }
 
@@ -69,8 +72,20 @@ function renderAddOns() {
     )
     .join("");
 
-  // Add change handlers
-  document.querySelectorAll(".addon-checkbox").forEach((checkbox, index) => {
+  // Add click handlers to the entire card
+  document.querySelectorAll(".addon-card").forEach((card, index) => {
+    card.style.cursor = "pointer";
+    const checkbox = card.querySelector(".addon-checkbox");
+
+    card.addEventListener("click", (e) => {
+      // Don't toggle twice if clicking directly on checkbox
+      if (e.target === checkbox) return;
+
+      checkbox.checked = !checkbox.checked;
+      toggleAddOn(addOns[index]);
+    });
+
+    // Keep the checkbox change handler for direct checkbox clicks
     checkbox.addEventListener("change", () => toggleAddOn(addOns[index]));
   });
 }
@@ -175,7 +190,7 @@ function goToStep(step) {
     updateSummary();
   } else if (step === 4) {
     updateSummary();
-    // Payment setup will be added when Stripe keys are available
+    initializeStripePayment();
   }
 
   // Scroll to top
@@ -258,33 +273,18 @@ async function handlePayment() {
     submitBtn.disabled = true;
     messageEl.textContent = "Processing payment...";
 
-    // Create payment intent
-    const response = await fetch(`${API_URL}/create-payment-intent`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        amount: bookingState.depositPrice,
-        bookingData: {
-          package: bookingState.selectedPackage,
-          addOns: bookingState.selectedAddOns,
-          customerInfo: bookingState.customerInfo,
-        },
-        totalPrice: bookingState.totalPrice,
-      }),
+    // Confirm payment with Stripe
+    const { error, paymentIntent } = await stripe.confirmPayment({
+      elements,
+      redirect: "if_required",
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Payment setup failed:", errorText);
-      throw new Error("Payment setup failed");
+    if (error) {
+      throw new Error(error.message);
     }
 
-    const data = await response.json();
-    const { clientSecret } = data;
-
-    // For now, simulate successful payment
-    // When Stripe keys are added, this will integrate with Stripe Elements
-    await completeBooking("simulated_payment_" + Date.now());
+    // Complete booking after successful payment
+    await completeBooking(paymentIntent.id);
   } catch (error) {
     messageEl.textContent = error.message;
     messageEl.classList.add("error");
@@ -325,6 +325,42 @@ async function completeBooking(paymentIntentId) {
     document.getElementById("payment-message").textContent = error.message;
     document.getElementById("payment-message").classList.add("error");
     document.getElementById("submitPayment").disabled = false;
+  }
+}
+
+// Initialize Stripe payment elements
+async function initializeStripePayment() {
+  try {
+    // Initialize Stripe
+    stripe = Stripe(
+      "pk_test_51SvhaDFDBH7o6nI7JiBuMnGD2ssI0OJeRYJcnkf9VVQcZGZEXBiEMyi1GRICNcLo9KkdxtyOdborxCS4Et9hqo1I001JX7S4yv",
+    ); // Replace with your actual key
+
+    // Create payment intent
+    const response = await fetch(`${API_URL}/create-payment-intent`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount: bookingState.depositPrice,
+        bookingData: {
+          package: bookingState.selectedPackage,
+          addOns: bookingState.selectedAddOns,
+          customerInfo: bookingState.customerInfo,
+        },
+        totalPrice: bookingState.totalPrice,
+      }),
+    });
+
+    const { clientSecret } = await response.json();
+
+    // Create Stripe Elements
+    elements = stripe.elements({ clientSecret });
+    paymentElement = elements.create("payment");
+    paymentElement.mount("#payment-element");
+  } catch (error) {
+    console.error("Error initializing payment:", error);
+    document.getElementById("payment-message").textContent =
+      "Failed to load payment form";
   }
 }
 
