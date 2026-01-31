@@ -116,7 +116,7 @@ function renderBookings(bookings) {
   gridEl.innerHTML = bookings
     .map(
       (booking) => `
-    <div class="booking-card">
+    <div class="booking-card" data-booking-id="${booking.id}">
       <div class="booking-header">
         <h3>${booking.customer_name}</h3>
         <span class="booking-date">${new Date(booking.created_at).toLocaleDateString()}</span>
@@ -175,10 +175,75 @@ function renderBookings(bookings) {
       `
           : ""
       }
+       <div class="booking-actions">
+        <button class="btn-confirm" data-booking-id="${booking.id}">Confirm</button>
+        <button class="btn-delete" data-booking-id="${booking.id}">Delete</button>
+      </div>
     </div>
   `,
     )
     .join("");
+
+  // Add event listeners after rendering
+  document.querySelectorAll(".btn-confirm").forEach((btn) => {
+    btn.addEventListener("click", () => confirmBooking(btn.dataset.bookingId));
+  });
+
+  document.querySelectorAll(".btn-delete").forEach((btn) => {
+    btn.addEventListener("click", () => deleteBooking(btn.dataset.bookingId));
+  });
+}
+
+// Confirm booking
+async function confirmBooking(bookingId) {
+  if (!confirm("Confirm this booking?")) return;
+
+  try {
+    const response = await fetch(
+      `${API_URL}/admin/bookings/${bookingId}/confirm`,
+      {
+        method: "PATCH",
+      },
+    );
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.error || "Failed to confirm booking");
+    }
+
+    // Reload bookings
+    await loadBookings();
+    alert("Booking confirmed successfully!");
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
+}
+
+// Delete booking
+async function deleteBooking(bookingId) {
+  if (
+    !confirm(
+      "Are you sure you want to delete this booking? This cannot be undone.",
+    )
+  )
+    return;
+
+  try {
+    const response = await fetch(`${API_URL}/admin/bookings/${bookingId}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.error || "Failed to delete booking");
+    }
+
+    // Reload bookings
+    await loadBookings();
+    alert("Booking deleted successfully!");
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
 }
 
 // Preview image before upload

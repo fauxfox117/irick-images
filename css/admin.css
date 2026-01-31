@@ -280,7 +280,7 @@
 }
 
 .booking-card {
-  background-color: var(--tone-200);
+  background-color: var(--tone-400);
   padding: 1.5rem;
   border-radius: 8px;
   border: 2px solid var(--tone-300);

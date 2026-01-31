@@ -210,6 +210,42 @@ app.get("/api/images/:category", async (req, res) => {
   }
 });
 
+// Confirm booking
+app.patch("/api/admin/bookings/:id/confirm", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Update booking status (you may need to add a status column to your database)
+    const { data, error } = await supabase
+      .from("bookings")
+      .update({ confirmed: true, updated_at: new Date() })
+      .eq("id", id);
+
+    if (error) throw error;
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Confirm booking error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete booking
+app.delete("/api/admin/bookings/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const { error } = await supabase.from("bookings").delete().eq("id", id);
+
+    if (error) throw error;
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Delete booking error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`📝 Frontend URL: ${process.env.FRONTEND_URL}`);
