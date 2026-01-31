@@ -155,10 +155,15 @@ app.post("/api/admin/upload-image", async (req, res) => {
   try {
     const { fileName, fileData, category } = req.body;
 
+    // Remove data URL prefix (data:image/jpeg;base64,) and decode base64
+    const base64Data = fileData.replace(/^data:image\/\w+;base64,/, "");
+    const buffer = Buffer.from(base64Data, "base64");
+
     // Upload to Supabase storage (upsert to overwrite if exists)
     const { data, error } = await supabase.storage
       .from("images")
-      .upload(`${category}/${fileName}`, fileData, {
+      .upload(`${category}/${fileName}`, buffer, {
+        contentType: "image/jpeg", // or detect from original data URL
         upsert: true,
       });
 
@@ -206,6 +211,95 @@ app.get("/api/images/:category", async (req, res) => {
     res.json({ images: imagesWithUrls });
   } catch (error) {
     console.error("Get images error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get all photos from storage
+app.get("/api/admin/photos", async (req, res) => {
+  try {
+    const { category } = req.query;
+
+    if (category) {
+      // Get photos from specific category
+      const { data: files, error } = await supabase.storage
+        .from("images")
+        .list(category);
+
+      if (error) throw error;
+
+      const photos = files
+        .filter((file) => file.name !== ".emptyFolderPlaceholder")
+        .map((file) => {
+          const { data } = supabase.storage
+            .from("images")
+            .getPublicUrl(`${category}/${file.name}`);
+
+          return {
+            name: file.name,
+            path: `${category}/${file.name}`,
+            category,
+            url: data.publicUrl,
+            size: file.metadata?.size || 0,
+            created_at: file.created_at,
+          };
+        });
+
+      res.json({ photos });
+    } else {
+      // Get photos from all categories
+      const categories = [
+        "real-estate",
+        "portraits",
+        "performance",
+        "events-misc",
+        "promotional",
+      ];
+      const allPhotos = [];
+
+      for (const cat of categories) {
+        const { data: files } = await supabase.storage.from("images").list(cat);
+
+        if (files) {
+          files
+            .filter((file) => file.name !== ".emptyFolderPlaceholder")
+            .forEach((file) => {
+              const { data } = supabase.storage
+                .from("images")
+                .getPublicUrl(`${cat}/${file.name}`);
+
+              allPhotos.push({
+                name: file.name,
+                path: `${cat}/${file.name}`,
+                category: cat,
+                url: data.publicUrl,
+                size: file.metadata?.size || 0,
+                created_at: file.created_at,
+              });
+            });
+        }
+      }
+
+      res.json({ photos: allPhotos });
+    }
+  } catch (error) {
+    console.error("Get photos error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete photo from storage
+app.delete("/api/admin/photos", async (req, res) => {
+  try {
+    const { path } = req.body;
+
+    const { error } = await supabase.storage.from("images").remove([path]);
+
+    if (error) throw error;
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Delete photo error:", error);
     res.status(500).json({ error: error.message });
   }
 });

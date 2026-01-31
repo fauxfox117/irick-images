@@ -53,6 +53,10 @@ function setupEventListeners() {
     .getElementById("refreshBookings")
     .addEventListener("click", loadBookings);
 
+  // Refresh photos
+  document.getElementById("refreshPhotos").addEventListener("click", loadPhotos);
+  document.getElementById("manageCategory").addEventListener("change", loadPhotos);
+
   // Image upload
   document.getElementById("uploadBtn").addEventListener("click", uploadImage);
   document.getElementById("imageFile").addEventListener("change", previewImage);
@@ -353,6 +357,94 @@ function fileToBase64(file) {
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
+}
+
+// Load photos
+async function loadPhotos() {
+  const loadingEl = document.getElementById("photosLoading");
+  const errorEl = document.getElementById("photosError");
+  const gridEl = document.getElementById("photosGrid");
+  const category = document.getElementById("manageCategory").value;
+
+  loadingEl.style.display = "block";
+  errorEl.textContent = "";
+  gridEl.innerHTML = "";
+
+  try {
+    const url = category 
+      ? `${API_URL}/admin/photos?category=${category}`
+      : `${API_URL}/admin/photos`;
+    
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to load photos");
+    }
+
+    loadingEl.style.display = "none";
+
+    if (data.photos.length === 0) {
+      gridEl.innerHTML = '<p class="no-data">No photos found.</p>';
+      return;
+    }
+
+    renderPhotos(data.photos);
+  } catch (error) {
+    loadingEl.style.display = "none";
+    errorEl.textContent = error.message;
+  }
+}
+
+// Render photos
+function renderPhotos(photos) {
+  const gridEl = document.getElementById("photosGrid");
+
+  gridEl.innerHTML = photos
+    .map(
+      (photo) => `
+    <div class="photo-card">
+      <img src="${photo.url}" alt="${photo.name}" loading="lazy" />
+      <div class="photo-info">
+        <p class="photo-name">${photo.name}</p>
+        <p class="photo-category">${photo.category}</p>
+        <p class="photo-size">${(photo.size / 1024).toFixed(1)} KB</p>
+      </div>
+      <div class="photo-actions">
+        <button class="btn-delete-photo" data-path="${photo.path}">Delete</button>
+      </div>
+    </div>
+  `,
+    )
+    .join("");
+
+  // Add delete handlers
+  document.querySelectorAll('.btn-delete-photo').forEach(btn => {
+    btn.addEventListener('click', () => deletePhoto(btn.dataset.path));
+  });
+}
+
+// Delete photo
+async function deletePhoto(path) {
+  if (!confirm(`Delete ${path}? This cannot be undone.`)) return;
+
+  try {
+    const response = await fetch(`${API_URL}/admin/photos`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path }),
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.error || 'Failed to delete photo');
+    }
+
+    await loadPhotos();
+    alert('Photo deleted successfully!');
+  } catch (error) {
+    alert('Error: ' + error.message);
+  }
 }
 
 // Initialize on page load

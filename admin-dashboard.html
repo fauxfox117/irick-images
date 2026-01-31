@@ -23,6 +23,7 @@
         <div class="container">
           <button class="tab-btn active" data-tab="bookings">Bookings</button>
           <button class="tab-btn" data-tab="upload">Upload Images</button>
+          <button class="tab-btn" data-tab="manage">Manage Photos</button>
         </div>
       </div>
 
@@ -124,6 +125,29 @@
                 </p>
               </div>
             </div>
+          </div>
+
+          <!-- Manage Photos Tab -->
+          <div class="tab-content" data-tab="manage">
+            <div class="section-header">
+              <h2>Manage Photos</h2>
+              <div>
+                <select id="manageCategory" class="category-filter">
+                  <option value="">All Categories</option>
+                  <option value="real-estate">Real Estate</option>
+                  <option value="portraits">Portraits</option>
+                  <option value="performance">Performance</option>
+                  <option value="events-misc">Events, misc.</option>
+                  <option value="promotional">Promotional</option>
+                </select>
+                <button class="btn-secondary" id="refreshPhotos">Refresh</button>
+              </div>
+            </div>
+
+            <div id="photosLoading" class="loading">Loading photos...</div>
+            <div id="photosError" class="error-message"></div>
+
+            <div class="photos-grid" id="photosGrid"></div>
           </div>
         </div>
       </div>
