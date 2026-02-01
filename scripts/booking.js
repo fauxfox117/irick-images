@@ -12,7 +12,8 @@ const bookingState = {
 
 // API Configuration
 const API_URL = "https://pplpwchruftvuwburumb.supabase.co/functions/v1";
-const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwbHB3Y2hydWZ0dnV3YnVydW1iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0NjAxOTksImV4cCI6MjA4MzAzNjE5OX0.0VdXrFhcgx_zqnt6Reipfgt3jtqfx6zstsz1DZTnFRA";
+const ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwbHB3Y2hydWZ0dnV3YnVydW1iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0NjAxOTksImV4cCI6MjA4MzAzNjE5OX0.0VdXrFhcgx_zqnt6Reipfgt3jtqfx6zstsz1DZTnFRA";
 let stripe = null;
 let elements = null;
 let paymentElement = null;
@@ -298,9 +299,9 @@ async function completeBooking(paymentIntentId) {
   try {
     const response = await fetch(`${API_URL}/booking-complete`, {
       method: "POST",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${ANON_KEY}`
+        Authorization: `Bearer ${ANON_KEY}`,
       },
       body: JSON.stringify({
         bookingData: {
@@ -343,9 +344,9 @@ async function initializeStripePayment() {
     // Create payment intent
     const response = await fetch(`${API_URL}/create-payment-intent`, {
       method: "POST",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${ANON_KEY}`
+        Authorization: `Bearer ${ANON_KEY}`,
       },
       body: JSON.stringify({
         amount: bookingState.depositPrice,

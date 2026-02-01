@@ -5,10 +5,10 @@
 Go to your Supabase Dashboard → Settings → Edge Functions → Add secrets:
 
 ```
-STRIPE_SECRET_KEY=sk_test_51QgjWlKu5YmxIk0YrpWqDG1YxJCU2k8IB3P1jJBQVBjzzLLaUKGoxWIu4jKc9Pg8b1D01z1uaOUCFPZLGmfxiykk001wvD8I76
-SUPABASE_URL=https://khugldubsnfehbnibabj.supabase.co
-SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtodWdsZHVic25mZWhibmliYWJqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg2MDQwMjMsImV4cCI6MjA1NDE4MDAyM30.xQAZC0MxqzjxNOXHqOdnD7hUCKSxnajT_4JfZPxwZfE
+STRIPE_SECRET_KEY=your_stripe_secret_key_here
 ```
+
+**Note:** `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` are automatically provided by Supabase Edge Functions - you don't need to set them manually.
 
 **IMPORTANT:** You'll also need to add your `SUPABASE_SERVICE_ROLE_KEY` (found in Settings → API) for storage operations.
 

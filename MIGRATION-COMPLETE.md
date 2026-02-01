@@ -44,14 +44,13 @@ Since CLI deployment requires organization permissions, you'll need to deploy vi
 
 Go to: **Supabase Dashboard** → **Edge Functions** → **Manage Secrets**
 
-Add these secrets:
+Add this secret:
 
 ```
-STRIPE_SECRET_KEY=sk_test_51QgjWlKu5YmxIk0YrpWqDG1YxJCU2k8IB3P1jJBQVBjzzLLaUKGoxWIu4jKc9Pg8b1D01z1uaOUCFPZLGmfxiykk001wvD8I76
-SUPABASE_URL=https://khugldubsnfehbnibabj.supabase.co
-SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-SUPABASE_SERVICE_ROLE_KEY=[Get from Settings → API]
+STRIPE_SECRET_KEY=your_stripe_secret_key_here
 ```
+
+**Note:** Supabase environment variables are automatically provided - you don't need to set them.
 
 ### Step 2: Deploy Each Function
 
