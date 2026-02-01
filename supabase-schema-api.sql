@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS api.bookings (
   total_price DECIMAL(10, 2) NOT NULL,
   deposit_paid DECIMAL(10, 2) NOT NULL,
   payment_intent_id TEXT NOT NULL,
+  confirmed BOOLEAN DEFAULT false,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );

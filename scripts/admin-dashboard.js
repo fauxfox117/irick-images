@@ -1,5 +1,6 @@
 // API Configuration
-const API_URL = "http://localhost:3000/api";
+const API_URL = "https://pplpwchruftvuwburumb.supabase.co/functions/v1";
+const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwbHB3Y2hydWZ0dnV3YnVydW1iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0NjAxOTksImV4cCI6MjA4MzAzNjE5OX0.0VdXrFhcgx_zqnt6Reipfgt3jtqfx6zstsz1DZTnFRA";
 
 // Check authentication on page load
 function checkAuth() {
@@ -54,8 +55,12 @@ function setupEventListeners() {
     .addEventListener("click", loadBookings);
 
   // Refresh photos
-  document.getElementById("refreshPhotos").addEventListener("click", loadPhotos);
-  document.getElementById("manageCategory").addEventListener("change", loadPhotos);
+  document
+    .getElementById("refreshPhotos")
+    .addEventListener("click", loadPhotos);
+  document
+    .getElementById("manageCategory")
+    .addEventListener("change", loadPhotos);
 
   // Image upload
   document.getElementById("uploadBtn").addEventListener("click", uploadImage);
@@ -92,7 +97,9 @@ async function loadBookings() {
   gridEl.innerHTML = "";
 
   try {
-    const response = await fetch(`${API_URL}/admin/bookings`);
+    const response = await fetch(`${API_URL}/admin-bookings`, {
+      headers: { "Authorization": `Bearer ${ANON_KEY}` }
+    });
     const data = await response.json();
 
     if (!response.ok) {
@@ -204,9 +211,10 @@ async function confirmBooking(bookingId) {
 
   try {
     const response = await fetch(
-      `${API_URL}/admin/bookings/${bookingId}/confirm`,
+      `${API_URL}/update-booking/${bookingId}/confirm`,
       {
         method: "PATCH",
+        headers: { "Authorization": `Bearer ${ANON_KEY}` }
       },
     );
 
@@ -233,8 +241,9 @@ async function deleteBooking(bookingId) {
     return;
 
   try {
-    const response = await fetch(`${API_URL}/admin/bookings/${bookingId}`, {
+    const response = await fetch(`${API_URL}/update-booking/${bookingId}`, {
       method: "DELETE",
+      headers: { "Authorization": `Bearer ${ANON_KEY}` }
     });
 
     if (!response.ok) {
@@ -311,10 +320,11 @@ async function uploadImage() {
     // Convert file to base64
     const base64 = await fileToBase64(file);
 
-    const response = await fetch(`${API_URL}/admin/upload-image`, {
+    const response = await fetch(`${API_URL}/upload-image`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${ANON_KEY}`
       },
       body: JSON.stringify({
         fileName,
@@ -371,11 +381,13 @@ async function loadPhotos() {
   gridEl.innerHTML = "";
 
   try {
-    const url = category 
-      ? `${API_URL}/admin/photos?category=${category}`
-      : `${API_URL}/admin/photos`;
-    
-    const response = await fetch(url);
+    const url = category
+      ? `${API_URL}/get-images?category=${category}`
+      : `${API_URL}/get-images?category=all`;
+
+    const response = await fetch(url, {
+      headers: { "Authorization": `Bearer ${ANON_KEY}` }
+    });
     const data = await response.json();
 
     if (!response.ok) {
@@ -384,12 +396,12 @@ async function loadPhotos() {
 
     loadingEl.style.display = "none";
 
-    if (data.photos.length === 0) {
+    if (data.images.length === 0) {
       gridEl.innerHTML = '<p class="no-data">No photos found.</p>';
       return;
     }
 
-    renderPhotos(data.photos);
+    renderPhotos(data.images);
   } catch (error) {
     loadingEl.style.display = "none";
     errorEl.textContent = error.message;
@@ -411,6 +423,14 @@ function renderPhotos(photos) {
         <p class="photo-size">${(photo.size / 1024).toFixed(1)} KB</p>
       </div>
       <div class="photo-actions">
+        <select class="category-select" data-path="${photo.path}" data-current-category="${photo.category}">
+          <option value="" disabled selected>Move to...</option>
+          <option value="real-estate">Real Estate</option>
+          <option value="portraits">Portraits</option>
+          <option value="performance">Performance</option>
+          <option value="events-misc">Events, misc.</option>
+          <option value="promotional">Promotional</option>
+        </select>
         <button class="btn-delete-photo" data-path="${photo.path}">Delete</button>
       </div>
     </div>
@@ -418,9 +438,22 @@ function renderPhotos(photos) {
     )
     .join("");
 
+  // Add category change handlers
+  document.querySelectorAll(".category-select").forEach((select) => {
+    select.addEventListener("change", (e) => {
+      const newCategory = e.target.value;
+      const path = e.target.dataset.path;
+      const currentCategory = e.target.dataset.currentCategory;
+
+      if (newCategory && newCategory !== currentCategory) {
+        movePhoto(path, newCategory);
+      }
+    });
+  });
+
   // Add delete handlers
-  document.querySelectorAll('.btn-delete-photo').forEach(btn => {
-    btn.addEventListener('click', () => deletePhoto(btn.dataset.path));
+  document.querySelectorAll(".btn-delete-photo").forEach((btn) => {
+    btn.addEventListener("click", () => deletePhoto(btn.dataset.path));
   });
 }
 
@@ -429,21 +462,53 @@ async function deletePhoto(path) {
   if (!confirm(`Delete ${path}? This cannot be undone.`)) return;
 
   try {
-    const response = await fetch(`${API_URL}/admin/photos`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch(`${API_URL}/manage-photos`, {
+      method: "DELETE",
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${ANON_KEY}`
+      },
       body: JSON.stringify({ path }),
     });
 
     if (!response.ok) {
       const data = await response.json();
-      throw new Error(data.error || 'Failed to delete photo');
+      throw new Error(data.error || "Failed to delete photo");
     }
 
     await loadPhotos();
-    alert('Photo deleted successfully!');
+    alert("Photo deleted successfully!");
   } catch (error) {
-    alert('Error: ' + error.message);
+    alert("Error: " + error.message);
+  }
+}
+
+// Move photo to different category
+async function movePhoto(oldPath, newCategory) {
+  const fileName = oldPath.split("/").pop();
+  const newPath = `${newCategory}/${fileName}`;
+
+  if (!confirm(`Move ${fileName} to ${newCategory}?`)) return;
+
+  try {
+    const response = await fetch(`${API_URL}/manage-photos`, {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${ANON_KEY}`
+      },
+      body: JSON.stringify({ oldPath, newPath }),
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.error || "Failed to move photo");
+    }
+
+    await loadPhotos();
+    alert("Photo moved successfully!");
+  } catch (error) {
+    alert("Error: " + error.message);
   }
 }
 

@@ -304,6 +304,45 @@ app.delete("/api/admin/photos", async (req, res) => {
   }
 });
 
+// Move photo to different category
+app.post("/api/admin/photos/move", async (req, res) => {
+  try {
+    const { oldPath, newPath } = req.body;
+
+    // Download the file from old location
+    const { data: fileData, error: downloadError } = await supabase.storage
+      .from("images")
+      .download(oldPath);
+
+    if (downloadError) throw downloadError;
+
+    // Convert blob to buffer
+    const buffer = Buffer.from(await fileData.arrayBuffer());
+
+    // Upload to new location
+    const { error: uploadError } = await supabase.storage
+      .from("images")
+      .upload(newPath, buffer, {
+        contentType: fileData.type,
+        upsert: true,
+      });
+
+    if (uploadError) throw uploadError;
+
+    // Delete old file
+    const { error: deleteError } = await supabase.storage
+      .from("images")
+      .remove([oldPath]);
+
+    if (deleteError) throw deleteError;
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Move photo error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Confirm booking
 app.patch("/api/admin/bookings/:id/confirm", async (req, res) => {
   try {

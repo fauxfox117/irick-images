@@ -1,0 +1,64 @@
+┌──────────────────────────────────────────────────────────────────┐
+│                  QUICK DEPLOYMENT CHECKLIST                      │
+└──────────────────────────────────────────────────────────────────┘
+
+□ 1. ADD DATABASE COLUMN
+   Run in Supabase SQL Editor:
+   ────────────────────────────────────────────────────────────
+   ALTER TABLE api.bookings 
+   ADD COLUMN IF NOT EXISTS confirmed BOOLEAN DEFAULT false;
+   ────────────────────────────────────────────────────────────
+
+□ 2. SET ENVIRONMENT SECRETS
+   Dashboard → Edge Functions → Manage Secrets:
+   
+   STRIPE_SECRET_KEY=sk_test_51QgjWlKu5YmxIk0Y...
+   SUPABASE_URL=https://khugldubsnfehbnibabj.supabase.co
+   SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+   SUPABASE_SERVICE_ROLE_KEY=[Get from Settings → API]
+
+□ 3. DEPLOY FUNCTIONS (Copy code from each file)
+   
+   ☐ create-payment-intent  → supabase/functions/create-payment-intent/index.ts
+   ☐ booking-complete       → supabase/functions/booking-complete/index.ts
+   ☐ admin-bookings         → supabase/functions/admin-bookings/index.ts
+   ☐ upload-image           → supabase/functions/upload-image/index.ts
+   ☐ get-images             → supabase/functions/get-images/index.ts
+   ☐ manage-photos          → supabase/functions/manage-photos/index.ts
+   ☐ update-booking         → supabase/functions/update-booking/index.ts
+
+□ 4. TEST EACH FUNCTION
+   Use Dashboard → Edge Functions → [Function Name] → Invoke
+
+□ 5. DEPLOY FRONTEND TO VERCEL
+   git add .
+   git commit -m "Migrate to Edge Functions"
+   git push
+
+□ 6. TEST FULL WORKFLOW
+   ☐ Book a session
+   ☐ Upload photos
+   ☐ View in admin dashboard
+   ☐ Move/delete photos
+
+┌──────────────────────────────────────────────────────────────────┐
+│                          FUNCTION URLS                           │
+└──────────────────────────────────────────────────────────────────┘
+
+Base URL: https://khugldubsnfehbnibabj.supabase.co/functions/v1
+
+1. /create-payment-intent  - POST - Creates Stripe payment
+2. /booking-complete       - POST - Saves booking to database
+3. /admin-bookings         - GET  - Lists all bookings
+4. /upload-image           - POST - Uploads photo to storage
+5. /get-images             - GET  - Gets photos by category
+6. /manage-photos          - DELETE/POST - Delete or move photos
+7. /update-booking/:id     - PATCH/DELETE - Confirm or delete booking
+
+┌──────────────────────────────────────────────────────────────────┐
+│                          COST: $0/month                          │
+└──────────────────────────────────────────────────────────────────┘
+
+✅ No Railway fees
+✅ Within Supabase free tier (500K function calls/month)
+✅ Vercel free tier for frontend
