@@ -14,9 +14,32 @@ const bookingState = {
 const API_URL = "https://pplpwchruftvuwburumb.supabase.co/functions/v1";
 const ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwbHB3Y2hydWZ0dnV3YnVydW1iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0NjAxOTksImV4cCI6MjA4MzAzNjE5OX0.0VdXrFhcgx_zqnt6Reipfgt3jtqfx6zstsz1DZTnFRA";
-let stripe = null;
-let elements = null;
-let paymentElement = null;
+const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID || "";
+let paypalSdkPromise = null;
+
+function getApiHeaders() {
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${ANON_KEY}`,
+  };
+}
+
+function setPaymentMessage(message, isError = false) {
+  const messageEl = document.getElementById("payment-message");
+  if (!messageEl) return;
+
+  messageEl.textContent = message;
+  if (!message) {
+    messageEl.classList.remove("error");
+    return;
+  }
+
+  if (isError) {
+    messageEl.classList.add("error");
+  } else {
+    messageEl.classList.remove("error");
+  }
+}
 
 // Initialize booking flow
 function init() {
@@ -192,7 +215,7 @@ function goToStep(step) {
     updateSummary();
   } else if (step === 4) {
     updateSummary();
-    initializeStripePayment();
+    initializePayPalCheckout();
   }
 
   // Scroll to top
@@ -260,37 +283,134 @@ function setupEventListeners() {
   document
     .getElementById("backToDetails")
     .addEventListener("click", () => goToStep(3));
-
-  document
-    .getElementById("submitPayment")
-    .addEventListener("click", handlePayment);
 }
 
-// Handle payment submission
-async function handlePayment() {
-  const messageEl = document.getElementById("payment-message");
-  const submitBtn = document.getElementById("submitPayment");
+function getBookingPayload() {
+  return {
+    package: bookingState.selectedPackage,
+    addOns: bookingState.selectedAddOns,
+    customerInfo: bookingState.customerInfo,
+  };
+}
+
+async function loadPayPalSdk() {
+  if (window.paypal) {
+    return window.paypal;
+  }
+
+  if (!PAYPAL_CLIENT_ID) {
+    throw new Error("PayPal is not configured. Set VITE_PAYPAL_CLIENT_ID.");
+  }
+
+  if (paypalSdkPromise) {
+    return paypalSdkPromise;
+  }
+
+  paypalSdkPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(PAYPAL_CLIENT_ID)}&currency=USD&intent=capture`;
+    script.async = true;
+
+    script.onload = () => {
+      if (window.paypal) {
+        resolve(window.paypal);
+      } else {
+        paypalSdkPromise = null;
+        reject(new Error("PayPal SDK failed to initialize."));
+      }
+    };
+
+    script.onerror = () => {
+      paypalSdkPromise = null;
+      reject(new Error("Failed to load PayPal SDK."));
+    };
+
+    document.head.appendChild(script);
+  });
+
+  return paypalSdkPromise;
+}
+
+async function createPayPalOrder() {
+  const response = await fetch(`${API_URL}/create-payment-intent`, {
+    method: "POST",
+    headers: getApiHeaders(),
+    body: JSON.stringify({
+      amount: bookingState.depositPrice,
+      bookingData: getBookingPayload(),
+      totalPrice: bookingState.totalPrice,
+    }),
+  });
+
+  const result = await response.json();
+  if (!response.ok || !result.orderID) {
+    throw new Error(result.error || "Unable to create PayPal order.");
+  }
+
+  return result.orderID;
+}
+
+async function capturePayPalOrder(orderID) {
+  const response = await fetch(`${API_URL}/capture-paypal-order`, {
+    method: "POST",
+    headers: getApiHeaders(),
+    body: JSON.stringify({ orderID }),
+  });
+
+  const result = await response.json();
+  if (!response.ok) {
+    throw new Error(result.error || "Unable to capture PayPal payment.");
+  }
+
+  return result;
+}
+
+async function initializePayPalCheckout() {
+  const paymentElementEl = document.getElementById("payment-element");
+  if (!paymentElementEl) return;
+
+  setPaymentMessage("");
+  paymentElementEl.innerHTML = "<p>Loading PayPal checkout...</p>";
 
   try {
-    submitBtn.disabled = true;
-    messageEl.textContent = "Processing payment...";
+    const paypal = await loadPayPalSdk();
+    paymentElementEl.innerHTML = "";
 
-    // Confirm payment with Stripe
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      redirect: "if_required",
-    });
-
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    // Complete booking after successful payment
-    await completeBooking(paymentIntent.id);
+    await paypal
+      .Buttons({
+        style: {
+          layout: "vertical",
+          shape: "rect",
+          label: "paypal",
+        },
+        createOrder: async () => {
+          setPaymentMessage("");
+          return createPayPalOrder();
+        },
+        onApprove: async (data) => {
+          try {
+            setPaymentMessage("Finalizing payment...");
+            const captureResult = await capturePayPalOrder(data.orderID);
+            const paymentReference =
+              captureResult.captureID || captureResult.orderID || data.orderID;
+            await completeBooking(paymentReference);
+          } catch (error) {
+            setPaymentMessage(error.message, true);
+          }
+        },
+        onCancel: () => {
+          setPaymentMessage("PayPal checkout was cancelled.", true);
+        },
+        onError: (error) => {
+          console.error("PayPal checkout error:", error);
+          setPaymentMessage("Payment failed. Please try again.", true);
+        },
+      })
+      .render("#payment-element");
   } catch (error) {
-    messageEl.textContent = error.message;
-    messageEl.classList.add("error");
-    submitBtn.disabled = false;
+    console.error("Error initializing PayPal:", error);
+    paymentElementEl.innerHTML = "";
+    setPaymentMessage(error.message || "Failed to load PayPal checkout.", true);
   }
 }
 
@@ -299,16 +419,9 @@ async function completeBooking(paymentIntentId) {
   try {
     const response = await fetch(`${API_URL}/booking-complete`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${ANON_KEY}`,
-      },
+      headers: getApiHeaders(),
       body: JSON.stringify({
-        bookingData: {
-          package: bookingState.selectedPackage,
-          addOns: bookingState.selectedAddOns,
-          customerInfo: bookingState.customerInfo,
-        },
+        bookingData: getBookingPayload(),
         paymentIntentId,
         totalPrice: bookingState.totalPrice,
         depositPaid: bookingState.depositPrice,
@@ -327,48 +440,7 @@ async function completeBooking(paymentIntentId) {
     // Redirect to success page
     window.location.href = "/booking-success.html";
   } catch (error) {
-    document.getElementById("payment-message").textContent = error.message;
-    document.getElementById("payment-message").classList.add("error");
-    document.getElementById("submitPayment").disabled = false;
-  }
-}
-
-// Initialize Stripe payment elements
-async function initializeStripePayment() {
-  try {
-    // Initialize Stripe
-    stripe = Stripe(
-      "pk_test_51SvhaDFDBH7o6nI7JiBuMnGD2ssI0OJeRYJcnkf9VVQcZGZEXBiEMyi1GRICNcLo9KkdxtyOdborxCS4Et9hqo1I001JX7S4yv",
-    ); // Replace with your actual key
-
-    // Create payment intent
-    const response = await fetch(`${API_URL}/create-payment-intent`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${ANON_KEY}`,
-      },
-      body: JSON.stringify({
-        amount: bookingState.depositPrice,
-        bookingData: {
-          package: bookingState.selectedPackage,
-          addOns: bookingState.selectedAddOns,
-          customerInfo: bookingState.customerInfo,
-        },
-        totalPrice: bookingState.totalPrice,
-      }),
-    });
-
-    const { clientSecret } = await response.json();
-
-    // Create Stripe Elements
-    elements = stripe.elements({ clientSecret });
-    paymentElement = elements.create("payment");
-    paymentElement.mount("#payment-element");
-  } catch (error) {
-    console.error("Error initializing payment:", error);
-    document.getElementById("payment-message").textContent =
-      "Failed to load payment form";
+    setPaymentMessage(error.message, true);
   }
 }
 

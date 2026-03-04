@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Directors | Irick Images</title>
+    <link rel="icon" href="/site-icon.png" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="author" content="Irick Images" />
+
+    <link rel="stylesheet" href="/globals.css" />
+    <link rel="stylesheet" href="/css/transition.css" />
+    <link rel="stylesheet" href="/css/menu.css" />
+    <link rel="stylesheet" href="/css/directors.css" />
+    <link rel="stylesheet" href="/css/pixelated-text.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+  </head>
+  <body>
+    <!-- page transition -->
+    <div class="transition">
+      <div class="transition-overlay"></div>
+    </div>
+
+    <!-- menu -->
+    <site-navbar></site-navbar>
+
+    <!-- directors: hero section -->
+    <section class="pixelated-text directors-hero">
+      <h1>House Directors</h1>
+    </section>
+
+    <!-- directors: list section -->
+    <div class="directors-list">
+      <!-- directors will be dynamically generated here -->
+    </div>
+
+    <!-- footer -->
+    <site-footer></site-footer>
+
+    <script type="module" src="/scripts/footer-component.js"></script>
+    <script type="module" src="/scripts/lenis-scroll.js"></script>
+    <script type="module" src="/scripts/transition.js"></script>
+    <script type="module" src="/scripts/navbar-component.js"></script>
+    <script type="module" src="/scripts/menu.js"></script>
+    <script type="module" src="/scripts/directors.js"></script>
+  </body>
+</html>

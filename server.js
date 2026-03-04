@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 
 // Load environment variables
@@ -9,11 +8,10 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Initialize Stripe (optional - only if key exists)
-const stripe = process.env.STRIPE_SECRET_KEY
-  ? new Stripe(process.env.STRIPE_SECRET_KEY)
-  : null;
+const PAYPAL_BASE_URL =
+  process.env.PAYPAL_ENV === "live"
+    ? "https://api-m.paypal.com"
+    : "https://api-m.sandbox.paypal.com";
 
 // Initialize Supabase with api schema
 const supabase = createClient(
@@ -35,37 +33,153 @@ app.use(
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
+async function readJsonSafely(response) {
+  try {
+    return await response.json();
+  } catch {
+    return {};
+  }
+}
+
+async function getPayPalAccessToken() {
+  const clientId = process.env.PAYPAL_CLIENT_ID;
+  const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
+
+  if (!clientId || !clientSecret) {
+    throw new Error(
+      "PayPal is not configured. Add PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET.",
+    );
+  }
+
+  const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString(
+    "base64",
+  );
+
+  const tokenResponse = await fetch(`${PAYPAL_BASE_URL}/v1/oauth2/token`, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${basicAuth}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: "grant_type=client_credentials",
+  });
+
+  const tokenData = await readJsonSafely(tokenResponse);
+  if (!tokenResponse.ok || !tokenData.access_token) {
+    throw new Error(
+      tokenData.error_description ||
+        tokenData.error ||
+        "Failed to authenticate with PayPal.",
+    );
+  }
+
+  return tokenData.access_token;
+}
+
 // Health check endpoint
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "Server is running" });
 });
 
-// Create payment intent endpoint (ported from irickimages_full)
+// Create PayPal order endpoint
 app.post("/api/create-payment-intent", async (req, res) => {
   try {
-    if (!stripe) {
-      return res.status(500).json({
-        error:
-          "Stripe is not configured. Please add STRIPE_SECRET_KEY to environment variables.",
+    const { amount, bookingData } = req.body;
+    const amountNumber = Number(amount);
+
+    if (!Number.isFinite(amountNumber) || amountNumber <= 0) {
+      return res.status(400).json({ error: "Invalid amount." });
+    }
+
+    const accessToken = await getPayPalAccessToken();
+    const purchaseUnit = {
+      amount: {
+        currency_code: "USD",
+        value: amountNumber.toFixed(2),
+      },
+      description: bookingData?.package?.name
+        ? `Deposit for ${bookingData.package.name}`
+        : "Booking deposit",
+    };
+
+    if (bookingData?.customerInfo?.email) {
+      purchaseUnit.custom_id = bookingData.customerInfo.email;
+    }
+
+    const orderResponse = await fetch(`${PAYPAL_BASE_URL}/v2/checkout/orders`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        intent: "CAPTURE",
+        purchase_units: [purchaseUnit],
+        application_context: {
+          shipping_preference: "NO_SHIPPING",
+          user_action: "PAY_NOW",
+        },
+      }),
+    });
+
+    const orderData = await readJsonSafely(orderResponse);
+    if (!orderResponse.ok || !orderData.id) {
+      throw new Error(orderData.message || "Failed to create PayPal order.");
+    }
+
+    res.json({ orderID: orderData.id });
+  } catch (error) {
+    console.error("PayPal order creation error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Capture PayPal order endpoint
+app.post("/api/capture-paypal-order", async (req, res) => {
+  try {
+    const { orderID } = req.body;
+
+    if (!orderID) {
+      return res.status(400).json({ error: "orderID is required." });
+    }
+
+    const accessToken = await getPayPalAccessToken();
+    const captureResponse = await fetch(
+      `${PAYPAL_BASE_URL}/v2/checkout/orders/${orderID}/capture`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    const captureData = await readJsonSafely(captureResponse);
+    if (!captureResponse.ok) {
+      throw new Error(captureData.message || "Failed to capture PayPal order.");
+    }
+
+    const captureID =
+      captureData?.purchase_units?.[0]?.payments?.captures?.[0]?.id || null;
+    const status =
+      captureData?.purchase_units?.[0]?.payments?.captures?.[0]?.status ||
+      captureData?.status;
+
+    if (status !== "COMPLETED") {
+      return res.status(400).json({
+        error: "PayPal payment is not completed.",
+        status,
       });
     }
 
-    const { amount, bookingData, totalPrice } = req.body;
-
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100), // Convert to cents
-      currency: "usd",
-      metadata: {
-        customer_email: bookingData.customerInfo.email,
-        customer_name: bookingData.customerInfo.name,
-        package_name: bookingData.package.name,
-        total_price: totalPrice.toString(),
-      },
+    res.json({
+      orderID: captureData.id || orderID,
+      captureID,
+      status,
     });
-
-    res.json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
-    console.error("Payment intent error:", error);
+    console.error("PayPal capture error:", error);
     res.status(500).json({ error: error.message });
   }
 });

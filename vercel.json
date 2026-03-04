@@ -2,10 +2,20 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/work", "destination": "/work.html" },
-    { "source": "/culture", "destination": "/culture.html" },
-    { "source": "/directors", "destination": "/directors.html" },
-    { "source": "/contact", "destination": "/contact.html" },
-    { "source": "/real-estate", "destination": "/real-estate.html" }
+    { "source": "/work", "destination": "/pages/work.html" },
+    { "source": "/about", "destination": "/pages/about.html" },
+    { "source": "/directors", "destination": "/pages/directors.html" },
+    { "source": "/contact", "destination": "/pages/contact.html" },
+    { "source": "/real-estate", "destination": "/pages/real-estate.html" },
+    { "source": "/book", "destination": "/pages/book.html" },
+    {
+      "source": "/booking-success",
+      "destination": "/pages/booking-success.html"
+    },
+    { "source": "/admin", "destination": "/pages/admin-login.html" },
+    {
+      "source": "/admin-dashboard",
+      "destination": "/pages/admin-dashboard.html"
+    }
   ]
 }
