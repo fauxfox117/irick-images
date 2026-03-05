@@ -218,8 +218,11 @@ function closeMenu() {
   isMenuOpen = false;
 }
 
-// main execution - wait for fonts to load
-document.fonts.ready.then(() => {
+// main execution - wait for navbar component and fonts to both be ready
+Promise.all([
+  customElements.whenDefined("site-navbar"),
+  document.fonts.ready,
+]).then(() => {
   const menuToggleBtn = document.querySelector(".menu-toggle-btn");
   const navOverlay = document.querySelector(".nav-overlay");
   const navItems = document.querySelectorAll(".nav-item");

@@ -1,4 +1,8 @@
 /* menu */
+site-navbar {
+  display: contents;
+}
+
 nav {
   position: fixed;
   top: 0;
