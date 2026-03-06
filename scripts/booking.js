@@ -438,7 +438,7 @@ async function completeBooking(paymentIntentId) {
     console.log("Booking completed:", data);
 
     // Redirect to success page
-    window.location.href = "/booking-success.html";
+    window.location.href = "/booking-success";
   } catch (error) {
     setPaymentMessage(error.message, true);
   }

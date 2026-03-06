@@ -24,16 +24,16 @@ const navbarTemplate = `
       <a href="/real-estate">Real Estate</a>
     </div>
     <div class="nav-item">
-      <a href="/directors">Portraits</a>
+      <a href="/real-estate">Portraits</a>
     </div>
     <div class="nav-item">
-      <a href="/directors">Performance</a>
+      <a href="/real-estate">Performance</a>
     </div>
     <div class="nav-item">
-      <a href="/directors">Events, misc.</a>
+      <a href="/real-estate">Events, misc.</a>
     </div>
     <div class="nav-item">
-      <a href="/directors">Promotional</a>
+      <a href="/real-estate">Promotional</a>
     </div>
     <div class="nav-item">
       <a href="/contact">Contact</a>

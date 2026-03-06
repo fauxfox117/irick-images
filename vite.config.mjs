@@ -8,7 +8,7 @@ const __dirname = dirname(__filename);
 const pageRoutes = {
   "/work": "/pages/work.html",
   "/about": "/pages/about.html",
-  "/directors": "/pages/directors.html",
+  "/directors": "/pages/real-estate.html",
   "/contact": "/pages/contact.html",
   "/real-estate": "/pages/real-estate.html",
   "/book": "/pages/book.html",
@@ -22,7 +22,8 @@ function mpaRewritePlugin() {
     name: "mpa-rewrite",
     configureServer(server) {
       server.middlewares.use((req, _res, next) => {
-        const url = req.url?.split("?")[0];
+        // normalize trailing slash and strip query string for matching
+        const url = (req.url?.split("?")[0] || "").replace(/\/$/, "");
         if (url && pageRoutes[url]) {
           req.url = pageRoutes[url];
         }
@@ -34,6 +35,7 @@ function mpaRewritePlugin() {
 
 export default defineConfig({
   plugins: [mpaRewritePlugin()],
+  appType: "mpa",
   build: {
     rollupOptions: {
       input: {

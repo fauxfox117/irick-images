@@ -1,7 +1,6 @@
 // API Configuration
-const API_URL = "https://pplpwchruftvuwburumb.supabase.co/functions/v1";
-const ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwbHB3Y2hydWZ0dnV3YnVydW1iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0NjAxOTksImV4cCI6MjA4MzAzNjE5OX0.0VdXrFhcgx_zqnt6Reipfgt3jtqfx6zstsz1DZTnFRA";
+const API_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1`;
+const ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Handle login form submission
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
@@ -44,7 +43,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     );
 
     // Redirect to dashboard
-    window.location.href = "/admin-dashboard.html";
+    window.location.href = "/admin-dashboard";
   } catch (error) {
     errorEl.textContent = error.message;
     loginBtn.disabled = false;

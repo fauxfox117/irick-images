@@ -1,13 +1,13 @@
 // API Configuration
-const API_URL = "https://pplpwchruftvuwburumb.supabase.co/functions/v1";
-const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwbHB3Y2hydWZ0dnV3YnVydW1iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0NjAxOTksImV4cCI6MjA4MzAzNjE5OX0.0VdXrFhcgx_zqnt6Reipfgt3jtqfx6zstsz1DZTnFRA";
+const API_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1`;
+const ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Check authentication on page load
 function checkAuth() {
   const session = localStorage.getItem("admin_session");
 
   if (!session) {
-    window.location.href = "/admin-login.html";
+    window.location.href = "/admin";
     return null;
   }
 
@@ -18,14 +18,14 @@ function checkAuth() {
     const hoursSinceLogin = (Date.now() - data.timestamp) / (1000 * 60 * 60);
     if (hoursSinceLogin > 24) {
       localStorage.removeItem("admin_session");
-      window.location.href = "/admin-login.html";
+      window.location.href = "/admin";
       return null;
     }
 
     return data;
   } catch (error) {
     localStorage.removeItem("admin_session");
-    window.location.href = "/admin-login.html";
+    window.location.href = "/admin";
     return null;
   }
 }
@@ -83,7 +83,7 @@ function switchTab(tabName) {
 // Logout
 function logout() {
   localStorage.removeItem("admin_session");
-  window.location.href = "/admin-login.html";
+  window.location.href = "/admin";
 }
 
 // Load bookings
@@ -98,7 +98,7 @@ async function loadBookings() {
 
   try {
     const response = await fetch(`${API_URL}/admin-bookings`, {
-      headers: { "Authorization": `Bearer ${ANON_KEY}` }
+      headers: { Authorization: `Bearer ${ANON_KEY}` },
     });
     const data = await response.json();
 
@@ -214,7 +214,7 @@ async function confirmBooking(bookingId) {
       `${API_URL}/update-booking/${bookingId}/confirm`,
       {
         method: "PATCH",
-        headers: { "Authorization": `Bearer ${ANON_KEY}` }
+        headers: { Authorization: `Bearer ${ANON_KEY}` },
       },
     );
 
@@ -243,7 +243,7 @@ async function deleteBooking(bookingId) {
   try {
     const response = await fetch(`${API_URL}/update-booking/${bookingId}`, {
       method: "DELETE",
-      headers: { "Authorization": `Bearer ${ANON_KEY}` }
+      headers: { Authorization: `Bearer ${ANON_KEY}` },
     });
 
     if (!response.ok) {
@@ -324,7 +324,7 @@ async function uploadImage() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${ANON_KEY}`
+        Authorization: `Bearer ${ANON_KEY}`,
       },
       body: JSON.stringify({
         fileName,
@@ -386,7 +386,7 @@ async function loadPhotos() {
       : `${API_URL}/get-images?category=all`;
 
     const response = await fetch(url, {
-      headers: { "Authorization": `Bearer ${ANON_KEY}` }
+      headers: { Authorization: `Bearer ${ANON_KEY}` },
     });
     const data = await response.json();
 
@@ -464,22 +464,31 @@ async function deletePhoto(path) {
   try {
     const response = await fetch(`${API_URL}/manage-photos`, {
       method: "DELETE",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${ANON_KEY}`
+        Authorization: `Bearer ${ANON_KEY}`,
       },
       body: JSON.stringify({ path }),
     });
 
+    const text = await response.text();
     if (!response.ok) {
-      const data = await response.json();
-      throw new Error(data.error || "Failed to delete photo");
+      let message;
+      try {
+        message = JSON.parse(text).error;
+      } catch {
+        message = text;
+      }
+      throw new Error(
+        `[${response.status}] ${message || "Failed to delete photo"}`,
+      );
     }
 
     await loadPhotos();
     alert("Photo deleted successfully!");
   } catch (error) {
-    alert("Error: " + error.message);
+    alert("Error deleting photo: " + error.message);
+    console.error("deletePhoto error:", error);
   }
 }
 
@@ -493,9 +502,9 @@ async function movePhoto(oldPath, newCategory) {
   try {
     const response = await fetch(`${API_URL}/manage-photos`, {
       method: "POST",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${ANON_KEY}`
+        Authorization: `Bearer ${ANON_KEY}`,
       },
       body: JSON.stringify({ oldPath, newPath }),
     });

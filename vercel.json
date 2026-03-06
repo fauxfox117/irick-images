@@ -13,6 +13,7 @@
       "destination": "/pages/booking-success.html"
     },
     { "source": "/admin", "destination": "/pages/admin-login.html" },
+    { "source": "/admin-login", "destination": "/pages/admin-login.html" },
     {
       "source": "/admin-dashboard",
       "destination": "/pages/admin-dashboard.html"

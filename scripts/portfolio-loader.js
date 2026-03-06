@@ -1,14 +1,15 @@
 // API Configuration
-const API_URL = "http://localhost:3000/api";
+const SUPABASE_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1`;
+const ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Get portfolio category from page title or URL
+// Derive category from the clean URL path (e.g. /real-estate → "real-estate")
 function getPortfolioCategory() {
   const path = window.location.pathname;
-  const fileName = path.split("/").pop().replace(".html", "");
-  return fileName || "real-estate";
+  const segment = path.split("/").filter(Boolean).pop() || "";
+  return segment.replace(".html", "") || "real-estate";
 }
 
-// Dynamically load images from Supabase
+// Dynamically load images from Supabase Storage via edge function
 async function loadPortfolioImages() {
   const category = getPortfolioCategory();
   const snapshotsSection = document.querySelector(".film-snapshots .container");
@@ -16,11 +17,17 @@ async function loadPortfolioImages() {
   if (!snapshotsSection) return;
 
   try {
-    const response = await fetch(`${API_URL}/images/${category}`);
+    const response = await fetch(
+      `${SUPABASE_URL}/get-images?category=${category}`,
+      { headers: { Authorization: `Bearer ${ANON_KEY}` } },
+    );
     const data = await response.json();
 
     if (!data.images || data.images.length === 0) {
       console.warn(`No images found for category: ${category}`);
+      document.dispatchEvent(
+        new CustomEvent("portfolioLoaded", { detail: { category, count: 0 } }),
+      );
       return;
     }
 
@@ -65,9 +72,21 @@ async function loadPortfolioImages() {
       }
     }
 
+    // Notify film.js to reinitialize scroll animations on the new DOM nodes
+    document.dispatchEvent(
+      new CustomEvent("portfolioLoaded", {
+        detail: { category, count: data.images.length },
+      }),
+    );
+
     console.log(`Loaded ${data.images.length} images for ${category}`);
   } catch (error) {
     console.error("Failed to load portfolio images:", error);
+    document.dispatchEvent(
+      new CustomEvent("portfolioLoaded", {
+        detail: { category, count: 0, error: true },
+      }),
+    );
   }
 }
 

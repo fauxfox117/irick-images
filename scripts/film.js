@@ -74,3 +74,17 @@ document.addEventListener("DOMContentLoaded", () => {
   createMasks();
   initImageRevealAnimations();
 });
+
+// Re-initialize after portfolio-loader.js dynamically injects images.
+// portfolio-loader already creates mask divs with background images,
+// so we only need to rerun the ScrollTrigger animations on the new rows.
+document.addEventListener("portfolioLoaded", ({ detail }) => {
+  if (!detail.count) return;
+
+  // Kill any ScrollTriggers from the old placeholder rows to avoid stale triggers
+  ScrollTrigger.getAll()
+    .filter((st) => st.trigger?.closest(".film-snapshots"))
+    .forEach((st) => st.kill());
+
+  initImageRevealAnimations();
+});
