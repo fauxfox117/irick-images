@@ -27,13 +27,7 @@ const navbarTemplate = `
       <a href="/real-estate">Portraits</a>
     </div>
     <div class="nav-item">
-      <a href="/real-estate">Performance</a>
-    </div>
-    <div class="nav-item">
       <a href="/real-estate">Events, misc.</a>
-    </div>
-    <div class="nav-item">
-      <a href="/real-estate">Promotional</a>
     </div>
     <div class="nav-item">
       <a href="/contact">Contact</a>
@@ -47,7 +41,7 @@ const navbarTemplate = `
     <div class="container">
       <div class="nav-footer-item">
         <a href="https://www.instagram.com/irickimages/" target="_blank">Instagram</a>
-        <a href="https://www.youtube.com/@irickimages" target="_blank">YouTube</a>
+        <a href="https://www.youtube.com/@JustinIrick" target="_blank">YouTube</a>
       </div>
 
       <div class="nav-footer-item">

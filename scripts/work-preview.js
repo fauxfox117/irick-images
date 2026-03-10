@@ -6,36 +6,32 @@ import * as THREE from "three";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 
-const page = document.querySelector(".page.work");
-
 gsap.registerPlugin(SplitText);
 gsap.config({ nullTargetWarn: false });
+
+const section = document.querySelector(".work-preview");
+if (!section) throw new Error(".work-preview section not found");
+const slider = section.querySelector(".slider");
 
 let currentSlideIndex = 0;
 let isTransitioning = false;
 let slideTextures = [];
 let shaderMaterial, renderer;
 
-// creates character elements for scramble animation
 function createCharacterElements(element) {
   if (element.querySelectorAll(".char").length > 0) return;
-
   const words = element.textContent.split(" ");
   element.innerHTML = "";
-
   words.forEach((word, index) => {
     const wordDiv = document.createElement("div");
     wordDiv.className = "word";
-
     [...word].forEach((char) => {
       const charDiv = document.createElement("div");
       charDiv.className = "char";
       charDiv.innerHTML = `<span>${char}</span>`;
       wordDiv.appendChild(charDiv);
     });
-
     element.appendChild(wordDiv);
-
     if (index < words.length - 1) {
       const spaceChar = document.createElement("div");
       spaceChar.className = "char space-char";
@@ -45,7 +41,6 @@ function createCharacterElements(element) {
   });
 }
 
-// creates line elements using splittext
 function createLineElements(element) {
   new SplitText(element, { type: "lines", linesClass: "line" });
   element.querySelectorAll(".line").forEach((line) => {
@@ -53,49 +48,36 @@ function createLineElements(element) {
   });
 }
 
-// adds hover effect to slide link
 function addSlideLinkHover(link) {
   let isAnimating = false;
   let currentSplit = null;
-
-  if (!link.dataset.originalColor) {
+  if (!link.dataset.originalColor)
     link.dataset.originalColor = getComputedStyle(link).color;
-  }
-
   link.addEventListener("mouseenter", () => {
     if (isAnimating) return;
     isAnimating = true;
-
-    if (currentSplit) {
-      currentSplit.wordSplit?.revert();
-    }
-
+    if (currentSplit) currentSplit.wordSplit?.revert();
     currentSplit = scrambleVisible(link, 0, {
       duration: 0.1,
       charDelay: 25,
       stagger: 10,
       maxIterations: 5,
     });
-
     setTimeout(() => {
       isAnimating = false;
     }, 250);
   });
-
   link.addEventListener("mouseleave", () => {
     link.style.color = link.dataset.originalColor || "";
   });
 }
 
-// processes text elements by creating character and line elements
 function processTextElements(container) {
   const title = container.querySelector(".slide-title h1");
   if (title) createCharacterElements(title);
-
   container
     .querySelectorAll(".slide-description p")
     .forEach(createLineElements);
-
   const link = container.querySelector(".slide-link a");
   if (link) {
     createLineElements(link);
@@ -103,12 +85,10 @@ function processTextElements(container) {
   }
 }
 
-// creates slide element with title and description
 const createSlideElement = (slideData) => {
   const content = document.createElement("div");
   content.className = "slider-content";
   content.style.opacity = "0";
-
   content.innerHTML = `
     <div class="slide-title"><h1>${slideData.title}</h1></div>
     <div class="slide-description">
@@ -123,31 +103,21 @@ const createSlideElement = (slideData) => {
       </div>
     </div>
   `;
-
   return content;
 };
 
-// animates transition between slides with scramble effects
 const animateSlideTransition = (nextIndex) => {
-  const currentContent = document.querySelector(".slider-content");
-  const slider = document.querySelector(".slider");
-
-  // ADD THIS: Get current description for backdrop animation
+  const currentContent = slider.querySelector(".slider-content");
   const currentDescription = currentContent.querySelector(".slide-description");
-
   const timeline = gsap.timeline();
-
   const currentTitle = currentContent.querySelector(".slide-title h1");
-  if (currentTitle) {
-    scrambleOut(currentTitle, 0);
-  }
+  if (currentTitle) scrambleOut(currentTitle, 0);
 
   timeline
-    // ADD THIS: Fade out backdrop with text
     .to(
       currentDescription,
       {
-        backgroundColor: "rgba(0, 0, 0, 0)",
+        backgroundColor: "rgba(0,0,0,0)",
         backdropFilter: "blur(0px)",
         duration: 0.1,
         ease: "power2.inOut",
@@ -156,70 +126,56 @@ const animateSlideTransition = (nextIndex) => {
     )
     .to(
       [...currentContent.querySelectorAll(".line span")],
-      {
-        y: "-100%",
-        duration: 0.1,
-        stagger: 0.005,
-        ease: "power2.inOut",
-      },
+      { y: "-100%", duration: 0.1, stagger: 0.005, ease: "power2.inOut" },
       0.1,
     )
     .call(
       () => {
         const newContent = createSlideElement(slides[nextIndex]);
-
         timeline.kill();
         slider.appendChild(newContent);
-
         gsap.set(newContent.querySelectorAll("span"), { y: "100%" });
-
         setTimeout(() => {
           processTextElements(newContent);
-
           const newTitle = newContent.querySelector(".slide-title h1");
           const newLines = newContent.querySelectorAll(".line span");
-
           gsap.set(newLines, { y: "100%" });
           gsap.set(newContent, { opacity: 1 });
-
-          // Set backdrop initial state
           const description = newContent.querySelector(".slide-description");
-          if (description) {
+          if (description)
             gsap.set(description, {
-              backgroundColor: "rgba(0, 0, 0, 0.3)",
+              backgroundColor: "rgba(0,0,0,0.3)",
               backdropFilter: "blur(2px)",
             });
-          }
-
           gsap
             .timeline({
               onComplete: () => {
                 isTransitioning = false;
                 currentSlideIndex = nextIndex;
                 currentContent.remove();
+                const footerTitle = section.querySelector(
+                  ".slide-current-title",
+                );
+                if (footerTitle)
+                  footerTitle.textContent = slides[nextIndex].title;
               },
             })
             .call(() => {
-              if (newTitle) {
-                scrambleIn(newTitle, 0);
-              }
+              if (newTitle) scrambleIn(newTitle, 0);
             })
             .to(
               newLines,
               { y: "0%", duration: 0.5, stagger: 0.1, ease: "power2.inOut" },
               0.3,
             );
-
-          // ADD THE BACKDROP ANIMATION AFTER THE TIMELINE, NOT INSIDE IT
-          if (description) {
+          if (description)
             gsap.to(description, {
-              backgroundColor: "rgba(0, 0, 0, 0.3)",
+              backgroundColor: "rgba(0,0,0,0.3)",
               backdropFilter: "blur(2px)",
               duration: 0.1,
               ease: "power2.inOut",
               delay: 0.1,
             });
-          }
         }, 100);
       },
       null,
@@ -227,49 +183,39 @@ const animateSlideTransition = (nextIndex) => {
     );
 };
 
-// sets up initial slide with proper text processing
 const setupInitialSlide = () => {
-  const content = document.querySelector(".slider-content");
+  const content = slider.querySelector(".slider-content");
   processTextElements(content);
-  const lines = content.querySelectorAll(".line span");
-  gsap.set(lines, { y: "0%" });
-
-  // ADD THIS: Set initial backdrop
+  gsap.set(content.querySelectorAll(".line span"), { y: "0%" });
   const description = content.querySelector(".slide-description");
-  gsap.set(description, {
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
-    backdropFilter: "blur(2px)",
-  });
+  if (description)
+    gsap.set(description, {
+      backgroundColor: "rgba(0,0,0,0.3)",
+      backdropFilter: "blur(2px)",
+    });
 };
 
-// initializes three renderer and shader material
 const initializeRenderer = async () => {
+  const canvas = section.querySelector("canvas");
+  const w = section.clientWidth;
+  const h = section.clientHeight;
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-
-  renderer = new THREE.WebGLRenderer({
-    canvas: document.querySelector("canvas"),
-    antialias: true,
-  });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setSize(w, h);
   shaderMaterial = new THREE.ShaderMaterial({
     uniforms: {
       uTexture1: { value: null },
       uTexture2: { value: null },
       uProgress: { value: 0.0 },
-      uResolution: {
-        value: new THREE.Vector2(window.innerWidth, window.innerHeight),
-      },
+      uResolution: { value: new THREE.Vector2(w, h) },
       uTexture1Size: { value: new THREE.Vector2(1, 1) },
       uTexture2Size: { value: new THREE.Vector2(1, 1) },
     },
     vertexShader,
     fragmentShader,
   });
-
   scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), shaderMaterial));
-
   const loader = new THREE.TextureLoader();
   for (const slide of slides) {
     const texture = await new Promise((resolve) =>
@@ -281,12 +227,10 @@ const initializeRenderer = async () => {
     };
     slideTextures.push(texture);
   }
-
   shaderMaterial.uniforms.uTexture1.value = slideTextures[0];
   shaderMaterial.uniforms.uTexture2.value = slideTextures[1];
   shaderMaterial.uniforms.uTexture1Size.value = slideTextures[0].userData.size;
   shaderMaterial.uniforms.uTexture2Size.value = slideTextures[1].userData.size;
-
   const render = () => {
     requestAnimationFrame(render);
     renderer.render(scene, camera);
@@ -294,22 +238,17 @@ const initializeRenderer = async () => {
   render();
 };
 
-// handles slide change with shader transition
 const handleSlideChange = () => {
   if (isTransitioning) return;
-
   isTransitioning = true;
   const nextIndex = (currentSlideIndex + 1) % slides.length;
-
   shaderMaterial.uniforms.uTexture1.value = slideTextures[currentSlideIndex];
   shaderMaterial.uniforms.uTexture2.value = slideTextures[nextIndex];
   shaderMaterial.uniforms.uTexture1Size.value =
     slideTextures[currentSlideIndex].userData.size;
   shaderMaterial.uniforms.uTexture2Size.value =
     slideTextures[nextIndex].userData.size;
-
   animateSlideTransition(nextIndex);
-
   gsap.fromTo(
     shaderMaterial.uniforms.uProgress,
     { value: 0 },
@@ -327,29 +266,18 @@ const handleSlideChange = () => {
   );
 };
 
-// handles window resize events - resets splittext and elements
 const handleResize = () => {
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  shaderMaterial.uniforms.uResolution.value.set(
-    window.innerWidth,
-    window.innerHeight,
-  );
-
-  const currentContent = document.querySelector(".slider-content");
+  const w = section.clientWidth;
+  const h = section.clientHeight;
+  renderer.setSize(w, h);
+  shaderMaterial.uniforms.uResolution.value.set(w, h);
+  const currentContent = slider.querySelector(".slider-content");
   if (!currentContent) return;
-
-  const currentSlideData = slides[currentSlideIndex];
-
-  const slider = document.querySelector(".slider");
   currentContent.remove();
-
-  const newContent = createSlideElement(currentSlideData);
+  const newContent = createSlideElement(slides[currentSlideIndex]);
   slider.appendChild(newContent);
-
   document.fonts.ready.then(() => {
     processTextElements(newContent);
-
-    // reset shader to current slide
     const nextIndex = (currentSlideIndex + 1) % slides.length;
     shaderMaterial.uniforms.uTexture1.value = slideTextures[currentSlideIndex];
     shaderMaterial.uniforms.uTexture2.value = slideTextures[nextIndex];
@@ -358,10 +286,7 @@ const handleResize = () => {
     shaderMaterial.uniforms.uTexture2Size.value =
       slideTextures[nextIndex].userData.size;
     shaderMaterial.uniforms.uProgress.value = 0;
-
-    // set initial state
-    const lines = newContent.querySelectorAll(".line span");
-    gsap.set(lines, { y: "0%" });
+    gsap.set(newContent.querySelectorAll(".line span"), { y: "0%" });
     gsap.set(newContent, { opacity: "1" });
   });
 };
@@ -373,16 +298,15 @@ window.addEventListener("load", () => {
   });
 });
 
-document.addEventListener("click", (e) => {
-  // don't change slide if clicking on project link, nav, nav-overlay, or menu elements
+section.addEventListener("click", (e) => {
   if (
     e.target.closest(".slide-link a") ||
     e.target.closest("nav") ||
     e.target.closest(".nav-overlay") ||
     e.target.closest(".menu-toggle-btn")
-  ) {
+  )
     return;
-  }
   handleSlideChange();
 });
+
 window.addEventListener("resize", handleResize);

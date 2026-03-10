@@ -33,6 +33,9 @@ function mpaRewritePlugin() {
 export default defineConfig({
   plugins: [mpaRewritePlugin()],
   appType: "mpa",
+  optimizeDeps: {
+    include: ["three", "gsap", "gsap/SplitText"],
+  },
   build: {
     rollupOptions: {
       input: {

@@ -30,10 +30,8 @@ const footerTemplate = `
         </div>
 
         <div class="meta-info">
-          <a href="https://www.youtube.com/@irickimages" target="_blank" class="scramble-hover">YouTube</a>
-          <a href="https://www.instagram.com/codegridweb/" target="_blank" class="scramble-hover">Instagram</a>
-          <a href="https://x.com/codegridweb" target="_blank" class="scramble-hover">Twitter</a>
-          <a href="https://vimeo.com/codegrid" target="_blank" class="scramble-hover">Vimeo</a>
+          <a href="https://www.youtube.com/@JustinIrick" target="_blank" class="scramble-hover">YouTube</a>
+          <a href="https://www.instagram.com/irickimages/" target="_blank" class="scramble-hover">Instagram</a>
         </div>
 
         <div class="meta-info">

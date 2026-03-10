@@ -10,82 +10,82 @@ const projectsData = [
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
   {
     name: "Justin Irick",
     director: "Irick Images",
-    location: "Greenville, SC",
+    location: "Greenville, South Carolina",
   },
 ];
 

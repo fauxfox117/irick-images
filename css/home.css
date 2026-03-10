@@ -153,9 +153,119 @@
   left: 0;
   background: white;
   opacity: 1;
-  transition: transform 0.25s ease, width 0.25s ease, height 0.25s ease,
+  transition:
+    transform 0.25s ease,
+    width 0.25s ease,
+    height 0.25s ease,
     background-color 0.25s ease;
   pointer-events: none;
+}
+
+/* ─── home: work preview (mirrors work.css scoped to .work-preview) ─────── */
+.work-preview,
+.work-preview .slider {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.work-preview canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.work-preview .slider-content {
+  position: absolute;
+  top: 50%;
+  right: 2rem;
+  transform: translateY(-50%);
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  z-index: 2;
+}
+
+.work-preview .slide-description {
+  transition: 0.1s ease-in-out;
+  width: 50%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+}
+
+.work-preview .slide-title h1 {
+  display: flex;
+  justify-content: flex-start;
+  font-size: 7rem;
+}
+
+.work-preview .slide-title h1 .word {
+  display: flex;
+}
+.work-preview .slide-title h1 .char {
+  display: block;
+}
+
+.work-preview .char,
+.work-preview .line {
+  overflow: hidden;
+}
+
+.work-preview .char span,
+.work-preview .line span {
+  position: relative;
+  display: inline-block;
+  will-change: transform;
+}
+
+.work-preview .slide-link a {
+  position: relative;
+  display: block;
+  color: var(--tone-900);
+  width: max-content;
+  padding: 0.5rem 0;
+}
+
+.work-preview .slide-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+.work-preview .slide-footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--tone-400);
+}
+
+@media (max-width: 1000px) {
+  .work-preview .slider-content {
+    width: calc(100% - 2rem);
+    right: unset;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-items: center;
+    text-align: center;
+  }
+  .work-preview .slide-title h1 {
+    font-size: 3rem;
+  }
+  .work-preview .slide-description {
+    width: 90%;
+  }
+  .work-preview .slide-link a {
+    margin: 0 auto;
+  }
 }
 
 @media (max-width: 1000px) {
