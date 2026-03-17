@@ -3,13 +3,10 @@
   publish = "dist"
   functions = "netlify/functions"
 
-# These env vars are intentionally public (client-side Supabase anon key,
-# public contact email, localhost fallback). Skip secrets scanning for them.
-[secrets-scanning]
-  PHOTOGRAPHER_EMAIL = false
-  VITE_SUPABASE_URL = false
-  VITE_SUPABASE_ANON_KEY = false
-  FRONTEND_URL = false
+# Supabase anon keys are designed to be public (RLS protects data).
+# Vite inlines VITE_ env vars into client bundles by design.
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_ANON_KEY,VITE_SUPABASE_URL"
 
 [dev]
   command = "npm run dev"
