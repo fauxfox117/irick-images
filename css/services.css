@@ -1,0 +1,131 @@
+/* services section */
+.services {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background-color: var(--tone-100);
+}
+
+.services .services-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.services .services-list {
+  position: relative;
+  flex: 1;
+  max-width: 90%;
+}
+
+.services .service-item {
+  position: relative;
+  height: 7rem;
+  display: flex;
+  align-items: center;
+  line-height: 0.9;
+  color: var(--tone-400);
+  cursor: pointer;
+}
+
+.services .service-item:last-child {
+  margin-bottom: 0;
+}
+
+.services .service-name {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.services .service-img-wrapper {
+  width: 0;
+  height: 100%;
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+.services .service-image {
+  width: 10rem;
+  height: 100%;
+  margin-right: 0;
+  border-radius: 2px;
+  object-fit: cover;
+  object-position: left center;
+  transform: scale(1.5);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.services .service-item:hover .service-img-wrapper {
+  width: 10.5rem;
+}
+
+.services .service-item:hover .service-image {
+  transform: scale(1);
+}
+
+.services .services-indicator {
+  position: absolute;
+  right: 2rem;
+  top: 2rem;
+}
+
+.services .services-indicator span {
+  text-transform: uppercase;
+  color: var(--tone-300);
+}
+
+.services .services-footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.services .services-footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  color: var(--tone-400);
+}
+
+@media (max-width: 1000px) {
+  .services .services-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .services .services-list {
+    max-width: 100%;
+  }
+
+  .services .service-item {
+    height: 3rem;
+  }
+
+  .services .service-name {
+    margin-left: 0;
+  }
+
+  .services .service-name h2 {
+    font-size: 2.75rem;
+  }
+
+  .services .service-img-wrapper {
+    display: none;
+  }
+
+  .services .services-indicator {
+    display: none;
+  }
+}

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Irick Images</title>
+    <link rel="icon" href="/site-icon.png" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="author" content="Irick Images Portfolio" />
+
+    <link rel="stylesheet" href="/globals.css" />
+    <link rel="stylesheet" href="/css/preloader.css" />
+    <link rel="stylesheet" href="/css/transition.css" />
+    <link rel="stylesheet" href="/css/menu.css" />
+    <link rel="stylesheet" href="/css/home.css" />
+    <link rel="stylesheet" href="/css/pixelated-video.css" />
+    <link rel="stylesheet" href="/css/pixelated-text.css" />
+    <link rel="stylesheet" href="/css/spotlight.css" />
+    <link rel="stylesheet" href="/css/split-element.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+  </head>
+  <body>
+    <!-- preloader -->
+    <div class="overlay">
+      <div class="projects">
+        <div class="projects-header">
+          <p>Project</p>
+          <p>Director</p>
+        </div>
+      </div>
+
+      <div class="loader">
+        <h1 class="logo-line-1">Irick Images</h1>
+      </div>
+
+      <div class="locations">
+        <div class="locations-header">
+          <p>Location</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="image-loop" aria-hidden="true">
+      <div class="loop-track"></div>
+    </div>
+
+    <!-- page transition -->
+    <div class="transition">
+      <div class="transition-overlay"></div>
+    </div>
+
+    <!-- menu -->
+    <site-navbar></site-navbar>
+
+    <!-- home: pixelated-video section -->
+    <section class="hero">
+      <video class="hero-video" autoplay muted loop playsinline>
+        <source src="/hero/hero-footage.mp4" type="video/mp4" />
+      </video>
+
+      <div class="hero-content">
+        <div class="hero-header">
+          <div class="container">
+            <h2>Films forged through balance, emphasis and variety.</h2>
+          </div>
+        </div>
+
+        <div class="hero-footer">
+          <div class="container">
+            <p>
+              <span>Upstate SC</span> <span>/</span> <span>Greenville SC</span>
+            </p>
+            <p>[ &nbsp;Scroll to Continue&nbsp; ]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="spotlight">
+      <div class="spotlight-container">
+        <div class="spotlight-gallery"></div>
+      </div>
+
+      <div class="spotlight-footer">
+        <div class="container">
+          <p>Selected Frames</p>
+          <a href="/work" class="scramble-hover"
+            >[ &nbsp;Expand Catalogue&nbsp; ]</a
+          >
+        </div>
+      </div>
+    </section>
+    <!-- home: work preview -->
+    <section class="work-preview">
+      <div class="slider">
+        <canvas></canvas>
+
+        <div class="slider-content">
+          <div class="slide-title">
+            <a href="/real-estate" class="scramble-hover"
+              ><h1>Real Estate</h1></a
+            >
+          </div>
+          <div class="slide-description">
+            <p>
+              Empty rooms hold stories in their light—morning sun through bare
+              windows, a home between chapters.
+            </p>
+            <div class="slide-info">
+              <p>Type. Architecture</p>
+              <p>Field. Real Estate</p>
+              <p>Date. 2025</p>
+            </div>
+            <div class="slide-link">
+              <a href="/real-estate">[ View Full Project ]</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <div class="container">
+            <p class="slide-current-title">Real Estate</p>
+            <p>[ Click to Advance ]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- footer -->
+    <site-footer></site-footer>
+
+    <script type="module" src="/scripts/footer-component.js"></script>
+    <script type="module" src="/scripts/lenis-scroll.js"></script>
+    <script type="module" src="/scripts/preloader.js"></script>
+    <script type="module" src="/scripts/transition.js"></script>
+    <script type="module" src="/scripts/navbar-component.js"></script>
+    <script type="module" src="/scripts/menu.js"></script>
+    <script type="module" src="/scripts/hover.js"></script>
+    <script type="module" src="/scripts/parallax.js"></script>
+    <script type="module" src="/scripts/spotlight.js"></script>
+    <script type="module" src="/scripts/split-element.js"></script>
+    <script type="module" src="/scripts/work-preview.js"></script>
+  </body>
+</html>

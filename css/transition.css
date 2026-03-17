@@ -1,0 +1,22 @@
+/* page transition */
+.transition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.transition-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--tone-500);
+  transform: scaleY(1);
+  transform-origin: top;
+  will-change: transform;
+}

@@ -1,0 +1,71 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[dev]
+  command = "npm run dev"
+  targetPort = 5173
+  port = 8888
+  autoLaunch = false
+
+# Clean URLs — map routes to built HTML pages
+[[redirects]]
+  from = "/work"
+  to = "/pages/work.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to = "/pages/contact.html"
+  status = 200
+
+[[redirects]]
+  from = "/real-estate"
+  to = "/pages/real-estate.html"
+  status = 200
+
+[[redirects]]
+  from = "/portraits"
+  to = "/pages/portraits.html"
+  status = 200
+
+[[redirects]]
+  from = "/events"
+  to = "/pages/events.html"
+  status = 200
+
+[[redirects]]
+  from = "/performance"
+  to = "/pages/performance.html"
+  status = 200
+
+[[redirects]]
+  from = "/promotional"
+  to = "/pages/promotional.html"
+  status = 200
+
+[[redirects]]
+  from = "/book"
+  to = "/pages/book.html"
+  status = 200
+
+[[redirects]]
+  from = "/booking-success"
+  to = "/pages/booking-success.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/pages/admin-login.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin-login"
+  to = "/pages/admin-login.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin-dashboard"
+  to = "/pages/admin-dashboard.html"
+  status = 200

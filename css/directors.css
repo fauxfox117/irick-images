@@ -1,0 +1,70 @@
+/* directors: hero section */
+.pixelated-text.directors-hero {
+  position: relative;
+  height: 100svh;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  padding: 0 0 2rem 0;
+  background-color: var(--tone-200);
+  text-align: left;
+  overflow: hidden;
+}
+
+.pixelated-text.directors-hero h1 {
+  font-size: 20vw;
+}
+
+/* directors: list section */
+.directors-list {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 10rem 0 20rem 0;
+  background-color: var(--tone-400);
+}
+
+.director-item {
+  position: relative;
+  width: 100%;
+}
+
+.director-item .director-name {
+  padding: 0 2rem;
+  cursor: pointer;
+}
+
+.director-item .director-name h2 {
+  color: var(--tone-100);
+}
+
+.director-preview {
+  position: absolute;
+  top: 100%;
+  z-index: 1;
+  width: 100%;
+  height: 300%;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.director-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 1000px) {
+  .directors-list {
+    margin: 5rem 0;
+  }
+
+  .director-preview {
+    clip-path: none;
+  }
+
+  .director-item {
+    margin-bottom: 2rem;
+  }
+}

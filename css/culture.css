@@ -1,0 +1,159 @@
+/* culture: hero section */
+.culture-hero {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.culture-hero .culture-hero-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.culture-hero .culture-hero-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.culture-hero .culture-hero-header {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: 100%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.culture-hero .culture-hero-header h1 {
+  width: 100%;
+  font-size: 20vw;
+  letter-spacing: -0.25vw;
+}
+
+.culture-hero .culture-hero-footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.culture-hero .culture-hero-footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  color: var(--tone-400);
+}
+
+/* culture: team section */
+.team {
+  position: relative;
+  width: 100%;
+  background-color: var(--tone-100);
+  overflow: hidden;
+}
+
+.team .team-row {
+  width: 100%;
+  display: flex;
+}
+
+.team .team-col {
+  flex: 1;
+  aspect-ratio: 1;
+}
+
+.team .team-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.team .team-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0) brightness(0.85) contrast(1.0125);
+}
+
+.team .team-img[data-origin="left"] {
+  transform-origin: 0% 0%;
+}
+
+.team .team-img[data-origin="right"] {
+  transform-origin: 100% 0%;
+}
+
+.team .team-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.team .team-header h2 {
+  color: var(--tone-500);
+}
+
+/* culture: about section */
+.culture-about {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 4rem 0 8rem 0;
+  background-color: var(--tone-100);
+  color: var(--tone-500);
+}
+
+.culture-about .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+  text-align: center;
+}
+
+.culture-about .culture-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.culture-about .culture-header p {
+  color: var(--tone-400);
+}
+
+.culture-about .culture-about-copy {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  color: var(--tone-400);
+}
+
+@media (max-width: 1000px) {
+  .culture-hero .culture-hero-header h1 {
+    font-size: 30vw;
+  }
+
+  .culture-about .culture-about-copy {
+    width: 100%;
+  }
+}
