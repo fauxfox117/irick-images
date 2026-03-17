@@ -3,6 +3,14 @@
   publish = "dist"
   functions = "netlify/functions"
 
+# These env vars are intentionally public (client-side Supabase anon key,
+# public contact email, localhost fallback). Skip secrets scanning for them.
+[secrets-scanning]
+  PHOTOGRAPHER_EMAIL = false
+  VITE_SUPABASE_URL = false
+  VITE_SUPABASE_ANON_KEY = false
+  FRONTEND_URL = false
+
 [dev]
   command = "npm run dev"
   targetPort = 5173
