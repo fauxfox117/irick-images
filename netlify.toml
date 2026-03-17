@@ -6,7 +6,7 @@
 # Supabase anon keys are designed to be public (RLS protects data).
 # Vite inlines VITE_ env vars into client bundles by design.
 [build.environment]
-  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_ANON_KEY,VITE_SUPABASE_URL"
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_ANON_KEY,VITE_SUPABASE_URL,SUPABASE_ANON_KEY,SUPABASE_URL"
 
 [dev]
   command = "npm run dev"
