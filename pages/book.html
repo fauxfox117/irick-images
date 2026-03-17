@@ -21,6 +21,22 @@
     <!-- menu -->
     <site-navbar></site-navbar>
 
+    <!-- Hidden form for Netlify bot detection (must be in static HTML) -->
+    <form name="booking" netlify netlify-honeypot="bot-field" hidden>
+      <input name="bot-field" />
+      <input name="package-name" />
+      <input name="package-price" />
+      <input name="add-ons" />
+      <input name="total-price" />
+      <input name="name" />
+      <input name="email" />
+      <input name="phone" />
+      <input name="date" />
+      <input name="time" />
+      <input name="location" />
+      <textarea name="notes"></textarea>
+    </form>
+
     <!-- Booking Flow -->
     <div class="page booking">
       <div class="booking-container">

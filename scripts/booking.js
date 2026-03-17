@@ -214,27 +214,39 @@ function validateForm() {
   return form.checkValidity();
 }
 
-// Submit booking request
+// Submit booking request via Netlify Forms
 async function submitBooking() {
   const submitBtn = document.getElementById("submitBooking");
   submitBtn.textContent = "Sending...";
   submitBtn.disabled = true;
 
   try {
-    const res = await fetch("/api/send-booking", {
+    const formData = new URLSearchParams();
+    formData.append("form-name", "booking");
+    formData.append("bot-field", ""); // honeypot
+    formData.append("package-name", bookingState.selectedPackage?.name || "");
+    formData.append("package-price", bookingState.selectedPackage?.price || 0);
+    formData.append(
+      "add-ons",
+      bookingState.selectedAddOns.map((a) => `${a.name} ($${a.price})`).join(", ") || "None",
+    );
+    formData.append("total-price", bookingState.totalPrice);
+    formData.append("name", bookingState.customerInfo.name);
+    formData.append("email", bookingState.customerInfo.email);
+    formData.append("phone", bookingState.customerInfo.phone);
+    formData.append("date", bookingState.customerInfo.date);
+    formData.append("time", bookingState.customerInfo.time || "Not specified");
+    formData.append("location", bookingState.customerInfo.location);
+    formData.append("notes", bookingState.customerInfo.notes || "");
+
+    const res = await fetch("/", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        package: bookingState.selectedPackage,
-        addOns: bookingState.selectedAddOns,
-        customerInfo: bookingState.customerInfo,
-      }),
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: formData.toString(),
     });
 
-    const data = await res.json();
-
-    if (!res.ok || data.error) {
-      throw new Error(data.error || "Request failed");
+    if (!res.ok) {
+      throw new Error("Form submission failed");
     }
 
     // Show confirmation
