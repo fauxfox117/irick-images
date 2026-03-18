@@ -26,8 +26,8 @@ const footerTemplate = `
         </div>
 
         <div class="meta-info">
-          <a href="https://www.youtube.com/@JustinIrick" target="_blank" class="scramble-hover">YouTube</a>
-          <a href="https://www.instagram.com/irickimages/" target="_blank" class="scramble-hover">Instagram</a>
+          <a href="https://www.youtube.com/@JustinIrick" target="_blank" rel="noopener noreferrer" class="scramble-hover">YouTube</a>
+          <a href="https://www.instagram.com/irickimages/" target="_blank" rel="noopener noreferrer" class="scramble-hover">Instagram</a>
         </div>
 
         <div class="meta-info">
@@ -37,7 +37,7 @@ const footerTemplate = `
 
       <div class="footer-meta-row">
         <p>Developed by Steven Bolin</p>
-        <p>&copy; 2025 Irick Images</p>
+        <p>&copy; <span class="copyright-year">2026</span> Irick Images</p>
       </div>
     </div>
   </div>
@@ -49,6 +49,9 @@ class SiteFooter extends HTMLElement {
     if (this.dataset.rendered === "true") return;
     this.dataset.rendered = "true";
     this.innerHTML = footerTemplate.trim();
+
+    const yearEl = this.querySelector(".copyright-year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
   }
 }
 

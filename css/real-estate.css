@@ -8,9 +8,27 @@
 }
 
 .film-hero .container {
+  background: url("../public/real-estate/_EPG9466.webp") no-repeat center center;
+  background-size: cover;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px); /* optional frosted glass */
   display: flex;
   justify-content: center;
   align-items: flex-end;
+}
+
+.film-hero .container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.55); /* semi-transparent black overlay */
+  pointer-events: none;
+}
+
+.film-hero .container > * {
+  position: relative;
+  z-index: 2;
 }
 
 .film-hero .container .film-hero-copy {

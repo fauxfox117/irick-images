@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /admin-login
+Disallow: /admin-dashboard
+Disallow: /booking-success
+
+Sitemap: https://irickimages.com/sitemap.xml

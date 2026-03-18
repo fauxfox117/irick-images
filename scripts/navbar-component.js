@@ -40,8 +40,8 @@ const navbarTemplate = `
   <div class="nav-footer">
     <div class="container">
       <div class="nav-footer-item">
-        <a href="https://www.instagram.com/irickimages/" target="_blank">Instagram</a>
-        <a href="https://www.youtube.com/@JustinIrick" target="_blank">YouTube</a>
+        <a href="https://www.instagram.com/irickimages/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.youtube.com/@JustinIrick" target="_blank" rel="noopener noreferrer">YouTube</a>
       </div>
 
       <div class="nav-footer-item">

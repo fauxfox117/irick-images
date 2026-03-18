@@ -2,6 +2,17 @@
 const API_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1`;
 const ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+// Escape HTML entities to prevent XSS
+function esc(str) {
+  if (str == null) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 // Check authentication on page load
 function checkAuth() {
   const session = localStorage.getItem("admin_session");
@@ -127,20 +138,20 @@ function renderBookings(bookings) {
   gridEl.innerHTML = bookings
     .map(
       (booking) => `
-    <div class="booking-card" data-booking-id="${booking.id}">
+    <div class="booking-card" data-booking-id="${esc(booking.id)}">
       <div class="booking-header">
-        <h3>${booking.customer_name}</h3>
+        <h3>${esc(booking.customer_name)}</h3>
         <span class="booking-date">${new Date(booking.created_at).toLocaleDateString()}</span>
       </div>
       
       <div class="booking-details">
         <div class="detail-row">
           <span class="label">Email:</span>
-          <span>${booking.customer_email}</span>
+          <span>${esc(booking.customer_email)}</span>
         </div>
         <div class="detail-row">
           <span class="label">Phone:</span>
-          <span>${booking.customer_phone}</span>
+          <span>${esc(booking.customer_phone)}</span>
         </div>
         <div class="detail-row">
           <span class="label">Shoot Date:</span>
@@ -148,23 +159,23 @@ function renderBookings(bookings) {
         </div>
         <div class="detail-row">
           <span class="label">Time:</span>
-          <span>${booking.booking_time}</span>
+          <span>${esc(booking.booking_time)}</span>
         </div>
         <div class="detail-row">
           <span class="label">Location:</span>
-          <span>${booking.location}</span>
+          <span>${esc(booking.location)}</span>
         </div>
         <div class="detail-row">
           <span class="label">Package:</span>
-          <span>${booking.package_name}</span>
+          <span>${esc(booking.package_name)}</span>
         </div>
         <div class="detail-row">
           <span class="label">Total:</span>
-          <span class="price">$${booking.total_price}</span>
+          <span class="price">$${esc(booking.total_price)}</span>
         </div>
         <div class="detail-row">
           <span class="label">Deposit Paid:</span>
-          <span class="price paid">$${booking.deposit_paid}</span>
+          <span class="price paid">$${esc(booking.deposit_paid)}</span>
         </div>
       </div>
       
@@ -177,7 +188,7 @@ function renderBookings(bookings) {
             ${JSON.parse(booking.add_ons)
               .map(
                 (addon) => `
-              <li>${addon.name} - $${addon.price}</li>
+              <li>${esc(addon.name)} - $${esc(addon.price)}</li>
             `,
               )
               .join("")}
@@ -187,8 +198,8 @@ function renderBookings(bookings) {
           : ""
       }
        <div class="booking-actions">
-        <button class="btn-confirm" data-booking-id="${booking.id}">Confirm</button>
-        <button class="btn-delete" data-booking-id="${booking.id}">Delete</button>
+        <button class="btn-confirm" data-booking-id="${esc(booking.id)}">Confirm</button>
+        <button class="btn-delete" data-booking-id="${esc(booking.id)}">Delete</button>
       </div>
     </div>
   `,
@@ -416,14 +427,14 @@ function renderPhotos(photos) {
     .map(
       (photo) => `
     <div class="photo-card">
-      <img src="${photo.url}" alt="${photo.name}" loading="lazy" />
+      <img src="${esc(photo.url)}" alt="${esc(photo.name)}" loading="lazy" />
       <div class="photo-info">
-        <p class="photo-name">${photo.name}</p>
-        <p class="photo-category">${photo.category}</p>
+        <p class="photo-name">${esc(photo.name)}</p>
+        <p class="photo-category">${esc(photo.category)}</p>
         <p class="photo-size">${(photo.size / 1024).toFixed(1)} KB</p>
       </div>
       <div class="photo-actions">
-        <select class="category-select" data-path="${photo.path}" data-current-category="${photo.category}">
+        <select class="category-select" data-path="${esc(photo.path)}" data-current-category="${esc(photo.category)}">
           <option value="" disabled selected>Move to...</option>
           <option value="real-estate">Real Estate</option>
           <option value="portraits">Portraits</option>
@@ -431,7 +442,7 @@ function renderPhotos(photos) {
           <option value="events-misc">Events, misc.</option>
           <option value="promotional">Promotional</option>
         </select>
-        <button class="btn-delete-photo" data-path="${photo.path}">Delete</button>
+        <button class="btn-delete-photo" data-path="${esc(photo.path)}">Delete</button>
       </div>
     </div>
   `,

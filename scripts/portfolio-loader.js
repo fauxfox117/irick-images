@@ -102,7 +102,7 @@ async function fetchSupabaseImages(category) {
       return data.images.map((img) => img.url);
     }
   } catch (err) {
-    console.warn("Supabase fetch failed, using local images:", err.message);
+    if (import.meta.env.DEV) console.warn("Supabase fetch failed, using local images:", err.message);
   }
 
   return null;
@@ -120,7 +120,7 @@ async function loadPortfolioImages() {
 
   if (localImages.length > 0) {
     renderGallery(localImages, snapshotsSection, category);
-    console.log(`Rendered ${localImages.length} local images for ${category}`);
+
   }
 
   // 2. Try Supabase — if it returns images, replace the gallery
@@ -128,11 +128,9 @@ async function loadPortfolioImages() {
 
   if (supabaseImages) {
     renderGallery(supabaseImages, snapshotsSection, category);
-    console.log(
-      `Replaced with ${supabaseImages.length} Supabase images for ${category}`,
-    );
+
   } else if (localImages.length === 0) {
-    console.warn(`No images found for category: ${category}`);
+    if (import.meta.env.DEV) console.warn(`No images found for category: ${category}`);
     document.dispatchEvent(
       new CustomEvent("portfolioLoaded", { detail: { category, count: 0 } }),
     );

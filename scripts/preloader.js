@@ -42,7 +42,6 @@ const allImageSources = [
   "/spotlight/EDIT11.webp",
   "/spotlight/EDIT19-2.webp",
   "/spotlight/OUTLINES.webp",
-  "/spotlight/TAWNY4.webp",
   "/spotlight/_EPG1798.webp",
   "/spotlight/_EPG4506.webp",
   "/spotlight/_EPG4536.webp",
@@ -50,7 +49,6 @@ const allImageSources = [
   "/spotlight/_EPG5747.webp",
   "/spotlight/_EPG6997.webp",
   "/spotlight/_EPG9466.webp",
-  // "/spotlight/_EPG9466_DTE.webp",
 ];
 
 function initializeDynamicContent() {
@@ -104,22 +102,14 @@ function buildLoopItems() {
 
   loopTrack.innerHTML = "";
 
-  const duplicatedSources = [...allImageSources, ...allImageSources];
-  const fragment = document.createDocumentFragment();
-
-  duplicatedSources.forEach((source) => {
-    const item = document.createElement("div");
-    item.className = "loop-item";
-
-    const image = document.createElement("img");
-    image.src = source;
-    image.alt = "";
-
-    item.appendChild(image);
-    fragment.appendChild(item);
-  });
-
-  loopTrack.appendChild(fragment);
+  // Only one image element for slideshow
+  const item = document.createElement("div");
+  item.className = "loop-item";
+  const image = document.createElement("img");
+  image.src = allImageSources[0];
+  image.alt = "";
+  item.appendChild(image);
+  loopTrack.appendChild(item);
 }
 
 async function prepareLoop() {
@@ -142,23 +132,20 @@ function startLoopAnimation() {
     return;
   }
 
-  const loopItems = gsap.utils.toArray(".loop-item");
-  const firstItem = loopItems[0];
-  const firstDuplicateItem = loopItems[allImageSources.length];
-
-  if (!firstItem || !firstDuplicateItem) {
-    return;
+  // Slideshow: hard cut to next image every 90ms
+  const img = loopTrack.querySelector("img");
+  let idx = 0;
+  const interval = 90; // ms per image
+  let running = true;
+  function showNext() {
+    if (!running) return;
+    idx = (idx + 1) % allImageSources.length;
+    img.src = allImageSources[idx];
+    // If preloader is about to finish, stop cycling
+    if (!loopTrack.parentElement) running = false;
+    else setTimeout(showNext, interval);
   }
-
-  const loopDistance = firstDuplicateItem.offsetLeft - firstItem.offsetLeft;
-
-  if (!loopDistance) {
-    return;
-  }
-
-  loopTrack.style.setProperty("--loop-distance", `-${loopDistance}px`);
-  loopTrack.style.setProperty("--loop-duration", `${LOOP_DURATION}s`);
-  loopTrack.classList.add("is-running");
+  setTimeout(showNext, interval);
 }
 
 function completePreloader() {
