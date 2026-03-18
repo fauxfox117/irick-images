@@ -35,22 +35,22 @@ const PROJECT_ROW = {
 const projectsData = Array.from({ length: 16 }, () => PROJECT_ROW);
 
 const allImageSources = [
-  "/spotlight/1 2.jpg",
-  "/spotlight/4.jpg",
-  "/spotlight/DJI_20251201172047_0094_D_DTE.jpg",
-  "/spotlight/EDIT1.jpg",
-  "/spotlight/EDIT11.jpg",
-  "/spotlight/EDIT19-2.jpg",
-  "/spotlight/OUTLINES.jpg",
-  "/spotlight/TAWNY4.jpg",
-  "/spotlight/_EPG1798.jpg",
-  "/spotlight/_EPG4506.jpg",
-  "/spotlight/_EPG4536.jpg",
-  "/spotlight/_EPG4716.jpg",
-  "/spotlight/_EPG5747.jpg",
-  "/spotlight/_EPG6997.jpg",
-  "/spotlight/_EPG9466.jpg",
-  // "/spotlight/_EPG9466_DTE.jpg",
+  "/spotlight/1 2.webp",
+  "/spotlight/4.webp",
+  "/spotlight/DJI_20251201172047_0094_D_DTE.webp",
+  "/spotlight/EDIT1.webp",
+  "/spotlight/EDIT11.webp",
+  "/spotlight/EDIT19-2.webp",
+  "/spotlight/OUTLINES.webp",
+  "/spotlight/TAWNY4.webp",
+  "/spotlight/_EPG1798.webp",
+  "/spotlight/_EPG4506.webp",
+  "/spotlight/_EPG4536.webp",
+  "/spotlight/_EPG4716.webp",
+  "/spotlight/_EPG5747.webp",
+  "/spotlight/_EPG6997.webp",
+  "/spotlight/_EPG9466.webp",
+  // "/spotlight/_EPG9466_DTE.webp",
 ];
 
 function initializeDynamicContent() {

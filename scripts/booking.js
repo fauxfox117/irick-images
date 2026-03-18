@@ -240,7 +240,9 @@ async function submitBooking() {
     formData.append("package-price", bookingState.selectedPackage?.price || 0);
     formData.append(
       "add-ons",
-      bookingState.selectedAddOns.map((a) => `${a.name} ($${a.price})`).join(", ") || "None",
+      bookingState.selectedAddOns
+        .map((a) => `${a.name} ($${a.price})`)
+        .join(", ") || "None",
     );
     formData.append("total-price", bookingState.totalPrice);
     formData.append("name", bookingState.customerInfo.name);

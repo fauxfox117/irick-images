@@ -6,7 +6,7 @@ export const slides = [
     type: "Architecture",
     field: "Real Estate",
     date: "2025",
-    image: "../public/real-estate/DJI_20251201172047_0094_D_DTE.jpg",
+    image: "../public/real-estate/DJI_20251201172047_0094_D_DTE.webp",
     route: "/real-estate",
   },
   {
@@ -16,7 +16,7 @@ export const slides = [
     type: "Portraits",
     field: "Character Study",
     date: "2024",
-    image: "/work/work-2.jpg",
+    image: "/work/work-2.webp",
     route: "/portraits",
   },
   {
@@ -26,7 +26,7 @@ export const slides = [
     type: "Live",
     field: "Performance",
     date: "2024",
-    image: "/work/work-3.jpg",
+    image: "/work/work-3.webp",
     route: "/performance",
   },
   {
@@ -36,7 +36,7 @@ export const slides = [
     type: "Portrait",
     field: "Crowd",
     date: "2025",
-    image: "/work/work-4.jpg",
+    image: "/work/work-4.webp",
     route: "/events",
   },
   {
@@ -46,7 +46,7 @@ export const slides = [
     type: "Commercial",
     field: "Promotional",
     date: "2025",
-    image: "/work/work-5.jpg",
+    image: "/work/work-5.webp",
     route: "/promotional",
   },
 ];

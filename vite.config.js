@@ -56,6 +56,7 @@ export default defineConfig({
       },
     },
     assetsInclude: [
+      "**/*.webp",
       "**/*.jpeg",
       "**/*.jpg",
       "**/*.png",

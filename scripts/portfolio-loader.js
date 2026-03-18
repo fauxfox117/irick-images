@@ -11,6 +11,31 @@ function getPortfolioCategory() {
   return segment.replace(".html", "") || "real-estate";
 }
 
+// Lazy-load observer: loads images when they enter/near the viewport
+const lazyObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const url = el.dataset.lazySrc;
+      if (!url) return;
+
+      // Set the sizer <img> src
+      const sizer = el.querySelector(".snap-sizer");
+      if (sizer) sizer.src = url;
+
+      // Set mask backgrounds
+      el.querySelectorAll(".mask").forEach((mask) => {
+        mask.style.background = `url(${url}) no-repeat 50% 50%`;
+        mask.style.backgroundSize = "cover";
+      });
+
+      lazyObserver.unobserve(el);
+    });
+  },
+  { rootMargin: "200px" },
+);
+
 // Build the gallery grid from an array of image URLs
 function renderGallery(imageUrls, snapshotsSection, category) {
   snapshotsSection.innerHTML = "";
@@ -27,10 +52,10 @@ function renderGallery(imageUrls, snapshotsSection, category) {
 
     const snapImg = document.createElement("div");
     snapImg.classList.add("snap-img", `img-${index + 1}`);
+    snapImg.dataset.lazySrc = url;
 
-    // Hidden image to establish natural aspect ratio
+    // Hidden image to establish natural aspect ratio (src set by observer)
     const sizer = document.createElement("img");
-    sizer.src = url;
     sizer.alt = "";
     sizer.classList.add("snap-sizer");
     snapImg.appendChild(sizer);
@@ -38,12 +63,11 @@ function renderGallery(imageUrls, snapshotsSection, category) {
     for (let i = 0; i < 9; i++) {
       const mask = document.createElement("div");
       mask.classList.add("mask");
-      mask.style.background = `url(${url}) no-repeat 50% 50%`;
-      mask.style.backgroundSize = "cover";
       snapImg.appendChild(mask);
     }
 
     currentRow.appendChild(snapImg);
+    lazyObserver.observe(snapImg);
   });
 
   // Fill remaining spots in last row with empty divs
