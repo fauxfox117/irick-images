@@ -174,6 +174,17 @@ function goToStep(step) {
     renderAddOns();
   } else if (step === 3) {
     updateSummary();
+    // Show square footage field only for Standard Listing Package
+    const sqftGroup = document.getElementById("sqftGroup");
+    const sqftInput = document.getElementById("sqft");
+    if (bookingState.selectedPackage?.id === "Lisiting") {
+      sqftGroup.style.display = "";
+      sqftInput.required = true;
+    } else {
+      sqftGroup.style.display = "none";
+      sqftInput.required = false;
+      sqftInput.value = "";
+    }
   }
 
   // Scroll to top
@@ -208,6 +219,7 @@ function validateForm() {
     date: formData.get("date"),
     time: formData.get("time"),
     location: formData.get("location"),
+    sqft: formData.get("square footage") || "",
     notes: formData.get("notes") || "",
   };
 
@@ -237,9 +249,10 @@ async function submitBooking() {
     formData.append("date", bookingState.customerInfo.date);
     formData.append("time", bookingState.customerInfo.time || "Not specified");
     formData.append("location", bookingState.customerInfo.location);
+    formData.append("square footage", bookingState.customerInfo.sqft || "");
     formData.append("notes", bookingState.customerInfo.notes || "");
 
-    const res = await fetch("/", {
+    const res = await fetch("/__forms.html", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: formData.toString(),
