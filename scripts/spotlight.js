@@ -45,7 +45,6 @@ class SpotlightGallery {
       "/spotlight/EDIT11.webp",
       "/spotlight/EDIT19-2.webp",
       "/spotlight/OUTLINES.webp",
-      "/spotlight/TAWNY4.webp",
       "/spotlight/DJI_20251201172047_0094_D_DTE.webp",
       "/spotlight/4.webp",
       "/spotlight/1 2.webp",
