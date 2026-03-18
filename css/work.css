@@ -66,7 +66,7 @@
 .page.work .slide-link a {
   position: relative;
   display: block;
-  color: var(--tone-900);
+  color: var(--tone-400);
   width: max-content;
   padding: 0.5rem 0;
 }

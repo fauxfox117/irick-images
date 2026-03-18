@@ -272,15 +272,18 @@ const initializeRenderer = async () => {
 
   const loader = new THREE.TextureLoader();
   for (const slide of slides) {
-    const texture = await new Promise((resolve) =>
-      loader.load(slide.image, resolve),
-    );
+    const texture = await new Promise((resolve, reject) =>
+      loader.load(slide.image, resolve, undefined, reject),
+    ).catch(() => null);
+    if (!texture) continue;
     texture.minFilter = texture.magFilter = THREE.LinearFilter;
     texture.userData = {
       size: new THREE.Vector2(texture.image.width, texture.image.height),
     };
     slideTextures.push(texture);
   }
+
+  if (slideTextures.length < 2) return;
 
   shaderMaterial.uniforms.uTexture1.value = slideTextures[0];
   shaderMaterial.uniforms.uTexture2.value = slideTextures[1];

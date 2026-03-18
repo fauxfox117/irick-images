@@ -6,7 +6,7 @@ export const slides = [
     type: "Architecture",
     field: "Real Estate",
     date: "2025",
-    image: "../public/real-estate/DJI_20251201172047_0094_D_DTE.webp",
+    image: "/real-estate/DJI_20251201172047_0094_D_DTE.webp",
     route: "/real-estate",
   },
   {
