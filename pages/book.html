@@ -123,7 +123,13 @@
 
             <div class="form-group" id="sqftGroup" style="display: none">
               <label for="sqft">Square Footage *</label>
-              <input type="number" id="sqft" name="square footage" min="1" placeholder="e.g. 2400" />
+              <input
+                type="number"
+                id="sqft"
+                name="square footage"
+                min="1"
+                placeholder="e.g. 2400"
+              />
             </div>
 
             <div class="form-group">
@@ -149,20 +155,20 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Confirmation -->
-    <section class="booking-confirmation" style="display: none">
-      <div class="confirmation-content">
-        <h2>Request Received</h2>
-        <p>
-          Thank you, <span class="confirm-name"></span>! We've received your
-          booking request and will reach out shortly to discuss details,
-          scheduling, and deposit information.
-        </p>
-        <a href="/" class="confirm-home-btn">Back to Home</a>
-      </div>
-    </section>
+      <!-- Confirmation -->
+      <section class="booking-confirmation" style="display: none">
+        <div class="confirmation-content">
+          <h2>Request Received</h2>
+          <p>
+            Thank you, <span class="confirm-name"></span>! We've received your
+            booking request and will reach out shortly to discuss details,
+            scheduling, and deposit information.
+          </p>
+          <a href="/" class="confirm-home-btn">Back to Home</a>
+        </div>
+      </section>
+    </div>
 
     <script type="module" src="/scripts/transition.js"></script>
     <script type="module" src="/scripts/navbar-component.js"></script>

@@ -1,5 +1,7 @@
 /* Booking Page */
 .page.booking {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   padding: 8rem 2rem 4rem;
   background-color: var(--tone-100);
@@ -358,9 +360,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  flex: 1;
   padding: 2rem;
-  background-color: var(--tone-100);
 }
 
 .confirmation-content {
@@ -376,7 +377,7 @@
 
 .confirmation-content p {
   font-size: 1rem;
-  color: var(--tone-450);
+  color: var(--tone-400);
   line-height: 1.6;
   margin-bottom: 2rem;
 }
