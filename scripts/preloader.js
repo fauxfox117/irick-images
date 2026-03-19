@@ -102,13 +102,28 @@ function buildLoopItems() {
 
   loopTrack.innerHTML = "";
 
-  // Only one image element for slideshow
+  // Create two image elements for crossfade effect
   const item = document.createElement("div");
   item.className = "loop-item";
-  const image = document.createElement("img");
-  image.src = allImageSources[0];
-  image.alt = "";
-  item.appendChild(image);
+
+  const image1 = document.createElement("img");
+  image1.src = allImageSources[0];
+  image1.alt = "";
+  image1.dataset.imageIndex = "0";
+  image1.style.opacity = "1";
+
+  const image2 = document.createElement("img");
+  image2.src = allImageSources[1];
+  image2.alt = "";
+  image2.dataset.imageIndex = "1";
+  image2.style.opacity = "0";
+  image2.style.position = "absolute";
+  image2.style.top = "0";
+  image2.style.left = "0";
+
+  item.style.position = "relative";
+  item.appendChild(image1);
+  item.appendChild(image2);
   loopTrack.appendChild(item);
 }
 
@@ -132,20 +147,49 @@ function startLoopAnimation() {
     return;
   }
 
-  // Slideshow: hard cut to next image every 90ms
-  const img = loopTrack.querySelector("img");
-  let idx = 0;
-  const interval = 90; // ms per image
+  // Crossfade between two images
+  const images = loopTrack.querySelectorAll("img");
+  const [img1, img2] = images;
+
+  let currentIdx = 0;
+  const fadeDuration = 0.1; // Duration of fade transition
+  const displayDuration = 0.5; // Duration to display each image
   let running = true;
+
   function showNext() {
-    if (!running) return;
-    idx = (idx + 1) % allImageSources.length;
-    img.src = allImageSources[idx];
-    // If preloader is about to finish, stop cycling
-    if (!loopTrack.parentElement) running = false;
-    else setTimeout(showNext, interval);
+    if (!running || !loopTrack.parentElement) {
+      running = false;
+      return;
+    }
+
+    currentIdx = (currentIdx + 1) % allImageSources.length;
+    const nextIdx = (currentIdx + 1) % allImageSources.length;
+
+    // Update the non-visible image to the next source
+    if (img1.style.opacity === "0") {
+      img1.src = allImageSources[nextIdx];
+    } else {
+      img2.src = allImageSources[nextIdx];
+    }
+
+    // Crossfade: fade out current, fade in next
+    gsap.to(img1, {
+      opacity: img1.style.opacity === "1" ? 0 : 1,
+      duration: fadeDuration,
+      ease: "power1.inOut",
+    });
+
+    gsap.to(img2, {
+      opacity: img2.style.opacity === "0" ? 1 : 0,
+      duration: fadeDuration,
+      ease: "power1.inOut",
+    });
+
+    // Schedule next image transition
+    setTimeout(showNext, displayDuration * 1000);
   }
-  setTimeout(showNext, interval);
+
+  setTimeout(showNext, displayDuration * 1000);
 }
 
 function completePreloader() {

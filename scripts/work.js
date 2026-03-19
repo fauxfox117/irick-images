@@ -142,89 +142,77 @@ const animateSlideTransition = (nextIndex) => {
     scrambleOut(currentTitle, 0);
   }
 
-  timeline
-    // ADD THIS: Fade out backdrop with text
-    .to(
-      currentDescription,
-      {
-        backgroundColor: "rgba(0, 0, 0, 0)",
-        backdropFilter: "blur(0px)",
-        duration: 0.1,
-        ease: "power2.inOut",
-      },
-      0.1,
-    )
-    .to(
-      [...currentContent.querySelectorAll(".line span")],
-      {
-        y: "-100%",
-        duration: 0.1,
-        stagger: 0.005,
-        ease: "power2.inOut",
-      },
-      0.1,
-    )
-    .call(
-      () => {
-        const newContent = createSlideElement(slides[nextIndex]);
+  timeline.call(
+    () => {
+      const newContent = createSlideElement(slides[nextIndex]);
 
-        timeline.kill();
-        slider.appendChild(newContent);
+      timeline.kill();
+      currentContent.remove();
+      slider.appendChild(newContent);
 
-        gsap.set(newContent.querySelectorAll("span"), { y: "100%" });
+      gsap.set(newContent.querySelectorAll("span"), { y: "100%" });
 
-        setTimeout(() => {
-          processTextElements(newContent);
+      setTimeout(() => {
+        processTextElements(newContent);
 
-          const newTitle = newContent.querySelector(".slide-title h1");
-          const newLines = newContent.querySelectorAll(".line span");
+        const newTitle = newContent.querySelector(".slide-title h1");
+        const newLines = newContent.querySelectorAll(".line span");
 
-          gsap.set(newLines, { y: "100%" });
-          gsap.set(newContent, { opacity: 1 });
+        gsap.set(newLines, { y: "100%" });
+        gsap.set(newContent, { opacity: 0 });
 
-          // Set backdrop initial state
-          const description = newContent.querySelector(".slide-description");
-          if (description) {
-            gsap.set(description, {
-              backgroundColor: "rgba(0, 0, 0, 0.3)",
-              backdropFilter: "blur(2px)",
-            });
-          }
+        // Set backdrop initial state
+        const description = newContent.querySelector(".slide-description");
+        if (description) {
+          gsap.set(description, {
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
+            backdropFilter: "blur(2px)",
+          });
+        }
 
-          gsap
-            .timeline({
-              onComplete: () => {
-                isTransitioning = false;
-                currentSlideIndex = nextIndex;
-                currentContent.remove();
-              },
-            })
-            .call(() => {
+        gsap
+          .timeline({
+            onComplete: () => {
+              isTransitioning = false;
+              currentSlideIndex = nextIndex;
+              currentContent.remove();
+            },
+          })
+          .to(
+            newContent,
+            { opacity: 1, duration: 0.6, ease: "power2.inOut" },
+            0,
+          )
+          .call(
+            () => {
               if (newTitle) {
                 scrambleIn(newTitle, 0);
               }
-            })
-            .to(
-              newLines,
-              { y: "0%", duration: 0.5, stagger: 0.1, ease: "power2.inOut" },
-              0.3,
-            );
+            },
+            [],
+            0.2,
+          )
+          .to(
+            newLines,
+            { y: "0%", duration: 0.5, stagger: 0.1, ease: "power2.inOut" },
+            0.3,
+          );
 
-          // ADD THE BACKDROP ANIMATION AFTER THE TIMELINE, NOT INSIDE IT
-          if (description) {
-            gsap.to(description, {
-              backgroundColor: "rgba(0, 0, 0, 0.3)",
-              backdropFilter: "blur(2px)",
-              duration: 0.1,
-              ease: "power2.inOut",
-              delay: 0.1,
-            });
-          }
-        }, 100);
-      },
-      null,
-      0.8,
-    );
+        // ADD THE BACKDROP ANIMATION AFTER THE TIMELINE, NOT INSIDE IT
+        if (description) {
+          gsap.to(description, {
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
+            backdropFilter: "blur(2px)",
+            duration: 0.01,
+            ease: "power2.inOut",
+            delay: 0.1,
+          });
+        }
+      }, 100);
+    },
+    null,
+    0,
+  );
 };
 
 // sets up initial slide with proper text processing

@@ -142,7 +142,6 @@
   object-fit: cover;
   display: block;
   margin: 0 auto;
-  transition: opacity 1.5s ease-in-out;
   backface-visibility: hidden;
 }
 
@@ -159,14 +158,18 @@
   .image-loop {
     top: 56%;
     width: min(90vw, 30rem);
+    height: min(90vw, 30rem);
   }
 
   .loop-track {
     gap: 0;
     padding-inline: 0;
+    width: 100%;
+    height: 100%;
   }
 
   .loop-item {
-    flex-basis: clamp(8rem, 28vw, 11.5rem);
+    width: 100%;
+    height: 100%;
   }
 }
