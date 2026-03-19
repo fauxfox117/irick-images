@@ -23,8 +23,8 @@
 }
 
 body {
-  background-color: var(--tone-400);
-  color: var(--tone-100);
+  background-color: var(--tone-100);
+  color: var(--tone-400);
 }
 
 h1,

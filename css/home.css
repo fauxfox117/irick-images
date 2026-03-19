@@ -226,6 +226,7 @@
 }
 
 .work-preview .slide-link a {
+  border: 0.5px dashed var(--tone-400);
   position: relative;
   display: block;
   color: var(--tone-400);
