@@ -86,6 +86,10 @@
   color: var(--tone-400);
 }
 
+.page.work .slide-footer .container .click-through {
+  border: 0.5px dashed var(--tone-400);
+}
+
 @media (max-width: 1000px) {
   .page.work .slider-content {
     width: calc(100% - 2rem);

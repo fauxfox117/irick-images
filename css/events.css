@@ -67,6 +67,10 @@
   opacity: 0.5;
 }
 
+.banner-content .container .banner-header {
+  margin-top: 75px;
+}
+
 /* film: snapshots section */
 .film-snapshots {
   position: relative;

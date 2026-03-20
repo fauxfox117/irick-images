@@ -31,6 +31,11 @@
 
 .contact-header {
   color: var(--tone-500);
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  font-size: 55px;
+  align-items: center;
 }
 
 .about-text {
