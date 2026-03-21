@@ -92,10 +92,9 @@ const createSlideElement = (slideData) => {
   content.innerHTML = `
     <div class="slide-title"><a href="${slideData.route}" class="scramble-hover"><h1>${slideData.title}</h1></a></div>
     <div class="slide-description">
-      <p>${slideData.description}</p>
       <div class="slide-info">
-        <p>Type. ${slideData.type}</p>
-        <p>Field. ${slideData.field}</p>
+        <p> ${slideData.type}</p>
+        <p> ${slideData.field}</p>
         <p>Date. ${slideData.date}</p>
       </div>
       <div class="slide-link">

@@ -32,7 +32,7 @@
   flex-direction: column;
   gap: 2rem;
   color: #fff;
-  background: rgba(0, 0, 0, 0.25); /* ADD THIS */
+  /* background: rgba(0, 0, 0, 0.25); ADD THIS */
   border-radius: 4px; /* ADD THIS */
 }
 
@@ -43,6 +43,7 @@
 }
 
 .page.work .slide-title h1 .word {
+  filter: drop-shadow(20px 4px 5.5px black);
   display: flex;
 }
 
@@ -71,6 +72,11 @@
   padding: 0.5rem 0;
 }
 
+.page.work .slider-content .slide-info {
+  background: none;
+  filter: drop-shadow(7px 4px 2.5px black);
+}
+
 .page.work .slide-footer {
   position: absolute;
   bottom: 0;
@@ -88,6 +94,7 @@
 
 .page.work .slide-footer .container .click-through {
   border: 0.5px dashed var(--tone-400);
+  filter: drop-shadow(7px 4px 2.5px black);
 }
 
 @media (max-width: 1000px) {

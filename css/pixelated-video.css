@@ -35,9 +35,7 @@
 }
 
 .hero .hero-content .hero-header {
-  background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(8px); /* optional frosted glass */
-
+  filter: drop-shadow(5px 4px 10px black);
   border-radius: 8px;
   width: 85%;
   text-align: center;
