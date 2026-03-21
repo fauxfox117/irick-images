@@ -21,6 +21,7 @@
   width: 50%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2rem;
   z-index: 2;
 }
@@ -76,11 +77,10 @@
 .page.work .slider-content .slide-info {
   background: none;
   filter: drop-shadow(7px 4px 2.5px black);
-  font-size: 1.1rem;
 }
 
 .page.work .slide-info .line span {
-  font-size: 40px;
+  font-size: 35px;
   display: flex;
   justify-content: center;
 }
@@ -116,7 +116,7 @@
   }
 
   .page.work .slide-title h1 {
-    font-size: 3rem;
+    font-size: 55px;
   }
 
   .page.work .slide-description {

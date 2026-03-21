@@ -123,15 +123,11 @@ const animateSlideTransition = (nextIndex) => {
       },
       0.1,
     )
-    .to(
-      [...currentContent.querySelectorAll(".line span")],
-      { y: "-100%", duration: 0.1, stagger: 0.005, ease: "power2.inOut" },
-      0.1,
-    )
     .call(
       () => {
         const newContent = createSlideElement(slides[nextIndex]);
         timeline.kill();
+        currentContent.remove();
         slider.appendChild(newContent);
         gsap.set(newContent.querySelectorAll("span"), { y: "100%" });
         setTimeout(() => {
@@ -143,24 +139,25 @@ const animateSlideTransition = (nextIndex) => {
           const description = newContent.querySelector(".slide-description");
           if (description)
             gsap.set(description, {
-              backgroundColor: "rgba(0,0,0,0.3)",
-              backdropFilter: "blur(2px)",
+              backgroundColor: "transparent",
             });
           gsap
             .timeline({
               onComplete: () => {
                 isTransitioning = false;
                 currentSlideIndex = nextIndex;
-                currentContent.remove();
-                const footerTitle = section.querySelector(
-                  ".slide-current-title",
-                );
-                if (footerTitle)
-                  footerTitle.textContent = slides[nextIndex].title;
               },
             })
             .call(() => {
-              if (newTitle) scrambleIn(newTitle, 0);
+              if (newTitle) {
+                scrambleIn(newTitle, 0);
+                const titleWords = newTitle.querySelectorAll(".word");
+                titleWords.forEach((word) => {
+                  gsap.set(word, {
+                    filter: "drop-shadow(46px 7px 18px black)",
+                  });
+                });
+              }
             })
             .to(
               newLines,
@@ -169,8 +166,7 @@ const animateSlideTransition = (nextIndex) => {
             );
           if (description)
             gsap.to(description, {
-              backgroundColor: "rgba(0,0,0,0.3)",
-              backdropFilter: "blur(2px)",
+              backgroundColor: "transparent",
               duration: 0.1,
               ease: "power2.inOut",
               delay: 0.1,
@@ -178,7 +174,7 @@ const animateSlideTransition = (nextIndex) => {
         }, 100);
       },
       null,
-      0.8,
+      0,
     );
 };
 
@@ -189,8 +185,7 @@ const setupInitialSlide = () => {
   const description = content.querySelector(".slide-description");
   if (description)
     gsap.set(description, {
-      backgroundColor: "rgba(0,0,0,0.3)",
-      backdropFilter: "blur(2px)",
+      backgroundColor: "transparent",
     });
 };
 
@@ -286,7 +281,7 @@ const handleResize = () => {
       slideTextures[nextIndex].userData.size;
     shaderMaterial.uniforms.uProgress.value = 0;
     gsap.set(newContent.querySelectorAll(".line span"), { y: "0%" });
-    gsap.set(newContent, { opacity: "1" });
+    gsap.set(newContent, { opacity: 0 });
   });
 };
 
