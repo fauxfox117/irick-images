@@ -164,8 +164,7 @@ const animateSlideTransition = (nextIndex) => {
         const description = newContent.querySelector(".slide-description");
         if (description) {
           gsap.set(description, {
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
-            backdropFilter: "blur(2px)",
+            backgroundColor: "transparent",
           });
         }
 
@@ -186,6 +185,11 @@ const animateSlideTransition = (nextIndex) => {
             () => {
               if (newTitle) {
                 scrambleIn(newTitle, 0);
+                // Re-apply the drop shadow to title words
+                const titleWords = newTitle.querySelectorAll(".word");
+                titleWords.forEach(word => {
+                  gsap.set(word, { filter: "drop-shadow(20px 4px 5.5px black)" });
+                });
               }
             },
             [],
@@ -200,8 +204,7 @@ const animateSlideTransition = (nextIndex) => {
         // ADD THE BACKDROP ANIMATION AFTER THE TIMELINE, NOT INSIDE IT
         if (description) {
           gsap.to(description, {
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
-            backdropFilter: "blur(2px)",
+            backgroundColor: "transparent",
             duration: 0.01,
             ease: "power2.inOut",
             delay: 0.1,
@@ -221,11 +224,10 @@ const setupInitialSlide = () => {
   const lines = content.querySelectorAll(".line span");
   gsap.set(lines, { y: "0%" });
 
-  // ADD THIS: Set initial backdrop
+  // Set initial backdrop
   const description = content.querySelector(".slide-description");
   gsap.set(description, {
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
-    backdropFilter: "blur(2px)",
+    backgroundColor: "transparent",
   });
 };
 

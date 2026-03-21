@@ -26,13 +26,13 @@
 }
 
 .page.work .slide-description {
-  width: 50%;
+  width: 75%;
   padding: 1.5rem; /* increased from 0.5rem */
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2rem;
   color: #fff;
-  /* background: rgba(0, 0, 0, 0.25); ADD THIS */
   border-radius: 4px; /* ADD THIS */
 }
 
@@ -64,6 +64,7 @@
 }
 
 .page.work .slide-link a {
+  filter: drop-shadow(7px 4px 2.5px black);
   border: 0.5px dashed var(--tone-400);
   position: relative;
   display: block;
@@ -75,6 +76,13 @@
 .page.work .slider-content .slide-info {
   background: none;
   filter: drop-shadow(7px 4px 2.5px black);
+  font-size: 1.1rem;
+}
+
+.page.work .slide-info .line span {
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
 }
 
 .page.work .slide-footer {
