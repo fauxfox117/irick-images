@@ -11,7 +11,6 @@
   text-align: center;
 }
 
-
 /* ─── home: work preview (mirrors work.css scoped to .work-preview) ─────── */
 .work-preview,
 .work-preview .slider {
@@ -87,6 +86,7 @@
   width: max-content;
   padding: 0.5rem 0;
   filter: drop-shadow(7px 4px 2.5px black);
+  font-size: 30px;
 }
 
 .work-preview .slide-footer {
