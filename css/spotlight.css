@@ -108,8 +108,8 @@
 
 .spotlight-modal-close {
   position: absolute;
-  top: -40px;
-  right: 0;
+  top: -30px;
+  right: -3px;
   background: none;
   border: none;
   font-size: 40px;
