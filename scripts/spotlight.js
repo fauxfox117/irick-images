@@ -134,6 +134,12 @@ class SpotlightGallery {
         this.currentExpandedIndex = index;
         this.updateGalleryLayout(this.currentExpandedIndex);
       });
+
+      // Add click to open modal
+      item.addEventListener("click", (e) => {
+        const img = item.querySelector("img");
+        this.openModal(img.src);
+      });
     });
   }
 
@@ -141,17 +147,27 @@ class SpotlightGallery {
   handleMobileEvents() {
     this.galleryItems.forEach((item, index) => {
       item.addEventListener("click", () => {
+        // Check if this is an expansion click or a modal open
+        const img = item.querySelector("img");
+
+        // If already expanded, open modal
+        if (
+          this.currentExpandedIndex === index &&
+          this.clickedItems.has(index)
+        ) {
+          this.openModal(img.src);
+          return;
+        }
+
         if (
           this.clickedItems.has(index) &&
           this.currentExpandedIndex === index
         ) {
           this.clickedItems.delete(index);
-          // find next available item to expand or default to first
           const nextIndex =
             this.clickedItems.size > 0 ? Math.min(...this.clickedItems) : 0;
           this.currentExpandedIndex = nextIndex;
         } else {
-          // add to clicked items and expand
           this.clickedItems.add(index);
           this.currentExpandedIndex = index;
         }
@@ -215,6 +231,64 @@ class SpotlightGallery {
     this.removeEventListeners();
     window.removeEventListener("resize", this.handleResize);
     this.galleryContainer.innerHTML = "";
+  }
+
+  // open modal with image
+  openModal(imageSrc) {
+    const modal = document.getElementById("spotlightModal");
+    const modalImage = document.getElementById("spotlightModalImage");
+
+    if (modal && modalImage) {
+      modalImage.src = imageSrc;
+      modal.style.display = "flex";
+      document.body.style.overflow = "hidden"; // prevent scrolling
+      // Re-setup listeners when modal opens
+      this.setupModalListeners();
+    }
+  }
+
+  // close modal
+  closeModal() {
+    const modal = document.getElementById("spotlightModal");
+    if (modal) {
+      modal.style.display = "none";
+      document.body.style.overflow = "";
+    }
+  }
+
+  // setup modal event listeners
+  setupModalListeners() {
+    // Handle close button
+    const modal = document.getElementById("spotlightModal");
+    if (!modal) return;
+
+    const closeBtn = modal.querySelector(".spotlight-modal-close");
+    const backdrop = modal.querySelector(".spotlight-modal-backdrop");
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.closeModal();
+      });
+    }
+
+    if (backdrop) {
+      backdrop.addEventListener("click", () => this.closeModal());
+    }
+
+    // Close on ESC key - use a proper listener
+    const handleEsc = (e) => {
+      if (e.key === "Escape") {
+        const currentModal = document.getElementById("spotlightModal");
+        if (currentModal && currentModal.style.display === "flex") {
+          this.closeModal();
+        }
+      }
+    };
+
+    // Remove old listener if it exists, then add new one
+    document.removeEventListener("keydown", handleEsc);
+    document.addEventListener("keydown", handleEsc);
   }
 }
 
