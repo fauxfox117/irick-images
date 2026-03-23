@@ -93,9 +93,6 @@ const createSlideElement = (slideData) => {
     <div class="slide-title"><a href="${slideData.route}" class="scramble-hover"><h1>${slideData.title}</h1></a></div>
     <div class="slide-description">
       <div class="slide-info">
-        <p> ${slideData.type}</p>
-        <p> ${slideData.field}</p>
-        <p>Date. ${slideData.date}</p>
       </div>
       <div class="slide-link">
         <a href="${slideData.route}">[ View Full Project ]</a>

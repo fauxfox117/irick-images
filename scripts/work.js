@@ -113,9 +113,6 @@ const createSlideElement = (slideData) => {
     <div class="slide-title"><a href="${slideData.route}" class="scramble-hover"><h1>${slideData.title}</h1></a></div>
     <div class="slide-description">
       <div class="slide-info">
-        <p> ${slideData.type}</p>
-        <p> ${slideData.field}</p>
-        <p>Date. ${slideData.date}</p>
       </div>
       <div class="slide-link">
         <a href="${slideData.route}" class="scramble-hover">[ View Full Project ]</a>
@@ -187,8 +184,10 @@ const animateSlideTransition = (nextIndex) => {
                 scrambleIn(newTitle, 0);
                 // Re-apply the drop shadow to title words
                 const titleWords = newTitle.querySelectorAll(".word");
-                titleWords.forEach(word => {
-                  gsap.set(word, { filter: "drop-shadow(20px 4px 5.5px black)" });
+                titleWords.forEach((word) => {
+                  gsap.set(word, {
+                    filter: "drop-shadow(20px 4px 5.5px black)",
+                  });
                 });
               }
             },
