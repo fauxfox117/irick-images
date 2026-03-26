@@ -5,6 +5,7 @@ const bookingState = {
   currentStep: 1,
   selectedPackage: null,
   selectedAddOns: [],
+  customDescription: "",
   customerInfo: {},
   totalPrice: 0,
 };
@@ -162,9 +163,14 @@ function goToStep(step) {
   });
 
   // Show target step
-  document
-    .querySelector(`.booking-step[data-step="${step}"]`)
-    .classList.add("active");
+  const targetStep = document.querySelector(
+    `.booking-step[data-step="${step}"]`,
+  );
+  if (!targetStep) {
+    console.error(`Step not found: ${step}`);
+    return;
+  }
+  targetStep.classList.add("active");
 
   bookingState.currentStep = step;
   updateProgress();
@@ -177,7 +183,7 @@ function goToStep(step) {
     // Show square footage field only for Standard Listing Package
     const sqftGroup = document.getElementById("sqftGroup");
     const sqftInput = document.getElementById("sqft");
-    if (bookingState.selectedPackage?.id === "Lisiting") {
+    if (bookingState.selectedPackage?.id === "Listing") {
       sqftGroup.style.display = "";
       sqftInput.required = true;
     } else {
@@ -193,12 +199,14 @@ function goToStep(step) {
 
 // Update progress indicator
 function updateProgress() {
+  const stepForProgress =
+    bookingState.currentStep === "custom" ? 2 : bookingState.currentStep;
   document.querySelectorAll(".progress-step").forEach((step) => {
     const stepNum = parseInt(step.dataset.step);
-    if (stepNum < bookingState.currentStep) {
+    if (stepNum < stepForProgress) {
       step.classList.add("completed");
       step.classList.remove("active");
-    } else if (stepNum === bookingState.currentStep) {
+    } else if (stepNum === stepForProgress) {
       step.classList.add("active");
       step.classList.remove("completed");
     } else {
@@ -252,7 +260,11 @@ async function submitBooking() {
     formData.append("time", bookingState.customerInfo.time || "Not specified");
     formData.append("location", bookingState.customerInfo.location);
     formData.append("square footage", bookingState.customerInfo.sqft || "");
-    formData.append("notes", bookingState.customerInfo.notes || "");
+    const notesValue =
+      bookingState.selectedPackage?.id === "custom photo shoot"
+        ? `Custom Shoot Description: ${bookingState.customDescription}\n\nAdditional Notes: ${bookingState.customerInfo.notes || ""}`.trim()
+        : bookingState.customerInfo.notes || "";
+    formData.append("notes", notesValue);
 
     const res = await fetch("/__forms.html", {
       method: "POST",
@@ -284,18 +296,46 @@ async function submitBooking() {
 
 // Setup event listeners
 function setupEventListeners() {
-  document
-    .getElementById("nextToAddons")
-    .addEventListener("click", () => goToStep(2));
+  // Route to custom description step for Custom Photo Shoot, otherwise add-ons
+  document.getElementById("nextToAddons").addEventListener("click", () => {
+    if (bookingState.selectedPackage?.id === "custom photo shoot") {
+      goToStep("custom");
+    } else {
+      goToStep(2);
+    }
+  });
+
   document
     .getElementById("backToPackages")
     .addEventListener("click", () => goToStep(1));
   document
     .getElementById("nextToDetails")
     .addEventListener("click", () => goToStep(3));
+
+  // Custom step buttons
   document
-    .getElementById("backToAddons")
-    .addEventListener("click", () => goToStep(2));
+    .getElementById("backToPackagesFromCustom")
+    .addEventListener("click", () => goToStep(1));
+  document
+    .getElementById("nextToDetailsFromCustom")
+    .addEventListener("click", () => {
+      const desc = document.getElementById("customDescription").value.trim();
+      if (!desc) {
+        alert("Please describe your custom photo shoot.");
+        return;
+      }
+      bookingState.customDescription = desc;
+      goToStep(3);
+    });
+
+  // Back from step 3 — go to custom step if custom package selected
+  document.getElementById("backToAddons").addEventListener("click", () => {
+    if (bookingState.selectedPackage?.id === "custom photo shoot") {
+      goToStep("custom");
+    } else {
+      goToStep(2);
+    }
+  });
 
   document.getElementById("submitBooking").addEventListener("click", () => {
     if (validateForm()) {

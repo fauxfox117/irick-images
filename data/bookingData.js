@@ -8,6 +8,7 @@ export const packages = [
       " 25-50 HDR photos (interior & exterior)",
       "Drone photos",
       "24-48 hour turnaround",
+      "price increases .10 cent per sqft after 2,000 sqft",
     ],
   },
   {
@@ -26,12 +27,23 @@ export const packages = [
     id: "luxury",
     name: "Luxury Media Package",
     description: "3 hour event coverage",
-    price: 800,
+    price: 1000,
     includes: [
+      "Any sized home",
       "Photos of entire property",
       "4k walkthrough video",
       "Drone photos",
     ],
+  },
+  {
+    id: "custom photo shoot",
+    name: "Custom Photo Shoot",
+    includes: [
+      " Tailored photo shoot based on specific client needs",
+      " Can include lifestyle shots, neighborhood features, etc.",
+      " Price varies based on scope of shoot",
+    ],
+    price: "TBD",
   },
 ];
 

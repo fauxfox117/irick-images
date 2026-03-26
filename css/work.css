@@ -35,7 +35,7 @@
   align-items: center;
   color: #fff;
   border-radius: 4px; /* ADD THIS */
-  backdrop-filter: blur(5px); /* ADD THIS */
+  /* backdrop-filter: blur(5px); ADD THIS */
   background-color: rgba(0, 0, 0, 0.15);
   justify-content: center;
 }
@@ -47,7 +47,7 @@
 }
 
 .page.work .slide-title h1 .word {
-  filter: drop-shadow(15px 2px 3.5px black);
+  filter: drop-shadow(10px 2px 1.5px black);
   display: flex;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .page.work .slide-link a {
-  filter: drop-shadow(7px 4px 2.5px black);
+  filter: drop-shadow(5px 4px 1.5px black);
   border: 0.5px dashed var(--tone-400);
   position: relative;
   display: block;

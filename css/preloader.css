@@ -13,36 +13,38 @@
 }
 
 .text-container {
+  --fill-progress: 0%;
   position: relative;
   display: inline-block;
+  line-height: 0.85;
 }
 
-.text-base {
+.preloader-text {
   font-size: 80px;
   font-weight: 500;
-  color: #ffffff;
+  font-family: "Cossette Titre";
   margin: 0;
+  display: block;
+  width: max-content;
+  line-height: 0.85;
   text-transform: uppercase;
   letter-spacing: -2px;
-}
-
-.text-fill {
-  font-size: 80px;
-  font-weight: 500;
-  color: #ff0000;
-  margin: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  white-space: nowrap;
-  text-transform: uppercase;
-  letter-spacing: -2px;
-  clip-path: inset(100% 0 0 0);
+  color: transparent;
+  background-image: linear-gradient(
+    to top,
+    #ff0000 0,
+    #ff0000 var(--fill-progress),
+    #ffffff var(--fill-progress),
+    #ffffff 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  will-change: background-image;
 }
 
 @media (max-width: 768px) {
-  .text-base,
-  .text-fill {
+  .preloader-text {
     font-size: 40px;
   }
 }
