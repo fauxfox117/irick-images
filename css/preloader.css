@@ -17,6 +17,7 @@
   position: relative;
   display: inline-block;
   line-height: 0.85;
+  padding-right: 10px;
 }
 
 .preloader-text {
@@ -41,6 +42,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   will-change: background-image;
+  padding-right: 10px;
 }
 
 @media (max-width: 768px) {
