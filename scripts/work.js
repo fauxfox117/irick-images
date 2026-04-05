@@ -15,6 +15,7 @@ let currentSlideIndex = 0;
 let isTransitioning = false;
 let slideTextures = [];
 let shaderMaterial, renderer;
+let animationFrameId = null;
 
 // creates character elements for scramble animation
 function createCharacterElements(element) {
@@ -284,8 +285,8 @@ const initializeRenderer = async () => {
   shaderMaterial.uniforms.uTexture2Size.value = slideTextures[1].userData.size;
 
   const render = () => {
-    if (!renderer || !renderer.getContext()) return; // Stop if context lost
-    requestAnimationFrame(render);
+    if (!renderer || !renderer.getContext()) return;
+    animationFrameId = requestAnimationFrame(render);
     renderer.render(scene, camera);
   };
   render();
@@ -326,6 +327,7 @@ const handleSlideChange = () => {
 
 // handles window resize events - resets splittext and elements
 const handleResize = () => {
+  if (!renderer || !shaderMaterial) return; // ← add this line
   renderer.setSize(window.innerWidth, window.innerHeight);
   shaderMaterial.uniforms.uResolution.value.set(
     window.innerWidth,
@@ -425,11 +427,25 @@ window.addEventListener("resize", handleResize);
 
 window.addEventListener("pageshow", (event) => {
   if (event.persisted) {
-    console.log("Restored from cache");
-    slideTextures = []; // Clear cached textures
-    if (renderer) {
-      renderer.dispose(); // Dispose old renderer
+    if (animationFrameId !== null) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
     }
+    gsap.killTweensOf("*");
+    isTransitioning = false;
+    currentSlideIndex = 0;
+    slideTextures.forEach((t) => t.dispose());
+    slideTextures = [];
+    if (renderer) {
+      renderer.dispose();
+      renderer = null;
+    }
+    shaderMaterial = null;
     initializeRenderer();
   }
 });
+
+if (animationFrameId !== null) {
+  cancelAnimationFrame(animationFrameId);
+  animationFrameId = null;
+}

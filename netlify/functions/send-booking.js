@@ -1,6 +1,16 @@
 import nodemailer from "nodemailer";
 import { createClient } from "@supabase/supabase-js";
 
+function esc(str) {
+  if (str == null) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export default async (req) => {
   if (req.method !== "POST") {
     return new Response(JSON.stringify({ error: "Method Not Allowed" }), {
@@ -44,27 +54,28 @@ export default async (req) => {
     });
 
     const addOnsList =
-      (addOns || []).map((a) => `${a.name} — $${a.price}`).join("<br>") ||
-      "None";
+      (addOns || [])
+        .map((a) => `${esc(a.name)} — $${esc(a.price)}`)
+        .join("<br>") || "None";
 
     // Email to photographer
     await transporter.sendMail({
       from: `"Irick Images Booking" <${process.env.GMAIL_USER}>`,
       to: process.env.GMAIL_USER,
-      subject: `New Booking Request — ${customerInfo.name}`,
+      subject: `New Booking Request — ${esc(customerInfo.name)}`,
       html: `
         <h2>New Booking Request</h2>
         <table style="border-collapse:collapse;font-family:sans-serif;">
-          <tr><td style="padding:8px;font-weight:bold;">Name</td><td style="padding:8px;">${customerInfo.name}</td></tr>
-          <tr><td style="padding:8px;font-weight:bold;">Email</td><td style="padding:8px;"><a href="mailto:${customerInfo.email}">${customerInfo.email}</a></td></tr>
-          <tr><td style="padding:8px;font-weight:bold;">Phone</td><td style="padding:8px;"><a href="tel:${customerInfo.phone}">${customerInfo.phone}</a></td></tr>
-          <tr><td style="padding:8px;font-weight:bold;">Shoot Date</td><td style="padding:8px;">${customerInfo.date}</td></tr>
-          <tr><td style="padding:8px;font-weight:bold;">Time</td><td style="padding:8px;">${customerInfo.time || "Not specified"}</td></tr>
-          <tr><td style="padding:8px;font-weight:bold;">Location</td><td style="padding:8px;">${customerInfo.location}</td></tr>
-          <tr><td style="padding:8px;font-weight:bold;">Package</td><td style="padding:8px;">${pkg?.name || "None"} — $${pkg?.price || 0}</td></tr>
+          <tr><td style="padding:8px;font-weight:bold;">Name</td><td style="padding:8px;">${esc(customerInfo.name)}</td></tr>
+          <tr><td style="padding:8px;font-weight:bold;">Email</td><td style="padding:8px;"><a href="mailto:${esc(customerInfo.email)}">${esc(customerInfo.email)}</a></td></tr>
+          <tr><td style="padding:8px;font-weight:bold;">Phone</td><td style="padding:8px;"><a href="tel:${esc(customerInfo.phone)}">${esc(customerInfo.phone)}</a></td></tr>
+          <tr><td style="padding:8px;font-weight:bold;">Shoot Date</td><td style="padding:8px;">${esc(customerInfo.date)}</td></tr>
+          <tr><td style="padding:8px;font-weight:bold;">Time</td><td style="padding:8px;">${esc(customerInfo.time) || "Not specified"}</td></tr>
+          <tr><td style="padding:8px;font-weight:bold;">Location</td><td style="padding:8px;">${esc(customerInfo.location)}</td></tr>
+          <tr><td style="padding:8px;font-weight:bold;">Package</td><td style="padding:8px;">${esc(pkg?.name) || "None"} — $${esc(pkg?.price) || 0}</td></tr>
           <tr><td style="padding:8px;font-weight:bold;">Add-ons</td><td style="padding:8px;">${addOnsList}</td></tr>
           <tr><td style="padding:8px;font-weight:bold;">Total</td><td style="padding:8px;"><strong>$${totalPrice}</strong></td></tr>
-          <tr><td style="padding:8px;font-weight:bold;">Notes</td><td style="padding:8px;">${customerInfo.notes || "None"}</td></tr>
+          <tr><td style="padding:8px;font-weight:bold;">Notes</td><td style="padding:8px;">${esc(customerInfo.notes) || "None"}</td></tr>
         </table>
       `,
     });
