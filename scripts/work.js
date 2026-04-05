@@ -259,11 +259,16 @@ const initializeRenderer = async () => {
   scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), shaderMaterial));
 
   const loader = new THREE.TextureLoader();
+  loader.flipY = false; // Add this
+  loader.premultiplyAlpha = false; // Add this
+
   for (const slide of slides) {
     const texture = await new Promise((resolve, reject) =>
       loader.load(slide.image, resolve, undefined, reject),
     ).catch(() => null);
     if (!texture) continue; // Skip failed textures
+    texture.flipY = false; // Add this
+    texture.premultiplyAlpha = false; // Add this
     texture.minFilter = texture.magFilter = THREE.LinearFilter;
     texture.userData = {
       size: new THREE.Vector2(texture.image.width, texture.image.height),
