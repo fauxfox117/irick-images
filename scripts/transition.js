@@ -98,3 +98,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) {
+    revealTransition();
+  }
+});
