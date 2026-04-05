@@ -209,9 +209,10 @@ const initializeRenderer = async () => {
   scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), shaderMaterial));
   const loader = new THREE.TextureLoader();
   for (const slide of slides) {
-    const texture = await new Promise((resolve) =>
-      loader.load(slide.image, resolve),
-    );
+    const texture = await new Promise((resolve, reject) =>
+      loader.load(slide.image, resolve, undefined, reject),
+    ).catch(() => null);
+    if (!texture) continue; // Skip failed textures
     texture.minFilter = texture.magFilter = THREE.LinearFilter;
     texture.userData = {
       size: new THREE.Vector2(texture.image.width, texture.image.height),
@@ -223,6 +224,7 @@ const initializeRenderer = async () => {
   shaderMaterial.uniforms.uTexture1Size.value = slideTextures[0].userData.size;
   shaderMaterial.uniforms.uTexture2Size.value = slideTextures[1].userData.size;
   const render = () => {
+    if (!renderer || !renderer.getContext()) return; // Stop if context lost
     requestAnimationFrame(render);
     renderer.render(scene, camera);
   };
@@ -301,3 +303,11 @@ section.addEventListener("click", (e) => {
 });
 
 window.addEventListener("resize", handleResize);
+
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) {
+    // Page was restored from bfcache
+    console.log("Restored from cache");
+    initializeRenderer();
+  }
+});

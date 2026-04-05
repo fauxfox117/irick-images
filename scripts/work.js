@@ -263,7 +263,7 @@ const initializeRenderer = async () => {
     const texture = await new Promise((resolve, reject) =>
       loader.load(slide.image, resolve, undefined, reject),
     ).catch(() => null);
-    if (!texture) continue;
+    if (!texture) continue; // Skip failed textures
     texture.minFilter = texture.magFilter = THREE.LinearFilter;
     texture.userData = {
       size: new THREE.Vector2(texture.image.width, texture.image.height),
@@ -279,6 +279,7 @@ const initializeRenderer = async () => {
   shaderMaterial.uniforms.uTexture2Size.value = slideTextures[1].userData.size;
 
   const render = () => {
+    if (!renderer || !renderer.getContext()) return; // Stop if context lost
     requestAnimationFrame(render);
     renderer.render(scene, camera);
   };
@@ -419,8 +420,11 @@ window.addEventListener("resize", handleResize);
 
 window.addEventListener("pageshow", (event) => {
   if (event.persisted) {
-    // Page was restored from bfcache
     console.log("Restored from cache");
+    slideTextures = []; // Clear cached textures
+    if (renderer) {
+      renderer.dispose(); // Dispose old renderer
+    }
     initializeRenderer();
   }
 });
