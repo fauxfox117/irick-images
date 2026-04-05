@@ -127,7 +127,7 @@
   color: var(--tone-400);
   width: max-content;
   padding: 0.5rem 0;
-  filter: drop-shadow(2px 0.5px 0.5px black);
+  filter: drop-shadow(2px 2.5px 1.5px black);
   /* filter: blur(4px); */
 }
 
@@ -141,7 +141,7 @@
 
 .work-preview .slider-content .slide-info {
   background: none;
-  filter: drop-shadow(4px 0.5px 0.5px black);
+  filter: drop-shadow(4px 4.5px 1.5px black);
   backdrop-filter: blur(2px);
   background-color: rgba(0, 0, 0, 0.15);
 }
@@ -162,7 +162,7 @@
 }
 
 .work-preview .slide-footer .slide-info {
-  filter: drop-shadow(4px 0.5px 0.5px black);
+  filter: drop-shadow(4px 2.5px 1.5px black);
   background: rgba(0, 0, 0, 0.25);
   font-size: 30px;
 }

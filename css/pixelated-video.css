@@ -47,7 +47,7 @@
   left: 0;
   bottom: 0;
   width: 100%;
-  filter: drop-shadow(2px 0.5px 0.5px black);
+  filter: drop-shadow(2px 2.5px 1.5px black);
 }
 
 .hero .hero-content .hero-footer .container {
