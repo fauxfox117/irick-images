@@ -29,7 +29,7 @@ const lazyObserver = new IntersectionObserver(
         mask.style.backgroundImage = `url("${url}")`;
         mask.style.backgroundPosition = "50% 50%";
         mask.style.backgroundRepeat = "no-repeat";
-        mask.style.backgroundSize = "cover";
+        mask.style.backgroundSize = "contain";
         mask.style.opacity = "1";
       });
 

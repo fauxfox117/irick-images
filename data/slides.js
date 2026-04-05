@@ -16,7 +16,8 @@ export const slides = [
     type: "Portraits",
     field: "Character Study",
     date: "2024",
-    image: "/portraits/DANIEL2.webp",
+    image: "/portraits/HOUSE2big.webp",
+    mobileImage: "/portraits/DANIEL2.webp",
     route: "/portraits",
   },
   {

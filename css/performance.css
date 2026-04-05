@@ -8,11 +8,10 @@
 }
 
 .film-hero .container {
-  background: url("../public/performance/image-asset.webp") no-repeat center
-    center;
+  background: url("../public/real-estate/_EPG9466.webp") no-repeat center center;
   background-size: cover;
   background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(40px); /* optional frosted glass */
+  backdrop-filter: blur(8px); /* optional frosted glass */
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -76,8 +75,7 @@
 .film-snapshots {
   position: relative;
   width: 100%;
-  height: 100%;
-  padding: 8rem 0;
+  padding: 8rem 2rem;
   background-color: var(--tone-200);
 }
 
@@ -85,18 +83,20 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  margin: 0 auto;
 }
 
 .film-snapshots .snap-row {
-  width: 100%;
   display: flex;
   gap: 2rem;
+  width: 100%;
 }
 
 .film-snapshots .snap-img {
   position: relative;
-  width: 100%;
-  height: auto;
+  flex: 1;
+  min-height: 400px;
+  overflow: hidden;
 }
 
 .film-snapshots .snap-sizer {
@@ -105,48 +105,20 @@
   height: auto;
   opacity: 0;
   pointer-events: none;
+  object-fit: contain;
 }
 
 .film-snapshots .mask {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-}
-
-.film-snapshots .img-1 .mask {
-  background: no-repeat 50% 50%;
+  inset: 0;
+  background-position: center;
+  background-repeat: no-repeat;
   background-size: contain;
+  background-color: transparent;
+  opacity: 1;
 }
 
-.film-snapshots .img-2 .mask {
-  background: no-repeat 50% 50%;
-  background-size: contain;
-}
-
-.film-snapshots .img-3 .mask {
-  background: no-repeat 50% 50%;
-  background-size: contain;
-}
-
-.film-snapshots .img-4 .mask {
-  background: no-repeat 50% 50%;
-  background-size: contain;
-}
-
-.film-snapshots .img-5 .mask {
-  background: no-repeat 50% 50%;
-  background-size: contain;
-}
-
-.film-snapshots .img-6 .mask {
-  background: no-repeat 50% 50%;
-  background-size: contain;
-}
-
-/* Hide empty photo placeholders on all screen sizes */
+/* Hide empty photo placeholders */
 .film-snapshots .snap-img:not([class*="img-"]) {
   display: none;
 }
@@ -161,9 +133,16 @@
     width: 100%;
   }
 
-  .film-snapshots .container,
+  .film-snapshots {
+    padding: 4rem 1rem;
+  }
+
   .film-snapshots .snap-row {
     flex-direction: column;
     gap: 1rem;
+  }
+
+  .film-snapshots .snap-img {
+    min-height: 250px;
   }
 }

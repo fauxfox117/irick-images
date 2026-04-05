@@ -69,6 +69,7 @@
   }
 
   .hero .hero-content .hero-header {
+    filter: drop-shadow(3px 0.5px 1.5px black);
     width: 100%;
   }
 

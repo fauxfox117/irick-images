@@ -263,8 +263,10 @@ const initializeRenderer = async () => {
   loader.premultiplyAlpha = false; // Add this
 
   for (const slide of slides) {
+    const imageUrl =
+      isMobile && slide.mobileImage ? slide.mobileImage : slide.image;
     const texture = await new Promise((resolve, reject) =>
-      loader.load(slide.image, resolve, undefined, reject),
+      loader.load(imageUrl, resolve, undefined, reject),
     ).catch(() => null);
     if (!texture) continue; // Skip failed textures
     texture.premultiplyAlpha = false; // Add this
@@ -458,3 +460,5 @@ if (animationFrameId !== null) {
   cancelAnimationFrame(animationFrameId);
   animationFrameId = null;
 }
+
+const isMobile = window.innerWidth < 768;
