@@ -8,10 +8,9 @@
 }
 
 .film-hero .container {
-  background: url("../public/real-estate/_EPG9466.webp") no-repeat center center;
   background-size: cover;
   background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(8px); /* optional frosted glass */
+  /* backdrop-filter: blur(8px); */
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -22,7 +21,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: rgba(0, 0, 0, 0.55); /* semi-transparent black overlay */
+  /* background: rgba(0, 0, 0, 0.55); semi-transparent black overlay */
   pointer-events: none;
 }
 
@@ -65,9 +64,11 @@
 
 .banner.film-banner .banner-img img {
   opacity: 0.5;
+  object-position: center top;
+  object-fit: contain;
 }
 
-.banner-content .container .banner-header {
+.banner .banner-content .container .banner-header {
   margin-top: 75px;
 }
 
@@ -144,5 +145,9 @@
 
   .film-snapshots .snap-img {
     min-height: 250px;
+  }
+
+  .banner.film-banner .banner-img img {
+    object-position: center center;
   }
 }
