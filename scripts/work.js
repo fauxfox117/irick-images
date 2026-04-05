@@ -277,10 +277,20 @@ const initializeRenderer = async () => {
 
   if (slideTextures.length < 2) return;
 
-  shaderMaterial.uniforms.uTexture1.value = slideTextures[0];
-  shaderMaterial.uniforms.uTexture2.value = slideTextures[1];
-  shaderMaterial.uniforms.uTexture1Size.value = slideTextures[0].userData.size;
-  shaderMaterial.uniforms.uTexture2Size.value = slideTextures[1].userData.size;
+  const safeIndex = Math.min(
+    Math.max(currentSlideIndex, 0),
+    slideTextures.length - 1,
+  );
+  const nextIndex = (safeIndex + 1) % slideTextures.length;
+  currentSlideIndex = safeIndex;
+
+  shaderMaterial.uniforms.uTexture1.value = slideTextures[safeIndex];
+  shaderMaterial.uniforms.uTexture2.value = slideTextures[nextIndex];
+  shaderMaterial.uniforms.uTexture1Size.value =
+    slideTextures[safeIndex].userData.size;
+  shaderMaterial.uniforms.uTexture2Size.value =
+    slideTextures[nextIndex].userData.size;
+  shaderMaterial.uniforms.uProgress.value = 0;
 
   const render = () => {
     if (!renderer || !renderer.getContext()) return;
@@ -314,6 +324,7 @@ const handleSlideChange = () => {
       duration: 2.5,
       ease: "power2.inOut",
       onComplete: () => {
+        if (!shaderMaterial || !slideTextures[nextIndex]) return;
         shaderMaterial.uniforms.uProgress.value = 0;
         shaderMaterial.uniforms.uTexture1.value = slideTextures[nextIndex];
         shaderMaterial.uniforms.uTexture1Size.value =
@@ -429,9 +440,9 @@ window.addEventListener("pageshow", (event) => {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = null;
     }
+    if (shaderMaterial) gsap.killTweensOf(shaderMaterial.uniforms.uProgress);
     gsap.killTweensOf("*");
     isTransitioning = false;
-    currentSlideIndex = 0;
     slideTextures.forEach((t) => t.dispose());
     slideTextures = [];
     if (renderer) {
