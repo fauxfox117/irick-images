@@ -151,7 +151,7 @@ const animateSlideTransition = (nextIndex) => {
                 const titleWords = newTitle.querySelectorAll(".word");
                 titleWords.forEach((word) => {
                   gsap.set(word, {
-                    filter: "drop-shadow(46px 7px 18px black)",
+                    filter: "drop-shadow(8px 0.5px 0.5px black)",
                   });
                 });
               }

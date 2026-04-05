@@ -35,7 +35,7 @@
 }
 
 .hero .hero-content .hero-header {
-  filter: drop-shadow(5px 4px 10px black);
+  filter: drop-shadow(4px 0.5px 0.5px black);
   border-radius: 8px;
   width: 85%;
   text-align: center;
@@ -47,6 +47,7 @@
   left: 0;
   bottom: 0;
   width: 100%;
+  filter: drop-shadow(2px 0.5px 0.5px black);
 }
 
 .hero .hero-content .hero-footer .container {
@@ -62,8 +63,27 @@
 }
 
 @media (max-width: 1000px) {
+  .hero .hero-content {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
   .hero .hero-content .hero-header {
     width: 100%;
+  }
+
+  .hero .hero-content .hero-footer {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    width: 100%;
+  }
+
+  .hero .hero-content .hero-footer .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
   }
 
   .hero .hero-content .hero-footer p:nth-child(1) {
