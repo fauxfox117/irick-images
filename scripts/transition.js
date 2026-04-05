@@ -97,10 +97,10 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = href;
     });
   });
-});
 
-window.addEventListener("pageshow", (event) => {
-  if (event.persisted) {
-    revealTransition();
-  }
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) {
+      revealTransition();
+    }
+  });
 });
