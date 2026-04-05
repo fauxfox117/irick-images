@@ -416,3 +416,11 @@ window.addEventListener("touchend", (e) => {
 });
 
 window.addEventListener("resize", handleResize);
+
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) {
+    // Page was restored from bfcache
+    console.log("Restored from cache");
+    initializeRenderer();
+  }
+});
