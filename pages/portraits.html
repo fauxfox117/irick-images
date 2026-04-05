@@ -40,7 +40,13 @@
     <!-- film: banner section -->
     <section class="banner film-banner">
       <div class="banner-img" data-parallax="true" data-parallax-speed="0.2">
-        <img src="/portraits/DANIEL2.webp" alt="" loading="lazy" />
+        <picture>
+          <source
+            media="(max-width: 1000px)"
+            srcset="/portraits/DANIEL2.webp"
+          />
+          <img src="/portraits/ENTRANCE1big-2.webp" alt="" loading="lazy" />
+        </picture>
       </div>
 
       <div class="banner-content">
