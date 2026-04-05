@@ -26,8 +26,11 @@ const lazyObserver = new IntersectionObserver(
 
       // Set mask backgrounds
       el.querySelectorAll(".mask").forEach((mask) => {
-        mask.style.background = `url(${url}) no-repeat 50% 50%`;
+        mask.style.backgroundImage = `url("${url}")`;
+        mask.style.backgroundPosition = "50% 50%";
+        mask.style.backgroundRepeat = "no-repeat";
         mask.style.backgroundSize = "cover";
+        mask.style.opacity = "1";
       });
 
       lazyObserver.unobserve(el);
@@ -102,7 +105,8 @@ async function fetchSupabaseImages(category) {
       return data.images.map((img) => img.url);
     }
   } catch (err) {
-    if (import.meta.env.DEV) console.warn("Supabase fetch failed, using local images:", err.message);
+    if (import.meta.env.DEV)
+      console.warn("Supabase fetch failed, using local images:", err.message);
   }
 
   return null;
@@ -120,7 +124,6 @@ async function loadPortfolioImages() {
 
   if (localImages.length > 0) {
     renderGallery(localImages, snapshotsSection, category);
-
   }
 
   // 2. Try Supabase — if it returns images, replace the gallery
@@ -128,9 +131,9 @@ async function loadPortfolioImages() {
 
   if (supabaseImages) {
     renderGallery(supabaseImages, snapshotsSection, category);
-
   } else if (localImages.length === 0) {
-    if (import.meta.env.DEV) console.warn(`No images found for category: ${category}`);
+    if (import.meta.env.DEV)
+      console.warn(`No images found for category: ${category}`);
     document.dispatchEvent(
       new CustomEvent("portfolioLoaded", { detail: { category, count: 0 } }),
     );

@@ -106,6 +106,7 @@ export const galleryImages = {
   ],
 
   portraits: [
+    "/portraits/DANIEL2.webp",
     "/portraits/EDIT1 2.webp",
     "/portraits/EDIT1.webp",
     "/portraits/EDIT10.webp",

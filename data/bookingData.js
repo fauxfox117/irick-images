@@ -40,7 +40,7 @@ export const packages = [
     name: "Custom Photo Shoot",
     includes: [
       " Tailored photo shoot based on specific client needs",
-      " Can include lifestyle shots, neighborhood features, etc.",
+      " Can include portraits, events, real estate, music videos, promotional content, etc.",
       " Price varies based on scope of shoot",
     ],
     price: "TBD",
