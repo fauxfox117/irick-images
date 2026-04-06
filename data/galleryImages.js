@@ -114,7 +114,6 @@ export const galleryImages = {
     "/portraits/EDIT19-2.webp",
     "/portraits/EDIT2-2-2.webp",
     "/portraits/EDIT2.webp",
-    "/portraits/EDIT20 copy.webp",
     "/portraits/EDIT20.webp",
     "/portraits/EDIT25-2.webp",
     "/portraits/EDIT26.webp",

@@ -4,7 +4,6 @@
   position: relative;
   width: 100%;
   height: 100svh;
-  overflow: hidden;
 }
 
 .page.work canvas {
@@ -35,8 +34,8 @@
   align-items: center;
   color: #fff;
   border-radius: 4px; /* ADD THIS */
-  backdrop-filter: blur(5px);
-  background-color: rgba(0, 0, 0, 0.15);
+  /* backdrop-filter: blur(5px); */
+  /* background-color: rgba(0, 0, 0, 0.15); */
   justify-content: center;
 }
 
@@ -101,12 +100,12 @@
   justify-content: space-between;
   align-items: center;
   color: var(--tone-400);
-}
-
-.page.work .slide-footer .container .click-through {
-  /* border: 0.5px dashed var(--tone-400); */
   filter: drop-shadow(4px 2.5px 1.5px black);
 }
+
+/* .page.work .slide-footer .container .click-through {
+  border: 0.5px dashed var(--tone-400); 
+} */
 
 @media (max-width: 1000px) {
   .page.work .slider-content {
