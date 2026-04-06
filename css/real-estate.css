@@ -94,7 +94,7 @@
 
 .film-snapshots .snap-img {
   position: relative;
-  flex: 0 1 calc(33.333% - 2rem);
+  flex: 0 1 calc(50% - 2rem);
   min-height: 400px;
   overflow: hidden;
 }

@@ -79,7 +79,6 @@ export const galleryImages = {
     "/real-estate/DRONE4.webp",
     "/real-estate/drone5.webp",
     "/real-estate/EDIT13.webp",
-    "/real-estate/EDIT7.webp",
     "/real-estate/EXTERIOR1small.webp",
     "/real-estate/EXTERIOR3small.webp",
     "/real-estate/FALLSPARK3.webp",
@@ -100,9 +99,10 @@ export const galleryImages = {
     "/real-estate/THORNBLADE1two3.webp",
     "/real-estate/TOWNHOMES1two.webp",
     "/real-estate/TOWNHOMES2two.webp",
-    "/real-estate/TR2two.webp",
-    "/real-estate/WACCAMAW1.webp",
     "/real-estate/WACCAMAW8.webp",
+    "/real-estate/TR2two.webp",
+    "/real-estate/EDIT7.webp",
+    "/real-estate/WACCAMAW1.webp",
   ],
 
   portraits: [

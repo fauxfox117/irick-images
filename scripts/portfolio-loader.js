@@ -43,7 +43,7 @@ const lazyObserver = new IntersectionObserver(
 function renderGallery(imageUrls, snapshotsSection, category) {
   snapshotsSection.innerHTML = "";
 
-  const imagesPerRow = 3;
+  const imagesPerRow = 2;
   let currentRow = null;
 
   imageUrls.forEach((url, index) => {
