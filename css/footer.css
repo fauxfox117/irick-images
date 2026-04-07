@@ -62,6 +62,7 @@ footer {
 }
 
 .footer-row.meta .footer-meta-row {
+  position: relative;
   display: flex;
   justify-content: space-between;
   gap: 2rem;
@@ -70,6 +71,22 @@ footer {
 .footer-row.meta .footer-meta-row a {
   display: block;
   width: 6rem;
+  color: var(--tone-400);
+}
+
+.footer-row.meta .footer-meta-row .meta-info:nth-child(2) {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.footer-row.meta .footer-meta-row .meta-info:nth-child(2) a {
+  display: block;
   color: var(--tone-400);
 }
 

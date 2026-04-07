@@ -114,7 +114,7 @@ const animateSlideTransition = (nextIndex) => {
       currentDescription,
       {
         backgroundColor: "rgba(0,0,0,0)",
-        backdropFilter: "blur(0px)",
+        // backdropFilter: "blur(0px)",
         duration: 0.1,
         ease: "power2.inOut",
       },

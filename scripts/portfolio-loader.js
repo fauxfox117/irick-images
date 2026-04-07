@@ -39,14 +39,45 @@ const lazyObserver = new IntersectionObserver(
   { rootMargin: "200px" },
 );
 
-// Build the gallery grid from an array of image URLs
-function renderGallery(imageUrls, snapshotsSection, category) {
+// Sort images by orientation and build smart rows
+async function renderGallery(imageUrls, snapshotsSection, category) {
   snapshotsSection.innerHTML = "";
 
+  // Step 1: Load all images and detect orientation
+  const imageMetadata = await Promise.all(
+    imageUrls.map(
+      (url) =>
+        new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => {
+            const isLandscape = img.naturalWidth > img.naturalHeight;
+            resolve({
+              url,
+              isLandscape,
+              width: img.naturalWidth,
+              height: img.naturalHeight,
+            });
+          };
+          img.onerror = () => resolve(null);
+          img.src = url;
+        }),
+    ),
+  );
+
+  const validImages = imageMetadata.filter(Boolean);
+
+  // Step 2: Separate landscape and portrait
+  const landscapeImages = validImages.filter((img) => img.isLandscape);
+  const portraitImages = validImages.filter((img) => !img.isLandscape);
+
+  // Step 3: Group portraits first, then landscapes at bottom
+  const arrangedImages = [...portraitImages, ...landscapeImages];
+
+  // Step 4: Build rows (2 per row)
   const imagesPerRow = 2;
   let currentRow = null;
 
-  imageUrls.forEach((url, index) => {
+  arrangedImages.forEach((imgData, index) => {
     if (index % imagesPerRow === 0) {
       currentRow = document.createElement("div");
       currentRow.classList.add("snap-row");
@@ -55,9 +86,8 @@ function renderGallery(imageUrls, snapshotsSection, category) {
 
     const snapImg = document.createElement("div");
     snapImg.classList.add("snap-img", `img-${index + 1}`);
-    snapImg.dataset.lazySrc = url;
+    snapImg.dataset.lazySrc = imgData.url;
 
-    // Hidden image to establish natural aspect ratio (src set by observer)
     const sizer = document.createElement("img");
     sizer.alt = "";
     sizer.classList.add("snap-sizer");
@@ -73,7 +103,7 @@ function renderGallery(imageUrls, snapshotsSection, category) {
     lazyObserver.observe(snapImg);
   });
 
-  // Fill remaining spots in last row with empty divs
+  // Fill remaining spots
   if (currentRow) {
     const remaining = imagesPerRow - currentRow.children.length;
     for (let i = 0; i < remaining; i++) {
@@ -85,7 +115,7 @@ function renderGallery(imageUrls, snapshotsSection, category) {
 
   document.dispatchEvent(
     new CustomEvent("portfolioLoaded", {
-      detail: { category, count: imageUrls.length },
+      detail: { category, count: validImages.length },
     }),
   );
 }
