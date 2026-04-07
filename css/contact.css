@@ -3,12 +3,12 @@
   width: 100%;
   min-height: 100svh;
   background-color: var(--tone-200);
-  padding: 30px;
 }
 
 .contact-layout {
   display: flex;
   min-height: 100svh;
+  margin: 100px;
 }
 
 /* left column: about + contact info */
@@ -115,6 +115,7 @@ a[href^="tel:"] {
 @media (max-width: 1000px) {
   .contact-layout {
     flex-direction: column-reverse;
+    margin: 35px 0 0 0;
   }
 
   .contact-photo {

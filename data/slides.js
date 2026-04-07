@@ -47,7 +47,7 @@ export const slides = [
     type: "Commercial",
     field: "Promotional",
     date: "2025",
-    image: "/work/work-5.webp",
+    image: "/promotional/KEOWEE29.webp",
     route: "/promotional",
   },
 ];
