@@ -8,7 +8,6 @@
 }
 
 .film-hero .container {
-  background: url("../public/real-estate/_EPG9466.webp") no-repeat center center;
   background-size: cover;
   background-color: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(8px); /* optional frosted glass */

@@ -17,7 +17,7 @@ export const slides = [
     field: "Character Study",
     date: "2024",
     image: "/portraits/HOUSE2big.webp",
-    mobileImage: "/portraits/EDIT10.webp",
+    mobileImage: "/portraits/EDIT4.webp",
     route: "/portraits",
   },
   {
@@ -48,6 +48,7 @@ export const slides = [
     field: "Promotional",
     date: "2025",
     image: "/promotional/KEOWEE29.webp",
+    mobileImage: "/promotional/BONDED7.webp",
     route: "/promotional",
   },
 ];

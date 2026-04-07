@@ -130,18 +130,14 @@
   }
 
   .page.work .slide-title h1 .word {
-    filter: drop-shadow(2px 0.5px 0.75px black);
+    filter: drop-shadow(2px 1px 2px black);
   }
 
   .page.work .slide-link a {
-    filter: drop-shadow(2px 0.5px 0.75px black);
+    filter: drop-shadow(2px 1px 2px black);
   }
 
   .page.work .slider-content .slide-info {
-    filter: drop-shadow(3px 2px 1.5px black);
-  }
-
-  .page.work .slide-footer .container .click-through {
     filter: drop-shadow(3px 2px 1.5px black);
   }
 }
