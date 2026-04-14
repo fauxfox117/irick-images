@@ -13,6 +13,8 @@ const section = document.querySelector(".work-preview");
 if (!section) throw new Error(".work-preview section not found");
 const slider = section.querySelector(".slider");
 
+const isMobile = window.innerWidth < 768;
+
 let currentSlideIndex = 0;
 let isTransitioning = false;
 let slideTextures = [];
@@ -212,8 +214,10 @@ const initializeRenderer = async () => {
   loader.premultiplyAlpha = false;
 
   for (const slide of slides) {
+    const imageUrl =
+      isMobile && slide.mobileImage ? slide.mobileImage : slide.image;
     const texture = await new Promise((resolve, reject) =>
-      loader.load(slide.image, resolve, undefined, reject),
+      loader.load(imageUrl, resolve, undefined, reject),
     ).catch(() => null);
     if (!texture) continue; // Skip failed textures
     texture.premultiplyAlpha = false;
