@@ -193,6 +193,7 @@ const initializeRenderer = async () => {
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(w, h);
   shaderMaterial = new THREE.ShaderMaterial({
     uniforms: {
@@ -219,6 +220,9 @@ const initializeRenderer = async () => {
     texture.generateMipmaps = true;
     texture.minFilter = THREE.LinearMipmapLinearFilter;
     texture.magFilter = THREE.LinearFilter;
+    texture.encoding = THREE.sRGBEncoding;
+    const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
+    texture.anisotropy = Math.min(maxAnisotropy, 16);
     texture.userData = {
       size: new THREE.Vector2(texture.image.width, texture.image.height),
     };
@@ -267,6 +271,7 @@ const handleSlideChange = () => {
 const handleResize = () => {
   const w = section.clientWidth;
   const h = section.clientHeight;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(w, h);
   shaderMaterial.uniforms.uResolution.value.set(w, h);
   const currentContent = slider.querySelector(".slider-content");

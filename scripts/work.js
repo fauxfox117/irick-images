@@ -240,6 +240,7 @@ const initializeRenderer = async () => {
     canvas: document.querySelector("canvas"),
     antialias: true,
   });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   shaderMaterial = new THREE.ShaderMaterial({
@@ -273,6 +274,9 @@ const initializeRenderer = async () => {
     texture.generateMipmaps = true;
     texture.minFilter = THREE.LinearMipmapLinearFilter;
     texture.magFilter = THREE.LinearFilter;
+    texture.encoding = THREE.sRGBEncoding;
+    const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
+    texture.anisotropy = Math.min(maxAnisotropy, 16);
     texture.userData = {
       size: new THREE.Vector2(texture.image.width, texture.image.height),
     };
@@ -341,6 +345,7 @@ const handleSlideChange = () => {
 // handles window resize events - resets splittext and elements
 const handleResize = () => {
   if (!renderer || !shaderMaterial) return; // ← add this line
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
   shaderMaterial.uniforms.uResolution.value.set(
     window.innerWidth,
