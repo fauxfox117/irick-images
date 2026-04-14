@@ -270,7 +270,9 @@ const initializeRenderer = async () => {
     ).catch(() => null);
     if (!texture) continue; // Skip failed textures
     texture.premultiplyAlpha = false; // Add this
-    texture.minFilter = texture.magFilter = THREE.LinearFilter;
+    texture.generateMipmaps = true;
+    texture.minFilter = THREE.LinearMipmapLinearFilter;
+    texture.magFilter = THREE.LinearFilter;
     texture.userData = {
       size: new THREE.Vector2(texture.image.width, texture.image.height),
     };

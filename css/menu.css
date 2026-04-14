@@ -86,13 +86,13 @@ nav .logo a span {
 
 .nav-overlay .nav-items {
   position: absolute;
-  top: 55%;
-  right: 0%;
+  top: 50%;
+  left: 50%;
   width: 50%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  transform: translate(0%, -50%);
+  align-items: center;
+  transform: translate(-50%, -50%);
 }
 
 .nav-overlay .nav-items .nav-item {
@@ -140,9 +140,11 @@ nav .logo a span {
 
 @media (max-width: 1000px) {
   .nav-overlay .nav-items {
-    left: 1rem;
+    left: 50%;
     width: 100%;
-    transform: translate(0%, -50%);
+    transform: translate(-50%, -50%);
+    justify-items: center;
+    text-align: center;
   }
 
   .nav-overlay .nav-items .nav-item a {

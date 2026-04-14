@@ -98,10 +98,10 @@ footer {
 
   .footer-row.form .container {
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
     padding: 1rem;
     margin-bottom: 2rem;
-    text-align: left;
+    text-align: center;
   }
 
   .footer-name h3 {
@@ -110,6 +110,7 @@ footer {
 
   .footer-row.meta .container {
     gap: 4rem;
+    align-items: center;
   }
 
   .footer-row.meta .footer-meta-row {
@@ -124,5 +125,20 @@ footer {
 
   .footer-row.meta .footer-meta-row:nth-child(2) {
     flex-direction: row;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-row.meta .footer-meta-row {
+    gap: 4rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-row.meta .footer-meta-row .meta-info:nth-child(2) {
+    position: static;
+    left: auto;
+    transform: none;
   }
 }
