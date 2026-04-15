@@ -82,8 +82,10 @@ function processTextElements(container) {
     .forEach(createLineElements);
   const link = container.querySelector(".slide-link a");
   if (link) {
-    createLineElements(link);
-    addSlideLinkHover(link);
+    if (!isMobile) {
+      createLineElements(link);
+      addSlideLinkHover(link);
+    }
   }
 }
 

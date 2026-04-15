@@ -108,6 +108,7 @@
 
 .work-preview .slide-title h1 .char {
   display: block;
+  padding: 0.1em 0;
 }
 
 .work-preview .char,
@@ -130,7 +131,14 @@
   width: max-content;
   padding: 0.5rem 0;
   filter: drop-shadow(2px 2.5px 1.5px black);
+  pointer-events: auto;
+  touch-action: manipulation;
   /* filter: blur(4px); */
+}
+
+.work-preview .slide-link a .line,
+.work-preview .slide-link a .line span {
+  pointer-events: none;
 }
 
 .work-preview .slide-footer {
@@ -181,6 +189,10 @@
   }
   .work-preview .slide-title h1 {
     font-size: 3rem;
+    line-height: 1.2;
+  }
+  .work-preview .slide-title h1 .char {
+    padding: 0.1em 0;
   }
   .work-preview .slide-description {
     width: 90%;
