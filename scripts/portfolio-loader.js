@@ -142,26 +142,25 @@ async function fetchSupabaseImages(category) {
   return null;
 }
 
-// Main loader — hardcoded first, then Supabase override
+// Main loader — hardcoded first, then Supabase added
 async function loadPortfolioImages() {
   const category = getPortfolioCategory();
   const snapshotsSection = document.querySelector(".film-snapshots .container");
 
   if (!snapshotsSection) return;
 
-  // 1. Immediately render local/hardcoded images
+  // 1. Get local/hardcoded images
   const localImages = galleryImages[category] || [];
 
-  if (localImages.length > 0) {
-    renderGallery(localImages, snapshotsSection, category);
-  }
-
-  // 2. Try Supabase — if it returns images, replace the gallery
+  // 2. Try Supabase — combine with local images
   const supabaseImages = await fetchSupabaseImages(category);
 
-  if (supabaseImages) {
-    renderGallery(supabaseImages, snapshotsSection, category);
-  } else if (localImages.length === 0) {
+  // 3. Combine both arrays (Supabase first, then local fallback)
+  const allImages = [...(supabaseImages || []), ...localImages];
+
+  if (allImages.length > 0) {
+    renderGallery(allImages, snapshotsSection, category);
+  } else {
     if (import.meta.env.DEV)
       console.warn(`No images found for category: ${category}`);
     document.dispatchEvent(

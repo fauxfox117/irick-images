@@ -22,31 +22,44 @@ Deno.serve(async (req) => {
 
     if (!category || category === 'all') {
       // Get all images from all categories
-      const { data, error } = await supabaseClient.storage
-        .from('images')
-        .list('', {
-          limit: 1000,
-          sortBy: { column: 'created_at', order: 'desc' }
-        })
+      const categories = ['real-estate', 'portraits', 'performance', 'events-misc', 'promotional']
+      let allImages = []
 
-      if (error) throw error
+      for (const cat of categories) {
+        const { data, error } = await supabaseClient.storage
+          .from('images')
+          .list(cat, {
+            limit: 1000,
+            sortBy: { column: 'created_at', order: 'desc' }
+          })
 
-      // Get public URLs for all images
-      const imagesWithUrls = data
-        .filter(file => file.name !== '.emptyFolderPlaceholder')
-        .map(file => {
-          const { data: { publicUrl } } = supabaseClient.storage
-            .from('images')
-            .getPublicUrl(file.name)
-          
-          return {
-            name: file.name,
-            path: file.name,
-            url: publicUrl,
-            category: file.name.includes('/') ? file.name.split('/')[0] : 'uncategorized',
-            created_at: file.created_at
-          }
-        })
+        if (error) continue // Skip categories that don't exist
+
+        const imagesInCategory = data
+          .filter(file => file.name !== '.emptyFolderPlaceholder' && file.id) // Filter out folders (folders don't have id)
+          .map(file => {
+            const filePath = `${cat}/${file.name}`
+            const { data: { publicUrl } } = supabaseClient.storage
+              .from('images')
+              .getPublicUrl(filePath)
+            
+            return {
+              name: file.name,
+              path: filePath,
+              url: publicUrl,
+              category: cat,
+              size: file.metadata?.size || 0,
+              created_at: file.created_at
+            }
+          })
+
+        allImages = allImages.concat(imagesInCategory)
+      }
+
+      // Sort all images by created_at
+      allImages.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+
+      const imagesWithUrls = allImages
 
       return new Response(
         JSON.stringify({ success: true, images: imagesWithUrls }),
@@ -64,7 +77,7 @@ Deno.serve(async (req) => {
       if (error) throw error
 
       const imagesWithUrls = data
-        .filter(file => file.name !== '.emptyFolderPlaceholder')
+        .filter(file => file.name !== '.emptyFolderPlaceholder' && file.id) // Filter out folders
         .map(file => {
           const filePath = `${category}/${file.name}`
           const { data: { publicUrl } } = supabaseClient.storage
@@ -76,6 +89,7 @@ Deno.serve(async (req) => {
             path: filePath,
             url: publicUrl,
             category: category,
+            size: file.metadata?.size || 0,
             created_at: file.created_at
           }
         })
