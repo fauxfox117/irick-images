@@ -122,6 +122,10 @@ a[href^="tel:"] {
     height: 50svh;
   }
 
+  .contact-photo img {
+    top: 0;
+  }
+
   .contact-info {
     padding: 2rem;
     gap: 2rem;
