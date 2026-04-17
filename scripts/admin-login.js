@@ -50,10 +50,3 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     loginBtn.textContent = "Sign In";
   }
 });
-
-// Auto-fill for development (remove in production)
-if (window.location.hostname === "localhost") {
-  console.log(
-    "Development mode: Check your Supabase dashboard for admin user credentials",
-  );
-}
