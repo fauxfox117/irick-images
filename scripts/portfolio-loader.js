@@ -8,7 +8,14 @@ const ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 function getPortfolioCategory() {
   const path = window.location.pathname;
   const segment = path.split("/").filter(Boolean).pop() || "";
-  return segment.replace(".html", "") || "real-estate";
+  const category = segment.replace(".html", "") || "real-estate";
+
+  // Map events page to events-misc folder in Supabase
+  if (category === "events") {
+    return "events-misc";
+  }
+
+  return category;
 }
 
 // Lazy-load observer: loads images when they enter/near the viewport
@@ -125,16 +132,23 @@ async function fetchSupabaseImages(category) {
   if (!ANON_KEY || !import.meta.env.VITE_SUPABASE_URL) return null;
 
   try {
+    const url = `${SUPABASE_URL}/get-images?category=${category}`;
+    console.log('Fetching Supabase images from:', url);
+    
     const response = await fetch(
-      `${SUPABASE_URL}/get-images?category=${category}`,
+      url,
       { headers: { Authorization: `Bearer ${ANON_KEY}` } },
     );
     const data = await response.json();
+    
+    console.log(`Supabase response for ${category}:`, data);
 
     if (data.images && data.images.length > 0) {
+      console.log(`Found ${data.images.length} images in Supabase`);
       return data.images.map((img) => img.url);
     }
   } catch (err) {
+    console.error("Supabase fetch error:", err);
     if (import.meta.env.DEV)
       console.warn("Supabase fetch failed, using local images:", err.message);
   }
@@ -144,27 +158,36 @@ async function fetchSupabaseImages(category) {
 
 // Main loader — hardcoded first, then Supabase added
 async function loadPortfolioImages() {
-  const category = getPortfolioCategory();
+  const supabaseCategory = getPortfolioCategory(); // This returns "events-misc" for events page
+  console.log('Portfolio category:', supabaseCategory);
+  
   const snapshotsSection = document.querySelector(".film-snapshots .container");
 
   if (!snapshotsSection) return;
 
-  // 1. Get local/hardcoded images
-  const localImages = galleryImages[category] || [];
+  // 1. Get local/hardcoded images - use the local key which might differ from Supabase folder
+  const localCategory =
+    supabaseCategory === "events-misc" ? "events" : supabaseCategory;
+  const localImages = galleryImages[localCategory] || [];
+  console.log(`Local images for ${localCategory}:`, localImages.length);
 
   // 2. Try Supabase — combine with local images
-  const supabaseImages = await fetchSupabaseImages(category);
+  const supabaseImages = await fetchSupabaseImages(supabaseCategory);
+  console.log('Supabase images:', supabaseImages?.length || 0);
 
   // 3. Combine both arrays (Supabase first, then local fallback)
   const allImages = [...(supabaseImages || []), ...localImages];
+  console.log('Total images:', allImages.length);
 
   if (allImages.length > 0) {
-    renderGallery(allImages, snapshotsSection, category);
+    renderGallery(allImages, snapshotsSection, supabaseCategory);
   } else {
     if (import.meta.env.DEV)
-      console.warn(`No images found for category: ${category}`);
+      console.warn(`No images found for category: ${supabaseCategory}`);
     document.dispatchEvent(
-      new CustomEvent("portfolioLoaded", { detail: { category, count: 0 } }),
+      new CustomEvent("portfolioLoaded", {
+        detail: { category: supabaseCategory, count: 0 },
+      }),
     );
   }
 }
