@@ -324,6 +324,12 @@ async function uploadImage() {
   const file = fileInput.files[0];
   const fileName = customFileName || file.name;
 
+  // Additional validation
+  if (!fileName.trim()) {
+    errorEl.textContent = "File name cannot be empty";
+    return;
+  }
+
   uploadBtn.disabled = true;
   uploadBtn.textContent = "Uploading...";
 
@@ -331,23 +337,39 @@ async function uploadImage() {
     // Convert file to base64
     const base64 = await fileToBase64(file);
 
+    if (!base64) {
+      throw new Error("Failed to convert image to base64");
+    }
+
+    const payload = {
+      fileName: fileName.trim(),
+      base64Image: base64,
+      category,
+    };
+
+    console.log("Upload payload:", {
+      fileName: payload.fileName,
+      category: payload.category,
+      base64Length: payload.base64Image?.length,
+      base64Prefix: payload.base64Image?.substring(0, 50),
+    });
+
     const response = await fetch(`${API_URL}/upload-image`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${ANON_KEY}`,
       },
-      body: JSON.stringify({
-        fileName,
-        fileData: base64,
-        category,
-      }),
+      body: JSON.stringify(payload),
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error || "Upload failed");
+      console.error("Upload failed:", data);
+      throw new Error(
+        data.error || `Upload failed with status ${response.status}`,
+      );
     }
 
     successEl.textContent = `Image uploaded successfully to ${data.path}`;
@@ -357,11 +379,8 @@ async function uploadImage() {
     document.getElementById("fileName").value = "";
     document.getElementById("uploadPreview").innerHTML = "";
 
-    // Show note about copying file to public folder
-    successEl.innerHTML +=
-      "<br><br><strong>Next step:</strong> Copy the uploaded image from Supabase storage to your /public/" +
-      category +
-      "/ folder to use it on the site.";
+    // Refresh photos to show the new upload
+    await loadPhotos();
   } catch (error) {
     errorEl.textContent = error.message;
   } finally {
