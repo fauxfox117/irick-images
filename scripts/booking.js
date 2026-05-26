@@ -10,6 +10,22 @@ const bookingState = {
   totalPrice: 0,
 };
 
+function requiresSquareFootage() {
+  const packageId = (bookingState.selectedPackage?.id || "")
+    .toString()
+    .toLowerCase();
+  const packageName = (bookingState.selectedPackage?.name || "")
+    .toString()
+    .toLowerCase();
+
+  // Keep this tolerant of historical ID typos in package data.
+  return (
+    packageId === "listing" ||
+    packageId === "lisiting" ||
+    packageName.includes("listing package")
+  );
+}
+
 // Initialize booking flow
 function init() {
   renderPackages();
@@ -183,7 +199,7 @@ function goToStep(step) {
     // Show square footage field only for Standard Listing Package
     const sqftGroup = document.getElementById("sqftGroup");
     const sqftInput = document.getElementById("sqft");
-    if (bookingState.selectedPackage?.id === "Listing") {
+    if (requiresSquareFootage()) {
       sqftGroup.style.display = "";
       sqftInput.required = true;
     } else {
@@ -341,7 +357,7 @@ function setupEventListeners() {
     if (validateForm()) {
       submitBooking();
     } else {
-      alert("Please fill out all required fields");
+      document.getElementById("customerForm").reportValidity();
     }
   });
 }

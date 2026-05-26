@@ -1,6 +1,6 @@
 export const packages = [
   {
-    id: "Lisiting",
+    id: "Listing",
     name: "Standard Listing Package",
     description: "For real estate agents who only need photos for MLS listing",
     price: 250,
